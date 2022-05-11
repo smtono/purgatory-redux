@@ -2,10 +2,10 @@ import pygame
 
 pygame.init()
 
-COLOR = (255, 100, 98)
+COLOR = (255, 255, 255)
 SURFACE_COLOR = (167, 255, 100)
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 20
+HEIGHT = 20
 
 class Player(pygame.sprite.Sprite):
     '''
