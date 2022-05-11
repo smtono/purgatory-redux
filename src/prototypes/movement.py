@@ -24,21 +24,25 @@ while (game_running):
         if event.type == pygame.QUIT:  
             game_running = False
             raise SystemExit
-        elif event.type == pygame.KEYDOWN:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_LEFT]:
-                player.move_left(10)
-            if keys[pygame.K_RIGHT]:
-                player.move_right(10)
-            if keys[pygame.K_DOWN]:
-                player.move_down(10)
-            if keys[pygame.K_UP]:
-                player.move_up(10)
+        #elif event.type == pygame.KEYDOWN:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            print("left")
+            player.move_left(2)
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            print("right")
+            player.move_right(2)
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            print("down")
+            player.move_down(2)
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            print("up")
+            player.move_up(2)
     
     sprites.update()
     window.fill(BG_COLOR)
     sprites.draw(window)
-    # pygame.display.flip()
+    pygame.display.flip()
     clock.tick(60)
 
 pygame.quit()
