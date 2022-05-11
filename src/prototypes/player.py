@@ -2,8 +2,8 @@ import pygame
 
 pygame.init()
 
-COLOR = (255, 255, 255)
-SURFACE_COLOR = (167, 255, 100)
+# sprite attributes
+COLOR = (255, 0, 0)
 WIDTH = 20
 HEIGHT = 20
 
@@ -24,8 +24,8 @@ class Player(pygame.sprite.Sprite):
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
         self.image = pygame.Surface([WIDTH, HEIGHT])
-        self.image.fill(SURFACE_COLOR)
-        self.image.set_colorkey(COLOR)
+        self.image.fill(COLOR)
+        #self.image.set_colorkey(COLOR)
  
         pygame.draw.rect(self.image,
                          COLOR,
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x -= pixels
     
     def move_up(self, pixels):
-        self.rect.y += pixels
+        self.rect.y -= pixels
     
     def move_down(self, pixels):
-        self.rect.y -= pixels
+        self.rect.y += pixels
