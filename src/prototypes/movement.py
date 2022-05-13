@@ -1,6 +1,5 @@
-import pygame
-import player
-from prototypes.player import Player
+import pygame, sys
+from prototypes.until import Player, Camera
 
 pygame.init()
 
@@ -18,6 +17,7 @@ clock = pygame.time.Clock()
 # Sprite management
 sprites = pygame.sprite.Group()
 player = Player()
+camera = Camera()
 
 # initialize start position
 player.rect.x = 320
@@ -29,25 +29,33 @@ while (game_running):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  
             game_running = False
-            raise SystemExit
+            exit()
         #elif event.type == pygame.KEYDOWN:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            print("left")
-            player.move_left(10)
+            #print("left")
+            player.move_left(5)
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            print("right")
-            player.move_right(10)
+            #print("right")
+            player.move_right(5)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            print("down")
-            player.move_down(10)
+            #print("down")
+            player.move_down(5)
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            print("up")
-            player.move_up(10)
+            #print("up")
+            player.move_up(5)
     
     sprites.update()
     window.fill(BG_COLOR)
+
+    # update camera
+    camera.move_camera(player.rect.x, player.rect.y, window)
+    player.rect.x -= camera.x
+    player.rect.y -= camera.y
+    camera.reset()
+
     sprites.draw(window)
+
     pygame.display.flip()
     clock.tick(60)
 
