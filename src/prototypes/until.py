@@ -50,3 +50,22 @@ class Player(pygame.sprite.Sprite):
     
     def move_down(self, pixels):
         self.rect.y += pixels
+
+class Camera:
+    def __init__(self) -> None:
+        self.x = 0
+        self.y = 0
+
+    def move_camera(self, x, y, screen: pygame.Surface) -> None:
+        w, h = screen.get_size()
+        if x > w / 4 * 3:
+            print("Updating x of camera")
+            self.x += 5
+        if y > h / 4 * 3:
+            print("Updating y of camera")
+            self.y += 5
+    
+    def reset(self):
+        self.x = 0
+        self.y = 0
+        
