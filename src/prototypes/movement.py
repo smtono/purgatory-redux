@@ -1,10 +1,11 @@
 import pygame, sys
-from prototypes.until import Player, Camera
+from prototypes.util import Player, Camera
 
 pygame.init()
 
 # Window initialization
 game_running = True
+FPS = 60
 WIDTH = 640
 HEIGHT = 360
 BG_COLOR = (0, 0, 0)
@@ -57,6 +58,6 @@ while (game_running):
     sprites.draw(window)
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(FPS)
 
 pygame.quit()
