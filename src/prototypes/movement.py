@@ -1,5 +1,5 @@
 import pygame, sys
-from prototypes.util import Player, Camera
+from prototypes.game import Player, Camera
 
 pygame.init()
 
