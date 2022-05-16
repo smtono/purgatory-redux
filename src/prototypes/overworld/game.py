@@ -18,17 +18,21 @@ class State(object):
         self.previous = None
 
 class Camera:
-    '''
-    Camera:
-        When the user moves , the camera moves?
-    '''
     def __init__(self) -> None:
         self.x = 0
         self.y = 0
 
     def move_camera(self, x, y, screen: pygame.Surface) -> None:
+        '''
+        The screen will move so that the player is still on screen at all times
+
+        Approaches:
+            When the user reaches the border of the current screen on any edge, move the screen
+            Each time the user moves, move the camera one unit that way. The user will always be in the middle of the screen
+            Have a static screen, with all elements on it already
+        '''
         w, h = screen.get_size()
-        if x > w / 4 * 3:
+        if x > w / 2 * 3: #or x < w / 3:
             print("Updating x of camera")
             self.x += 5
         if y > h / 4 * 3:
