@@ -34,9 +34,28 @@ class Entity(pygame.sprite.Sprite):
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
 
-class NpcEntity(Entity):
+    def get_rect(self):
+        return self.rect
+
+class Npc(Entity):
+    '''
+    An NPC character is any character who has a spoken line/interacts with the player character
+    Can be just a normal NPC with no quest, or can be a special kind
+    '''
     def __init__(self) -> None:
         super().__init__()
+
+class NpcWithQuest(Npc):
+    '''
+    An NPC with a quest will have a mission for the player character
+    This mission will be mentioned when the player interacts with them
+    '''
+    def __init__(self) -> None:
+        super().__init__()
+    
+    # TODO:
+    # make quest giving function
+    # make function to check if player has active quest
 
 class Player(Entity):
     '''
