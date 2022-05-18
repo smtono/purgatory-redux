@@ -10,7 +10,7 @@ HEIGHT = 20
 class Entity(pygame.sprite.Sprite):
     '''
     An entity object represents any character in the game that can be moved, interacted with, etc
-    Each entity has a symbol and a color
+    Each entity has a symbol and a colour
     '''
 
     @abstractmethod
@@ -44,6 +44,24 @@ class Npc(Entity):
     '''
     def __init__(self) -> None:
         super().__init__()
+        self.has_quest = False
+
+    def setQuestFlag(self, toggle):
+        self.has_quest = toggle
+
+    """
+    something happens
+    - [chat]
+        - response ->SELECT_RESPONSE: 48
+            [different chat options for response 48]
+                - response
+                    [ different chat options ]
+                    EXIT_CHAT -> "cya l8r alig8r"
+
+
+    """
+
+    
 
 class NpcWithQuest(Npc):
     '''
