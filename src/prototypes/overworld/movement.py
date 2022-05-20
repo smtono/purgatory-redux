@@ -1,6 +1,7 @@
+from turtle import width
 import pygame, sys
 from prototypes.overworld.game import Camera
-from prototypes.overworld.entity import Player
+from prototypes.overworld.entity import Npc, Player
 
 pygame.init()
 
@@ -19,13 +20,20 @@ clock = pygame.time.Clock()
 # Sprite management
 sprites = pygame.sprite.Group()
 player = Player()
+npc = Npc()
 camera = Camera()
 
 # initialize start position
 player.rect.x = 320
 player.rect.y = 180
 
+npc.rect.x = 200
+npc.rect.y = 50
+
+npc.image.fill((0, 255, 0))
+
 sprites.add(player)
+sprites.add(npc)
 
 while (game_running):
     for event in pygame.event.get():
@@ -46,15 +54,22 @@ while (game_running):
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             #print("up")
             player.move_up(5)
+
+    # debug
+    print("playerX", player.rect.x)
+    print("playerY", player.rect.y)
     
+    player.detectCollision()
     sprites.update()
     window.fill(BG_COLOR)
 
     # update camera
+    '''
     camera.move_camera(player.rect.x, player.rect.y, window)
     player.rect.x -= camera.x
     player.rect.y -= camera.y
     camera.reset()
+    '''
 
     sprites.draw(window)
 
