@@ -6,6 +6,7 @@ from prototypes.overworld.entity import Npc, Player
 pygame.init()
 
 # Window initialization
+# TODO: make settings in file / allow for changes with dev tools
 game_running = True
 FPS = 60
 WIDTH = 640
@@ -56,10 +57,10 @@ while (game_running):
             player.move_up(5)
 
     # debug
-    print("playerX", player.rect.x)
-    print("playerY", player.rect.y)
+    #print("playerX=", player.rect.x)
+    #print("playerY=", player.rect.y)
     
-    player.detectCollision()
+    player.detectCollision([WIDTH, HEIGHT])
     sprites.update()
     window.fill(BG_COLOR)
 

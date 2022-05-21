@@ -104,21 +104,23 @@ class Player(Entity):
         self.rect.y += pixels
     
     # Utility functions
-    def detectCollision(self):
+    def detectCollision(self, border: list):
+        border_x = border[0]
+        border_y = border[1]
         # borders detection
         if self.rect.x < 0:
             print("border detected, x < 0")
             self.rect.x = 0
-        if self.rect.x > WIDTH:
+        if self.rect.x > border_x - WIDTH:
             print("border detected, x > WIDTH")
-            self.rect.x = WIDTH
+            self.rect.x = border_x - WIDTH
         
         if self.rect.y < 0:
             print("border detected, y < 0")
             self.rect.y = 0
-        if self.rect.y > HEIGHT:
+        if self.rect.y > border_y - HEIGHT:
             print("border detected, y > HEIGHT")
-            self.rect.y = HEIGHT
+            self.rect.y = border_y - HEIGHT
         
         # other entity detection
 
