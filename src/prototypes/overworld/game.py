@@ -2,6 +2,15 @@ import pygame, sys
 
 pygame.init()
 
+class Settings():
+    '''
+    Game settings will deal with the mechanics of presenting the game to the user
+    The user can change the window sizes, adjust volume, etc. 
+    This class both initializes these parameters and allows for changes
+    '''
+    def __init__(self) -> None:
+        pass
+
 class State(object):
     '''
     A State is an event in the game loop, which is attached to other states in a specific order

@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from typing import Any
 import pygame
 
 # sprite attributes
@@ -12,7 +13,6 @@ class Entity(pygame.sprite.Sprite):
     An entity object represents any character in the game that can be moved, interacted with, etc
     Each entity has a symbol and a colour
     '''
-
     @abstractmethod
     def __init__(self) -> None:
         pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
@@ -34,7 +34,7 @@ class Entity(pygame.sprite.Sprite):
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
 
-    def get_rect(self):
+    def get_rect(self) -> pygame.Rect:
         return self.rect
 
 class Npc(Entity):
@@ -42,12 +42,31 @@ class Npc(Entity):
     An NPC character is any character who has a spoken line/interacts with the player character
     Can be just a normal NPC with no quest, or can be a special kind
     '''
+    # Default constructor
     def __init__(self) -> None:
         super().__init__()
         self.has_quest = False
+        self.is_enemy = False
+    
+    # Quest giver constructor
+    def __init__(self) -> None:
+        super().__init__()
+        self.has_quest = True
+        self.is_enemy = False
+    
+    # Enemy (potential) constructor
+    def __init__(self) -> None:
+        super().__init__()
+        self.has_quest = False
+        self.is_enemy = True
 
-    def setQuestFlag(self, toggle):
+    # TODO: getters?
+
+    def setQuestFlag(self, toggle: Any) -> None:
         self.has_quest = toggle
+    
+    def setEnemyFlag(self, toggle: Any) -> None:
+        self.is_enemy = toggle
 
     """
     something happens
@@ -57,8 +76,6 @@ class Npc(Entity):
                 - response
                     [ different chat options ]
                     EXIT_CHAT -> "cya l8r alig8r"
-
-
     """
 
     
@@ -82,35 +99,33 @@ class Player(Entity):
     The player will have a symbol and color
     It will also have functions for moving around the map
     '''
-
     # Constructor
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     # Movement functions
     '''
     Call the object and move it positively or negatively in the x and y directions
     '''
-    def move_right(self, pixels):
+    def move_right(self, pixels: int) -> None:
         self.rect.x += pixels
  
-    def move_left(self, pixels):
+    def move_left(self, pixels: int) -> None:
         self.rect.x -= pixels
     
-    def move_up(self, pixels):
+    def move_up(self, pixels: int) -> None:
         self.rect.y -= pixels
     
-    def move_down(self, pixels):
+    def move_down(self, pixels: int) -> None:
         self.rect.y += pixels
     
     # Utility functions
-    def detectCollision(self, border: list):
+    def detectCollision(self, border: list) -> None:
         '''
         Used for adjusting the user's position 
         on the screen if they go beyond the bounds of the screen,
         or if they collide with any objects in the sprites group of the game.
         '''
-
         border_x = border[0]
         border_y = border[1]
         # borders detection
