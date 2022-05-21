@@ -120,7 +120,7 @@ class Player(Entity):
         self.rect.y += pixels
     
     # Utility functions
-    def detectCollision(self, border: list) -> None:
+    def detectCollision(self, direction_moving, border: list, sprites: pygame.sprite.Group) -> None:
         '''
         Used for adjusting the user's position 
         on the screen if they go beyond the bounds of the screen,
@@ -144,5 +144,35 @@ class Player(Entity):
             self.rect.y = border_y - HEIGHT
         
         # other entity detection
+        '''
+        Take coords of sprite
+        move player sprite over player width/height as to not touch sprite
+        '''
+        dx = self.rect.x
+        dy = self.rect.y
+        # If you collide with a object, move out
+        for sprite in sprites:
+            if self.rect.colliderect(sprite.rect):
+                if dx > 0: # Moving right; Hit the left side of the wall
+                    self.rect.right = sprite.rect.right
+                if dx < 0: # Moving left; Hit the right side of the wall
+                    self.rect.left = sprite.rect.left
+                if dy > 0: # Moving down; Hit the top side of the wall
+                    self.rect.bottom = sprite.rect.top
+                if dy < 0: # Moving up; Hit the bottom side of the wall
+                    self.rect.top = sprite.rect.bottom
+
+
+        '''
+        for sprite in sprites:
+            if self.rect.x in range(sprite.rect., sprite.rect.x)  and self.rect.y == sprite.rect.y:
+                print("Collision with sprite")
+                self.rect.x -= self.rect.width # subtract length of width
+                self.rect.y -= self.rect.height
+            
+            if self.rect.y == sprite.rect.y:
+                print("Collision with sprite")
+                self.rect.y -= self.rect.height
+        '''
 
         # object detection

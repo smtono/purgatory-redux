@@ -20,6 +20,7 @@ clock = pygame.time.Clock()
 
 # Sprite management
 sprites = pygame.sprite.Group()
+npcs = pygame.sprite.Group()
 player = Player()
 npc = Npc()
 camera = Camera()
@@ -33,8 +34,10 @@ npc.rect.y = 50
 
 npc.image.fill((0, 255, 0))
 
-sprites.add(player)
 sprites.add(npc)
+sprites.add(player)
+
+npcs.add(npc)
 
 while (game_running):
     for event in pygame.event.get():
@@ -60,7 +63,7 @@ while (game_running):
     #print("playerX=", player.rect.x)
     #print("playerY=", player.rect.y)
     
-    player.detectCollision([WIDTH, HEIGHT])
+    player.detectCollision([WIDTH, HEIGHT], npcs)
     sprites.update()
     window.fill(BG_COLOR)
 
