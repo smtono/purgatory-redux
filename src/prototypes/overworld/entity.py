@@ -105,21 +105,27 @@ class Player(Entity):
     
     # Utility functions
     def detectCollision(self, border: list):
+        '''
+        Used for adjusting the user's position 
+        on the screen if they go beyond the bounds of the screen,
+        or if they collide with any objects in the sprites group of the game.
+        '''
+
         border_x = border[0]
         border_y = border[1]
         # borders detection
         if self.rect.x < 0:
-            print("border detected, x < 0")
+            # print("border detected, x < 0")
             self.rect.x = 0
         if self.rect.x > border_x - WIDTH:
-            print("border detected, x > WIDTH")
+            # print("border detected, x > WIDTH")
             self.rect.x = border_x - WIDTH
         
         if self.rect.y < 0:
-            print("border detected, y < 0")
+            # print("border detected, y < 0")
             self.rect.y = 0
         if self.rect.y > border_y - HEIGHT:
-            print("border detected, y > HEIGHT")
+            # print("border detected, y > HEIGHT")
             self.rect.y = border_y - HEIGHT
         
         # other entity detection
