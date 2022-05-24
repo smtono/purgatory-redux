@@ -85,21 +85,6 @@ class Npc(Entity):
                     [ different chat options ]
                     EXIT_CHAT -> "cya l8r alig8r"
     """
-
-    
-'''
-class NpcWithQuest(Npc):
-    
-    # An NPC with a quest will have a mission for the player character
-    # This mission will be mentioned when the player interacts with them
-
-    def __init__(self) -> None:
-        super().__init__()
-    
-    # TODO:
-    # make quest giving function
-    # make function to check if player has active quest
-'''
     
 class Player(Entity):
     '''
