@@ -1,6 +1,6 @@
 from turtle import width
 import pygame, sys
-from prototypes.overworld.game import Camera
+from prototypes.overworld.game import Camera, Direction
 from prototypes.overworld.entity import Npc, Player
 
 pygame.init()
@@ -48,15 +48,19 @@ while (game_running):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             #print("left")
+            player.set_direction_moving(Direction.LEFT)
             player.move_left(5)
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             #print("right")
+            player.set_direction_moving(Direction.RIGHT)
             player.move_right(5)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             #print("down")
+            player.set_direction_moving(Direction.DOWN)
             player.move_down(5)
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             #print("up")
+            player.set_direction_moving(Direction.UP)
             player.move_up(5)
 
     # debug

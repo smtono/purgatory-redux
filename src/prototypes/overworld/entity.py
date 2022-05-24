@@ -1,7 +1,7 @@
 from abc import abstractmethod
-import enum
 from typing import Any
 import pygame
+from prototypes.overworld.game import Direction
 
 # sprite attributes
 COLOR = (255, 0, 0)
@@ -93,7 +93,7 @@ class NpcWithQuest(Npc):
     # make quest giving function
     # make function to check if player has active quest
 '''
-
+    
 class Player(Entity):
     '''
     Used for representing the object that the user will control in the game while moving
@@ -158,27 +158,16 @@ class Player(Entity):
         dy = self.rect.y
         # If you collide with a object, move out
         for sprite in sprites:
+            # find direction player was moving if collision
             if self.rect.colliderect(sprite.rect):
-                if dx > 0: # Moving right; Hit the left side of the wall
-                    self.rect.right = sprite.rect.right
-                if dx < 0: # Moving left; Hit the right side of the wall
-                    self.rect.left = sprite.rect.left
-                if dy > 0: # Moving down; Hit the top side of the wall
-                    self.rect.bottom = sprite.rect.top
-                if dy < 0: # Moving up; Hit the bottom side of the wall
-                    self.rect.top = sprite.rect.bottom
-
-
-        '''
-        for sprite in sprites:
-            if self.rect.x in range(sprite.rect., sprite.rect.x)  and self.rect.y == sprite.rect.y:
-                print("Collision with sprite")
-                self.rect.x -= self.rect.width # subtract length of width
-                self.rect.y -= self.rect.height
-            
-            if self.rect.y == sprite.rect.y:
-                print("Collision with sprite")
-                self.rect.y -= self.rect.height
-        '''
+                match self.is_moving:
+                    case Direction.UP:
+                        self.rect.top = sprite.rect.bottom
+                    case Direction.DOWN:
+                        self.rect.bottom = sprite.rect.top
+                    case Direction.LEFT:
+                        self.rect.left = sprite.rect.right
+                    case Direction.RIGHT:
+                        self.rect.right = sprite.rect.left
 
         # object detection
