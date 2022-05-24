@@ -130,7 +130,7 @@ class Player(Entity):
         self.rect.y += pixels
     
     # Utility functions
-    def detectCollision(self, direction_moving, border: list, sprites: pygame.sprite.Group) -> None:
+    def detectCollision(self, direction_moving: Direction, border: list, sprites: pygame.sprite.Group) -> None:
         '''
         Used for adjusting the user's position 
         on the screen if they go beyond the bounds of the screen,
