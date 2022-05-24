@@ -68,6 +68,13 @@ class Npc(Entity):
     
     def setEnemyFlag(self, toggle: Any) -> None:
         self.is_enemy = toggle
+    
+    def detect_nearby(self):
+        '''
+        Used to see if player is within a range of coordinates of the NPC
+        so that the player can then interact with the NPC
+        '''
+        return
 
     """
     something happens
@@ -126,7 +133,7 @@ class Player(Entity):
         self.rect.y += pixels
     
     # Utility functions
-    def detectCollision(self, border: list, sprites: pygame.sprite.Group) -> None:
+    def detect_collision(self, border: list, sprites: pygame.sprite.Group) -> None:
         '''
         Used for adjusting the user's position 
         on the screen if they go beyond the bounds of the screen,
