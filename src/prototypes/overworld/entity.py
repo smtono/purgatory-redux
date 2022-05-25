@@ -43,6 +43,7 @@ class Npc(Entity):
     An NPC character is any character who has a spoken line/interacts with the player character
     Can be just a normal NPC with no quest, or can be a special kind
     '''
+    # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
     # Default constructor
     def __init__(self) -> None:
         super().__init__()
@@ -75,16 +76,6 @@ class Npc(Entity):
         so that the player can then interact with the NPC
         '''
         return
-
-    """
-    something happens
-    - [chat]
-        - response ->SELECT_RESPONSE: 48
-            [different chat options for response 48]
-                - response
-                    [ different chat options ]
-                    EXIT_CHAT -> "cya l8r alig8r"
-    """
     
 class Player(Entity):
     '''

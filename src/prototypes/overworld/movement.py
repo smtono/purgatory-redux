@@ -58,6 +58,8 @@ while (game_running):
             exit()
         #elif event.type == pygame.KEYDOWN:
         keys = pygame.key.get_pressed()
+        
+        # TODO: put in Player update() function
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             #print("left")
             player.set_direction_moving(Direction.LEFT)
