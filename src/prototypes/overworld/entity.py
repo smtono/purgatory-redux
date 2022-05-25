@@ -10,17 +10,26 @@ HEIGHT = 20
 
 # TODO: make it so you can have different shapes
 class Entity(pygame.sprite.Sprite):
-    '''
-    An entity object represents any character in the game that can be moved, interacted with, etc
-    Each entity has a symbol and a colour
-    '''
+    """
+    An entity object represents any character in the game with a sprite
+
+    Attributes:
+        image: pygame.Surface
+            A drawing or sprite that represents the Entity character
+        rect: pygame.Rect
+            The Rect object associated with the sprite image in pygame
+    
+    Functions:
+
+
+    """
+
     @abstractmethod
     def __init__(self) -> None:
         pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
 
-        '''
-        The following is from docs online
-        '''
+        # The following is from docs online
+    
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
         self.image = pygame.Surface([WIDTH, HEIGHT])
@@ -39,10 +48,28 @@ class Entity(pygame.sprite.Sprite):
         return self.rect
 
 class Npc(Entity):
-    '''
+    """
     An NPC character is any character who has a spoken line/interacts with the player character
-    Can be just a normal NPC with no quest, or can be a special kind
-    '''
+    Is a subclass of the Entity class
+
+    Attributes:
+        has_quest: boolean
+            Indicates whether or not this NPC has a mission or quest for the player currently
+        is_enemy: boolean
+            Indicates whether or not this NPC is hostile towards the player
+        is_shopkeeper: boolean
+            Indicates whether or not this NPC has a shop menu
+
+    Functions:
+        update()
+        toggle_quest()
+            Changes `has_quest` attribute to the opposite
+        toggle_enemy()
+            Changes `is_enemy` attribute to the opposite
+        detect_nearby(player: Player)
+
+    """
+
     # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
     # Default constructor
     def __init__(self) -> None:
@@ -62,40 +89,81 @@ class Npc(Entity):
         self.has_quest = False
         self.is_enemy = True
 
+    def update(self) -> None:
+        """_summary_
+        """
+        return
+
     # TODO: getters?
 
-    def setQuestFlag(self, toggle: Any) -> None:
-        self.has_quest = toggle
+    def toggle_quest(self) -> None:
+        self.has_quest = not self.has_quest
     
-    def setEnemyFlag(self, toggle: Any) -> None:
-        self.is_enemy = toggle
+    def toggle_enemy(self) -> None:
+        self.is_enemy = not self.is_enemy
     
-    def detect_nearby(self):
+    def detect_nearby(self, player: Player) -> Any:
         '''
+        player: The object represetning the user
+
         Used to see if player is within a range of coordinates of the NPC
         so that the player can then interact with the NPC
+
+        returns: A boolean if the user is near or not
         '''
         return
     
 class Player(Entity):
-    '''
-    Used for representing the object that the user will control in the game while moving
-    The player will have a symbol and color
-    It will also have functions for moving around the map
-    '''
+    """
+    Used for representing the object that the user will control in the game while moving in the overworld
+    Is a subclass of the Entity class
+    
+    Attributes:
+        is_moving: Direction
+            Indicated the direction of movement currently from the Direction enum
+            UP, DOWN, LEFT, RIGHT, or NONE
+    
+    Functions:
+        update()
+            
+        set_direction_moving(toggle: Direction {default=NONE})
+            Toggles the is_moving attribute to a new direction of movement
+        move_right(pixels: int)
+            Moves the player sprite right on the screen 'pixels' amount
+        move_left()
+            Moves the player sprite left on the screen 'pixels' amount
+        move_up()
+            Moves the player sprite up on the screen 'pixels' amount
+        move_down()
+            Moves the player sprite down on the screen 'pixels' amount
+    """
 
     # Constructor
     def __init__(self) -> None:
         super().__init__()
         self.is_moving = Direction.NONE
 
+   # update function
+    def update(self) -> None:
+        """
+        
+        """
+
+        return
+
+    # getters/setters
     def set_direction_moving(self, toggle: Direction):
         self.is_moving = toggle
 
     # Movement functions
-    '''
+    """
     Call the object and move it positively or negatively in the x and y directions
-    '''
+
+    Args:
+        pixels: int
+            The amount of pixels to move in a given direction
+    """
+
     def move_right(self, pixels: int) -> None:
         self.rect.x += pixels
  
