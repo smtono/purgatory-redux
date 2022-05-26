@@ -58,7 +58,7 @@ while (game_running):
             exit()
         #elif event.type == pygame.KEYDOWN:
         keys = pygame.key.get_pressed()
-        
+
         # TODO: put in Player update() function
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             #print("left")
@@ -82,7 +82,11 @@ while (game_running):
     #print("playerY=", player.rect.y)
     
     # TODO: maybe make it so that the NPC does the collision detection?
+    npc1.detect_nearby(player)
+    npc2.detect_nearby(player)
+    
     player.detect_collision([WIDTH, HEIGHT], npcs)
+
     sprites.update()
     window.fill(BG_COLOR)
 

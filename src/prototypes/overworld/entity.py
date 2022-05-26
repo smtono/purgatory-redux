@@ -20,8 +20,8 @@ class Entity(pygame.sprite.Sprite):
             The Rect object associated with the sprite image in pygame
     
     Functions:
-
-
+        get_rect()
+            Returns the rect object of the sprite
     """
 
     @abstractmethod
@@ -47,79 +47,13 @@ class Entity(pygame.sprite.Sprite):
     def get_rect(self) -> pygame.Rect:
         return self.rect
 
-class Npc(Entity):
-    """
-    An NPC character is any character who has a spoken line/interacts with the player character
-    Is a subclass of the Entity class
-
-    Attributes:
-        has_quest: boolean
-            Indicates whether or not this NPC has a mission or quest for the player currently
-        is_enemy: boolean
-            Indicates whether or not this NPC is hostile towards the player
-        is_shopkeeper: boolean
-            Indicates whether or not this NPC has a shop menu
-
-    Functions:
-        update()
-        toggle_quest()
-            Changes `has_quest` attribute to the opposite
-        toggle_enemy()
-            Changes `is_enemy` attribute to the opposite
-        detect_nearby(player: Player)
-
-    """
-
-    # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
-    # Default constructor
-    def __init__(self) -> None:
-        super().__init__()
-        self.has_quest = False
-        self.is_enemy = False
-    
-    # Quest giver constructor
-    def __init__(self) -> None:
-        super().__init__()
-        self.has_quest = True
-        self.is_enemy = False
-    
-    # Enemy (potential) constructor
-    def __init__(self) -> None:
-        super().__init__()
-        self.has_quest = False
-        self.is_enemy = True
-
-    def update(self) -> None:
-        """_summary_
-        """
-        return
-
-    # TODO: getters?
-
-    def toggle_quest(self) -> None:
-        self.has_quest = not self.has_quest
-    
-    def toggle_enemy(self) -> None:
-        self.is_enemy = not self.is_enemy
-    
-    def detect_nearby(self, player: Player) -> Any:
-        '''
-        player: The object represetning the user
-
-        Used to see if player is within a range of coordinates of the NPC
-        so that the player can then interact with the NPC
-
-        returns: A boolean if the user is near or not
-        '''
-        return
-    
 class Player(Entity):
     """
     Used for representing the object that the user will control in the game while moving in the overworld
     Is a subclass of the Entity class
     
     Attributes:
-        is_moving: Direction
+        is_facing: Direction
             Indicated the direction of movement currently from the Direction enum
             UP, DOWN, LEFT, RIGHT, or NONE
     
@@ -141,7 +75,7 @@ class Player(Entity):
     # Constructor
     def __init__(self) -> None:
         super().__init__()
-        self.is_moving = Direction.NONE
+        self.is_facing = Direction.NONE
 
    # update function
     def update(self) -> None:
@@ -153,7 +87,7 @@ class Player(Entity):
 
     # getters/setters
     def set_direction_moving(self, toggle: Direction):
-        self.is_moving = toggle
+        self.is_facing = toggle
 
     # Movement functions
     """
@@ -163,7 +97,6 @@ class Player(Entity):
         pixels: int
             The amount of pixels to move in a given direction
     """
-
     def move_right(self, pixels: int) -> None:
         self.rect.x += pixels
  
@@ -179,9 +112,13 @@ class Player(Entity):
     # Utility functions
     def detect_collision(self, border: list, sprites: pygame.sprite.Group) -> None:
         '''
-        Used for adjusting the user's position 
-        on the screen if they go beyond the bounds of the screen,
-        or if they collide with any objects in the sprites group of the game.
+        Adjusts the user's position on the screen if out of bounds, or if they collide with any other sprites
+
+        Args:
+            border: list
+                A set of coordinates for the outer bounds of x and y axis
+            sprites: pygame.sprite.Group
+                A list of sprite objects that the player can collide with
         '''
         border_x = border[0]
         border_y = border[1]
@@ -205,13 +142,12 @@ class Player(Entity):
         Take coords of sprite
         move player sprite over player width/height as to not touch sprite
         '''
-        dx = self.rect.x
-        dy = self.rect.y
+        # FIXME: Put in NPC class instead?
         # If you collide with a object, move out
         for sprite in sprites:
             # find direction player was moving if collision
             if self.rect.colliderect(sprite.rect):
-                match self.is_moving:
+                match self.is_facing:
                     case Direction.UP:
                         self.rect.top = sprite.rect.bottom
                     case Direction.DOWN:
@@ -222,3 +158,88 @@ class Player(Entity):
                         self.rect.right = sprite.rect.left
 
         # object detection
+
+class Npc(Entity):
+    """
+    An NPC character is any character who has a spoken line/interacts with the player character
+    Is a subclass of the Entity class
+
+    Attributes:
+        has_quest: boolean
+            Indicates whether or not this NPC has a mission or quest for the player currently
+        is_enemy: boolean
+            Indicates whether or not this NPC is hostile towards the player
+        is_shopkeeper: boolean
+            Indicates whether or not this NPC has a shop menu
+
+    Functions:
+        update()
+        toggle_quest()
+            Changes `has_quest` attribute to the opposite
+        toggle_enemy()
+            Changes `is_enemy` attribute to the opposite
+        detect_nearby(player: Player)
+
+    """
+
+    # Create an image of the block, and fill it with a color.
+    # This could also be an image loaded from the disk.
+    notification = pygame.Surface([3, 3])
+    notification.fill((255, 255, 0))
+    #self.image.set_colorkey(COLOR)
+
+    # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
+    # Default constructor
+    def __init__(self) -> None:
+        super().__init__()
+        self.has_quest = False
+        self.is_enemy = False
+        self.can_interact = False
+    
+    # Quest giver constructor
+    def __init__(self) -> None:
+        super().__init__()
+        self.has_quest = True
+        self.is_enemy = False
+    
+    # Enemy (potential) constructor
+    def __init__(self) -> None:
+        super().__init__()
+        self.has_quest = False
+        self.is_enemy = True
+    
+    
+
+    def update(self) -> None:
+        """_summary_
+        """
+        return
+
+    # TODO: getters?
+
+    def toggle_quest(self) -> None:
+        self.has_quest = not self.has_quest
+    
+    def toggle_enemy(self) -> None:
+        self.is_enemy = not self.is_enemy
+
+    def toggle_interact(self) -> None:
+        self.can_interact = not self.can_interact
+    
+    def detect_nearby(self, player: Player) -> Any:
+        '''
+        player: The object represetning the user
+
+        Used to see if player is within a range of coordinates of the NPC
+        so that the player can then interact with the NPC
+
+        returns: A boolean if the user is near or not
+        '''
+        #print("PlayerX:", player.rect.x, "NpcX:", self.rect.x)
+        #print("PlayerY:", player.rect.y, "NpcY:", self.rect.y)
+
+        # Find if player is within interact bubble, (3 pixels in any direction)
+        if player.rect.x in range(self.rect.x - 30, self.rect.x + 30) and player.rect.y in range(self.rect.y - 30, self.rect.y + 30):
+            print("nearby detected")
+            self.rect = self.image.blit(self.notification, (self.rect.x, self.rect.y + 3)) # draw notifcation above head
+        return
