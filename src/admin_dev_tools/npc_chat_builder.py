@@ -8,18 +8,18 @@
 
 
 import json
-import sys
+import os, sys
 
 print('Welcome to the NPC Chat Builder!')
 print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
 print('Please enter the NPC ID for the NPC you want to create the NPC chat data for')
-npc_id = input('NPC ID: ')
+npc_id = input('\nNPC ID: ')
 
-with open('chat_session_data.json', 'r') as f:
+with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
     chat_data = json.load(f)
 
 if npc_id not in chat_data:
-    print('creating new NPC chat data for NPC ID: ' + npc_id)
+    print('Creating new NPC chat data for NPC ID: ' + npc_id)
     chat_data[npc_id] = {}
 else:
     print('NPC chat data already exists for NPC ID: ' + npc_id)
@@ -38,9 +38,9 @@ else:
 for chat_session_id in chat_data[npc_id]:
     print(chat_session_id, chat_data[chat_session_id]['description'])
 
-print('Please enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
+print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
 chat_session_id = input('Session ID: ')
-if chat_session_id == 0:
+if chat_session_id == '0':
     print('Creating new NPC chat session')
     chat_session_id = len(chat_data[npc_id]) + 1
     chat_data[npc_id][chat_session_id] = {}
@@ -90,7 +90,7 @@ def add_option(option_id, order_id, translation_code, translation_text, action_c
         json.dump(translation_data, f, indent=4)
 
 
-print('Existing options for NPC chat session')
+print('\nExisting options for NPC chat session')
 for option in chat_data[npc_id][chat_session_id]['options']:
     print(option['id'], ':', option['order'], option['translation_code'], option['action_code'], option['action_code_parameter'], option['action_code_parameter_type'])
 
@@ -108,8 +108,8 @@ def saveFile():
     with open('chat_session_data.json', 'w') as f:
         json.dump(chat_data, f)
 
-while selection != 0:
-    if selection == 1:
+while selection != '0':
+    if selection == '1':
         print('Adding a new option')
         option_id = len(chat_data[npc_id][chat_session_id]['options']) + 1
         order_id = input('Order ID: ')
@@ -125,7 +125,7 @@ while selection != 0:
             action_code_parameter_type = None
         add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter,
                    action_code_parameter_type)
-    elif selection == 2:
+    elif selection == '2':
         # TODO: make sure the option exists, otherwise ask again
         # TODO: add a proper menu system instead of just doing everything linearly
         print('Updating an existing option')
@@ -143,7 +143,7 @@ while selection != 0:
             action_code_parameter_type = None
         add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter,
                    action_code_parameter_type)
-    elif selection == 3:
+    elif selection == '3':
         print('Deleting an existing option')
         option_id = input('Option ID: ')
         for option in chat_data[npc_id][chat_session_id]['options']:
@@ -151,7 +151,7 @@ while selection != 0:
                 chat_data[npc_id][chat_session_id]['options'].remove(option)
                 break
 
-if selection == 0:
+if selection == '0':
     saveFile()
     print('Done!')
 
