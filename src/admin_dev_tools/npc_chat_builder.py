@@ -83,10 +83,10 @@ def add_option(option_id, order_id, translation_code, translation_text, action_c
         'action_code_parameter_type': action_code_parameter_type # e.g. None or quest_id (int), or npc_id (int)
     })
     # also add the translation text in our translation_data.eng.json file
-    with open('translation_data.eng.json', 'r') as f:
+    with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'r') as f:
         translation_data = json.load(f)
     translation_data[translation_code] = translation_text
-    with open('translation_data.eng.json', 'w') as f:
+    with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'w') as f:
         json.dump(translation_data, f, indent=4)
 
 
@@ -104,8 +104,9 @@ print('0. Finish')
 selection = input('Choice: ')
 
 # finally, we can save the updated chat data to the chat_session_data.json file
+# FIXME: write to the same file that it opened at the start
 def saveFile():
-    with open('chat_session_data.json', 'w') as f:
+    with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'w') as f:
         json.dump(chat_data, f)
 
 while selection != '0':
