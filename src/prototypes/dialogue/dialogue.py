@@ -12,8 +12,6 @@ something happens
 # For now, just from classes/hard coded values
 
 import enum
-from typing_extensions import get_overloads
-
 
 class Morality(enum):
     """
@@ -23,6 +21,7 @@ class Morality(enum):
     GOOD = 10
     NEUTRAL = 0
     BAD = -10
+    NONE = None
 
 
 class Dialogue():
@@ -41,6 +40,24 @@ class Dialogue():
 
     """
 
+
+    def __init__(self, text: str, position: int, moral_status: Morality) -> None:
+        """
+        Initializes a Dialogue object with a set of text, position to be in the menu, and which Morality it coaligns with
+
+        Args:
+            text (str): _description_
+            position (int): _description_
+            moral_status (Morality): _description_
+
+        Returns:
+            None
+        """
+        
+        self.text = text
+        self.position = position
+        self.moral_status = moral_status
+
 class DialogueSet():
     """
     Represents a set of choices the user can make during a conversation with an NPC
@@ -50,5 +67,5 @@ class DialogueSet():
             a list of dialogue options to choose from
 
     Functions:
-        
+
     """

@@ -117,6 +117,9 @@ class Player(GameObject):
                 A set of coordinates for the outer bounds of x and y axis
             sprites: pygame.sprite.Group
                 A list of sprite objects that the player can collide with
+        
+        Returns: 
+            None
         '''
         border_x = border[0]
         border_y = border[1]
@@ -243,6 +246,7 @@ class Npc(GameObject):
                 A Player object representing the user
 
         Returns: 
+            bool
             A boolean if the user is near or not
         """
 
