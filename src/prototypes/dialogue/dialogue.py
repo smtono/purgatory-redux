@@ -40,6 +40,9 @@ class Dialogue():
 
     """
 
+    text = ""
+    position = -1
+    moral_status = Morality.NONE
 
     def __init__(self, text: str, position: int, moral_status: Morality) -> None:
         """
