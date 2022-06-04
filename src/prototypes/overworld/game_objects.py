@@ -73,6 +73,14 @@ class Player(GameObject):
 
     # Constructor
     def __init__(self) -> None:
+        """
+        Initializes a player object, which is who the user will control
+
+        Args:
+            None
+        Returns:
+            None
+        """
         super().__init__()
         self.is_facing = Direction.NONE
 
@@ -98,23 +106,52 @@ class Player(GameObject):
         self.is_facing = toggle
 
     # Movement functions
-    """
-    Call the object and move it positively or negatively in the x and y directions
-
-    Args:
-        pixels: int
-            The amount of pixels to move in a given direction
-    """
     def move_right(self, pixels: int) -> None:
+        """
+        Call the object and move it in the x direction right
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
         self.rect.x += pixels
  
     def move_left(self, pixels: int) -> None:
+        """
+        Call the object and move it in the x direction left
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
         self.rect.x -= pixels
     
     def move_up(self, pixels: int) -> None:
+        """
+        Call the object and move it in the y direction up
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
         self.rect.y -= pixels
     
     def move_down(self, pixels: int) -> None:
+        """
+        Call the object and move it in the y direction down
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
         self.rect.y += pixels
     
     # Utility functions
@@ -128,7 +165,6 @@ class Player(GameObject):
                 A set of coordinates for the outer bounds of x and y axis
             sprites: pygame.sprite.Group
                 A list of sprite objects that the player can collide with
-        
         Returns: 
             None
         '''
@@ -150,10 +186,8 @@ class Player(GameObject):
             self.rect.y = border_y - self.HEIGHT
         
         # other entity detection
-        '''
-        Take coords of sprite
-        move player sprite over player width/height as to not touch sprite
-        '''
+        # Take coords of sprite
+        # move player sprite over player width/height as to not touch sprite
         # FIXME: Put in NPC class instead?
         # If you collide with a object, move out
         for sprite in sprites:
@@ -191,9 +225,7 @@ class Npc(GameObject):
         toggle_enemy()
             Changes `is_enemy` attribute to the opposite
         detect_nearby(player: Player)
-
     """
-
     has_quest = False
     is_enemy = False
     is_shopkeeper = False
@@ -223,24 +255,54 @@ class Npc(GameObject):
     
 
     def update(self) -> None:
-        """_summary_
+        """
+
         """
         return
 
     # TODO: getters?
 
     def toggle_quest(self) -> None:
+        """
+        Sets this NPC's quest marker to it's current opposite
+
+        Args:
+            None
+        Returns:
+            None
+        """
         self.has_quest = not self.has_quest
     
     def toggle_enemy(self) -> None:
+        """
+        Sets this NPC's is_enemy marker to it's current opposite
+
+        Args:
+            None
+        Returns:
+            None
+        """
         self.is_enemy = not self.is_enemy
 
     def toggle_interact(self) -> None:
+        """
+        Sets this NPC's can_interact marker to it's current opposite
+
+        Args:
+            None
+        Returns:
+            None
+        """
         self.can_interact = not self.can_interact
     
     def reset_sprite(self):
         """
         Resets to original sprite state
+
+        Args:
+            None
+        Returns:
+            None
         """
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
@@ -259,7 +321,6 @@ class Npc(GameObject):
         Args:
             player: Player
                 A Player object representing the user
-
         Returns: 
             bool
             A boolean if the user is near or not
