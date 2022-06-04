@@ -1,6 +1,9 @@
 {
     "python.envFile": "${workspaceFolder}/.env",
-    "python.linting.enabled": true,
+    "python.linting.enabled": false,
     
-    "python.analysis.extraPaths": ["./src"]
+    "python.analysis.extraPaths": [
+        "./src"
+    ],
+    "python.linting.pylintEnabled": true
 }
