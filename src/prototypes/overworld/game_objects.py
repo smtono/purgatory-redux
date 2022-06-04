@@ -163,7 +163,7 @@ class Player(GameObject):
 class Npc(GameObject):
     """
     An NPC character is any character who has a spoken line/interacts with the player character
-    Is a subclass of the Entity class
+    Is a subclass of the GameObject class
 
     Attributes:
         has_quest: boolean
@@ -182,6 +182,10 @@ class Npc(GameObject):
         detect_nearby(player: Player)
 
     """
+
+    has_quest = False
+    is_enemy = False
+    is_shopkeeper = False
 
     #self.image.set_colorkey(COLOR)
 
