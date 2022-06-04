@@ -46,9 +46,6 @@ class GameObject(pygame.sprite.Sprite):
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
 
-    def get_rect(self) -> pygame.Rect:
-        return self.rect
-
 class Player(GameObject):
     """
     Used for representing the object that the user will control in the game while moving in the overworld
