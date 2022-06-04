@@ -1,5 +1,4 @@
-from turtle import width
-import pygame, sys
+import pygame
 from prototypes.overworld.game import Camera, Direction
 from prototypes.overworld.game_objects import Npc, Player
 

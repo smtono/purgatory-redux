@@ -12,6 +12,7 @@ import click
 import os, sys
 
 chat_data = {}
+npc_id = ''
 
 @click.group()
 def cli(self):
@@ -51,11 +52,13 @@ def get_npc(self, npc_id: str):
     Args:
         npc_id: str
             The ID of the NPC object to look up, 0 for a new NPC
+    Returns:
+        None
     """
     npc_id = input('\nNPC ID: ')
     if npc_id not in chat_data:
         print('Creating new NPC chat data for NPC ID: ' + npc_id)
-        self.chat_data[npc_id] = {}
+        self.chat_data[self.npc_id] = {}
     else:
         print('NPC chat data already exists for NPC ID: ' + npc_id)
         print('Do you want to delete the existing NPC chat sessions, or update the data?')
@@ -64,7 +67,7 @@ def get_npc(self, npc_id: str):
         overwrite_choice = input('Choice: ')
         if overwrite_choice == '1':
             print('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
-            chat_data[npc_id] = {}
+            self.chat_data[self.npc_id] = {}
         else:
             print('Adding/updating new options to existing NPC chat data for NPC ID: ' + npc_id)
 

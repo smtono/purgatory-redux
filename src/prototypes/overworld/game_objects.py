@@ -27,14 +27,19 @@ class GameObject(pygame.sprite.Sprite):
 
     @abstractmethod
     def __init__(self) -> None:
-        pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
+        """
+        Initializes game object with a color and size
 
-        # The following is from docs online
+        Args:
+            None
+        Returns:
+            None
+        """
+        pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
     
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        self.image = pygame.Surface([self.WIDTH, self.HEIGHT]) # .fill(self.COLOR)
- 
+        self.image = pygame.Surface([self.WIDTH, self.HEIGHT])
         pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.WIDTH, self.HEIGHT))
 
         # Fetch the rectangle object that has the dimensions of the image
@@ -84,6 +89,15 @@ class Player(GameObject):
 
     # getters/setters
     def set_direction_moving(self, toggle: Direction):
+        """
+        Toggles the direction the player is facing
+
+        Args:
+            toggle: Direction 
+               The direction to switch the character
+        Returns:
+            None
+        """
         self.is_facing = toggle
 
     # Movement functions
