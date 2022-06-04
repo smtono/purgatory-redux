@@ -8,30 +8,65 @@
 
 
 import json
+import click
 import os, sys
 
-print('Welcome to the NPC Chat Builder!')
-print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
-print('Please enter the NPC ID for the NPC you want to create the NPC chat data for')
-npc_id = input('\nNPC ID: ')
+chat_data = {}
 
-with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
-    chat_data = json.load(f)
+@click.group()
+def cli(self):
+    """
+    Defines the command line interface for the NPC chat builder admin tool
 
-if npc_id not in chat_data:
-    print('Creating new NPC chat data for NPC ID: ' + npc_id)
-    chat_data[npc_id] = {}
-else:
-    print('NPC chat data already exists for NPC ID: ' + npc_id)
-    print('Do you want to delete the existing NPC chat sessions, or update the data?')
-    print('1. Yes - delete existing chat sessions (overwrite existing sessions)')
-    print('2. No - add new options to existing NPC chat data')
-    overwrite_choice = input('Choice: ')
-    if overwrite_choice == '1':
-        print('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
-        chat_data[npc_id] = {}
+    Args:
+        None
+    Returns:
+        None
+    """
+    pass
+
+@click.command()
+@click.option('--file_name', help='The name of the Chat Session JSON file')
+def open_json_file(self, file_name: str):
+    """
+    Opens the JSON file associated with 
+
+    Args:
+        file_name: str
+            Name of the file to open, the JSON file with all the chat session objects
+    Returns:
+        None
+    """
+    click.echo('Welcome to the NPC Chat Builder!')
+    click.echo('This tool will help you create a json file that contains all the npc chat data for a new NPC')
+    click.echo('Please enter the NPC ID for the NPC you want to create the NPC chat data for')
+    with open(os.path.join(sys.path[0], file_name), 'r') as f:
+        self.chat_data = json.load(f)
+
+@click.command()
+def get_npc(self, npc_id: str):
+    """
+    Asks user to specify an NPC to look up
+
+    Args:
+        npc_id: str
+            The ID of the NPC object to look up, 0 for a new NPC
+    """
+    npc_id = input('\nNPC ID: ')
+    if npc_id not in chat_data:
+        print('Creating new NPC chat data for NPC ID: ' + npc_id)
+        self.chat_data[npc_id] = {}
     else:
-        print('Adding/updating new options to existing NPC chat data for NPC ID: ' + npc_id)
+        print('NPC chat data already exists for NPC ID: ' + npc_id)
+        print('Do you want to delete the existing NPC chat sessions, or update the data?')
+        print('1. Yes - delete existing chat sessions (overwrite existing sessions)')
+        print('2. No - add new options to existing NPC chat data')
+        overwrite_choice = input('Choice: ')
+        if overwrite_choice == '1':
+            print('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
+            chat_data[npc_id] = {}
+        else:
+            print('Adding/updating new options to existing NPC chat data for NPC ID: ' + npc_id)
 
 # list out all the NPC chat sessions for the NPC and the description of the session (developer notes)
 
