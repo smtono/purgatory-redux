@@ -18,33 +18,24 @@ npc_id = ''
 def cli(self):
     """
     Defines the command line interface for the NPC chat builder admin tool
+    Reads the chat_session_data.json file and loads the pre-existing data into a list
 
     Args:
         None
-    Returns:
-        None
-    """
-    pass
-
-@click.command()
-@click.option('--file_name', help='The name of the Chat Session JSON file')
-def open_json_file(self, file_name: str):
-    """
-    Opens the JSON file associated with 
-
-    Args:
-        file_name: str
-            Name of the file to open, the JSON file with all the chat session objects
     Returns:
         None
     """
     click.echo('Welcome to the NPC Chat Builder!')
-    click.echo('This tool will help you create a json file that contains all the npc chat data for a new NPC')
-    click.echo('Please enter the NPC ID for the NPC you want to create the NPC chat data for')
-    with open(os.path.join(sys.path[0], file_name), 'r') as f:
+    click.echo('This tool will help you create/modify a JSON file that contains all the NPC chat data for a new NPC')
+    with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
         self.chat_data = json.load(f)
+    
+    click.echo('Please enter the NPC ID for the NPC you want to create the NPC chat data for',
+                'Or enter a new NPC ID to create a new session')
 
+'''
 @click.command()
+@click.argument('input')
 def get_npc(self, npc_id: str):
     """
     Asks user to specify an NPC to look up
@@ -95,7 +86,7 @@ print('Updating existing NPC chat session')
 chat_data[npc_id][chat_session_id]['description'] = input('Session description: ')
 
 # now we need to add the options for the NPC chat session and specify any unique limiting features (such as CANNOT_EXIT or CANNOT_REPEAT or CANNOT_SKIP or REQUIREMENTS)
-'''
+"""
 action codes
     EXIT_CHAT
     TRIGGER_EVENT
@@ -110,7 +101,7 @@ action code parameter
         start_quest
         progress_quest
         end_quest
-'''
+"""
 def add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter, action_code_parameter_type):
     chat_data[npc_id][chat_session_id]['options'].append({
         'id': option_id, # unique id for the option
@@ -196,7 +187,7 @@ if selection == '0':
 
                 
         
-'''
+"""
 new NPC
 -> checks for chat data
 -> loads all the chat sessions for the npc, translates if necessary
@@ -206,4 +197,7 @@ NPC->rampUpHealth()
 NPC->rampUpMana()
 NPC->fightTheBoss(50)
 NPC->startQuest(1) 
+"""
 '''
+
+cli()
