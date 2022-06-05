@@ -22,9 +22,9 @@ sprites = pygame.sprite.Group()
 npcs = pygame.sprite.Group()
 
 # sprites
-player = Player()
-npc1 = Npc()
-npc2 = Npc()
+player = Player((255, 0, 0), 20, 20)
+npc1 = Npc((0, 255, 0), 20, 20)
+npc2 = Npc((0, 0, 255), 20, 20)
 
 # other game initializations
 camera = Camera()
@@ -40,8 +40,8 @@ npc2.rect.x = 100
 npc2.rect.y = 100
 
 # color npcs
-npc1.image.fill((0, 255, 0))
-npc2.image.fill((0, 0, 255))
+# npc1.image.fill((0, 255, 0))
+# npc2.image.fill((0, 0, 255))
 
 sprites.add(npc1)
 sprites.add(npc2)

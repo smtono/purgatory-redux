@@ -52,14 +52,46 @@ class GameObject(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
     
+        ######## DEFAULT RECT ########
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        self.image = pygame.Surface([self.WIDTH, self.HEIGHT])
-        pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.WIDTH, self.HEIGHT))
+        if color == None and width == None and height == None:
+            self.image = pygame.Surface([WIDTH, HEIGHT])
+            pygame.draw.rect(self.image, COLOR, pygame.Rect(0, 0, WIDTH, HEIGHT))
+        ######## PARAMETERIZED RECT ########
+        else:
+            self.image = pygame.Surface([width, height])
+            pygame.draw.rect(self.image, color, pygame.Rect(0, 0, width, height))
 
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
+
+    # FIXME: not DRY
+    def change_color(self, color) -> None:
+        """
+        Changes the current rect color to a new color
+
+        Args:
+            color: tuple
+                The new color to be changed to
+        Returns:
+            None
+        """
+        self.image = pygame.Surface([self.width, self.height])
+        pygame.draw.rect(self.image, color, pygame.Rect(0, 0, self.width, self.height))
+    
+    def reset_color(self) -> None:
+        """
+        Resets the current rect to its original color
+
+        Args:
+            None
+        Returns:
+            None
+        """
+        self.image = pygame.Surface([self.width, self.height])
+        pygame.draw.rect(self.image, self.color, pygame.Rect(0, 0, self.width, self.height))
 
 class Player(GameObject):
     """
@@ -353,6 +385,9 @@ class Npc(GameObject):
         if player.rect.x in range(self.rect.x - 30, self.rect.x + 30) and player.rect.y in range(self.rect.y - 30, self.rect.y + 30):
             print("nearby detected")
             #self.rect = self.image.blit(self.notification, (self.rect.x, self.rect.y + 3)) # draw notifcation above head
+
+            # change color for now
+            self.change_color((255, 255, 255))
 
             # Redrawing surface image with notification blit
             # FIXME: what
