@@ -3,6 +3,10 @@ from typing import Any
 import pygame
 from prototypes.overworld.game import Direction
 
+# sprite attributes DEFAULT
+COLOR = (255, 0, 0)
+WIDTH = 20
+HEIGHT = 20
 class GameObject(pygame.sprite.Sprite):
     """
     Any object represented by a sprite in the overworld of the game
@@ -14,19 +18,26 @@ class GameObject(pygame.sprite.Sprite):
             A drawing or sprite that represents the Entity character
         rect: pygame.Rect
             The Rect object associated with the sprite image in pygame
+        color: tuple
+            The color to fill the rect with
+        width: int
+            The width of the rect object
+        height: int
+            The height of the rect object
     
     Functions:
         get_rect()
             Returns the rect object of the sprite
     """
-
-    # sprite attributes
-    COLOR = (255, 0, 0)
-    WIDTH = 20
-    HEIGHT = 20
+    is_collideable: False
+    image = None
+    rect = None
+    color = None
+    width = None
+    height = None
 
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self, color=None, width=None, height=None) -> None:
         """
         Initializes game object with a color and size
 
@@ -35,6 +46,10 @@ class GameObject(pygame.sprite.Sprite):
         Returns:
             None
         """
+        self.color = color
+        self.width = width
+        self.height = height
+
         pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
     
         # Create an image of the block, and fill it with a color.
@@ -72,7 +87,7 @@ class Player(GameObject):
     """
 
     # Constructor
-    def __init__(self) -> None:
+    def __init__(self, color=None, width=None, height=None) -> None:
         """
         Initializes a player object, which is who the user will control
 
@@ -81,7 +96,7 @@ class Player(GameObject):
         Returns:
             None
         """
-        super().__init__()
+        super().__init__(color, width, height)
         self.is_facing = Direction.NONE
 
    # update function
@@ -174,16 +189,16 @@ class Player(GameObject):
         if self.rect.x < 0:
             # print("border detected, x < 0")
             self.rect.x = 0
-        if self.rect.x > border_x - self.WIDTH:
+        if self.rect.x > border_x - self.width:
             # print("border detected, x > WIDTH")
-            self.rect.x = border_x - self.WIDTH
+            self.rect.x = border_x - self.width
         
         if self.rect.y < 0:
             # print("border detected, y < 0")
             self.rect.y = 0
-        if self.rect.y > border_y - self.HEIGHT:
-            # print("border detected, y > HEIGHT")
-            self.rect.y = border_y - self.HEIGHT
+        if self.rect.y > border_y - self.height:
+            # print("border detected, y > height")
+            self.rect.y = border_y - self.height
         
         # other entity detection
         # Take coords of sprite
@@ -234,12 +249,13 @@ class Npc(GameObject):
 
     # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
     # Default constructor
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, color=None, width=None, height=None) -> None:
+        super().__init__(color, width, height)
         self.has_quest = False
         self.is_enemy = False
         self.can_interact = False
     
+    '''
     # Quest giver constructor
     def __init__(self) -> None:
         super().__init__()
@@ -251,8 +267,7 @@ class Npc(GameObject):
         super().__init__()
         self.has_quest = False
         self.is_enemy = True
-    
-    
+    '''
 
     def update(self) -> None:
         """
@@ -306,9 +321,9 @@ class Npc(GameObject):
         """
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        self.image = pygame.Surface([self.WIDTH, self.HEIGHT]) # .fill(self.COLOR)
+        self.image = pygame.Surface([self.width, self.height]) # .fill(self.COLOR)
  
-        pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.WIDTH, self.HEIGHT))
+        pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.width, self.height))
 
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
@@ -341,11 +356,14 @@ class Npc(GameObject):
 
             # Redrawing surface image with notification blit
             # FIXME: what
-            self.image = pygame.Surface([self.WIDTH + 5, self.HEIGHT + 5]) # .fill(self.COLOR)
-            pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.WIDTH - 5, self.HEIGHT - 5))
+            '''
+            self.image = pygame.Surface([self.width + 5, self.height + 5]) # .fill(self.COLOR)
+            pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.width - 5, self.height - 5))
             self.image.blit(notification, (self.rect.x, self.rect.y))
             self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
-
+            '''
             return True
         else:
+            # TODO: maybe make it so it doesn't have to do this every time?
+            self.reset_color()
             return False
