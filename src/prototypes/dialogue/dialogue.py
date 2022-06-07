@@ -56,7 +56,6 @@ class Dialogue():
         Returns:
             None
         """
-        
         self.text = text
         self.position = position
         self.moral_status = moral_status
@@ -70,5 +69,17 @@ class DialogueSet():
             a list of dialogue options to choose from
 
     Functions:
-
     """
+    choices = None
+
+    def __init__(self, dialogue_list: list) -> None:
+        """
+        Initizalizes a Dialogue Set object with a list of Dialogue objects
+        
+        Args:
+            dialogue_list: list
+                A list of however many Dialogue objects are associated with this set
+        Returns:
+            None
+        """
+        self.choices = dialogue_list
