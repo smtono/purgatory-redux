@@ -27,13 +27,16 @@ def cli(self):
     """
     click.echo('Welcome to the NPC Chat Builder!')
     click.echo('This tool will help you create/modify a JSON file that contains all the NPC chat data for a new NPC')
+
+    # try open JSON file
     with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
         self.chat_data = json.load(f)
+        click.echo('JSON file opened successfully!')
     
-    click.echo('Please enter the NPC ID for the NPC you want to create the NPC chat data for',
+    id = click.prompt('Please enter the NPC ID for the NPC you want to create the NPC chat data for',
                 'Or enter a new NPC ID to create a new session')
+    get_npc(id)
 
-'''
 @click.command()
 @click.argument('input')
 def get_npc(self, npc_id: str):
@@ -46,22 +49,24 @@ def get_npc(self, npc_id: str):
     Returns:
         None
     """
-    npc_id = input('\nNPC ID: ')
+    click.echo(f'\nNPC ID: {npc_id}')
+
+    # Create new NPC ID if not exists
     if npc_id not in chat_data:
-        print('Creating new NPC chat data for NPC ID: ' + npc_id)
+        click.echo('Creating new NPC chat data for NPC ID: ' + npc_id)
         self.chat_data[self.npc_id] = {}
+    # Look up correct NPC ID otherwise
     else:
-        print('NPC chat data already exists for NPC ID: ' + npc_id)
-        print('Do you want to delete the existing NPC chat sessions, or update the data?')
-        print('1. Yes - delete existing chat sessions (overwrite existing sessions)')
-        print('2. No - add new options to existing NPC chat data')
-        overwrite_choice = input('Choice: ')
-        if overwrite_choice == '1':
-            print('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
+        click.echo('NPC chat data already exists for NPC ID: ' + npc_id)
+        
+        # Check for new session or updating old session
+        if not click.confirm('Do you want to delete the existing NPC chat sessions?'):
+            click.echo('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
             self.chat_data[self.npc_id] = {}
         else:
-            print('Adding/updating new options to existing NPC chat data for NPC ID: ' + npc_id)
+            click.echo(f'Adding/updating new options to existing NPC chat data for NPC ID: {npc_id}')
 
+'''
 # list out all the NPC chat sessions for the NPC and the description of the session (developer notes)
 
 for chat_session_id in chat_data[npc_id]:
