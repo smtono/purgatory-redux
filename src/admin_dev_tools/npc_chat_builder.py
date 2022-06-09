@@ -9,22 +9,14 @@
 
 import json
 import click
-import os, sys
+import os
+import sys
 
 chat_data = {}
 npc_id = ''
 
 @click.group()
 def cli(self):
-    """
-    Defines the command line interface for the NPC chat builder admin tool
-    Reads the chat_session_data.json file and loads the pre-existing data into a list
-
-    Args:
-        None
-    Returns:
-        None
-    """
     click.echo('Welcome to the NPC Chat Builder!')
     click.echo('This tool will help you create/modify a JSON file that contains all the NPC chat data for a new NPC')
 
@@ -33,6 +25,7 @@ def cli(self):
         self.chat_data = json.load(f)
         click.echo('JSON file opened successfully!')
     
+    # prompt user for ID
     id = click.prompt('Please enter the NPC ID for the NPC you want to create the NPC chat data for',
                 'Or enter a new NPC ID to create a new session')
     get_npc(id)
@@ -41,7 +34,7 @@ def cli(self):
 @click.argument('input')
 def get_npc(self, npc_id: str):
     """
-    Asks user to specify an NPC to look up
+    Specify an NPC to look up
 
     Args:
         npc_id: str
@@ -205,4 +198,6 @@ NPC->startQuest(1)
 """
 '''
 
-cli()
+cli.add_command(get_npc)
+if __name__ == '__main__':
+    cli()
