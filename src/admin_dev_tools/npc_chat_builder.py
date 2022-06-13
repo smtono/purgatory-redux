@@ -59,12 +59,16 @@ def get_npc(self, npc_id: str):
         else:
             click.echo(f'Adding/updating new options to existing NPC chat data for NPC ID: {npc_id}')
 
+@click.command()
+def print_npc_data(self):
+    """
+    Prints all NPC chat data in the JSON file opened
+    """
+    # list out all the NPC chat sessions for the NPC and the description of the session (developer notes)
+    for chat_session_id in chat_data[npc_id]:
+        print(chat_session_id, chat_data[chat_session_id]['description'])
+
 '''
-# list out all the NPC chat sessions for the NPC and the description of the session (developer notes)
-
-for chat_session_id in chat_data[npc_id]:
-    print(chat_session_id, chat_data[chat_session_id]['description'])
-
 print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
 chat_session_id = input('Session ID: ')
 if chat_session_id == '0':
