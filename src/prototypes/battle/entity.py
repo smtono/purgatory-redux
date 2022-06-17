@@ -1,3 +1,7 @@
+"""
+THis file deals with Entity characters, the player, enemies, party members, bosses and otherwise
+That you would encounter in battle
+"""
 import enum
 
 
