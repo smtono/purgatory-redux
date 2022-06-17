@@ -251,6 +251,14 @@ class Player(GameObject):
                         self.rect.right = sprite.rect.left
 
         # object detection
+    
+    def interact_npc(self):
+        """
+        When nearby an NPC and they are interactable, detect button press for interaction
+
+        Returns:
+            _type_: _description_
+        """
 
 class Npc(GameObject):
     """
