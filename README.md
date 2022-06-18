@@ -21,3 +21,5 @@ Jet and Chase would each get a turn and then each enemy would get a turn. A char
 The order of play is dependent on a stat, much like in Octopath. So not all allies will go at the same time, and not all enemies will go at the same time, it is dependent on a stat. In the original program, this stat was called “speed,” in this iteration it will be called agility.
 In the original program, there were different weapons you could use based on the class of the character you made. Your party members were predetermined but used unique weapons of their own. 
 Chase by default will be a cleric,  and Jet a warrior-type, though these classes can be changed later using other game mechanics.
+
+est time: ~1 Year
