@@ -5,12 +5,14 @@
 
 # in the backend, we will need to map the NPC id with the NPC chat session ids,
 # and then map each of the NPC chat session ids with the NPC chat options, which trigger action codes (which might start another chat session or end the chat session or trigger a different event)
-
-
 import json
 import click
 import os
 import sys
+
+from admin_dev_tools.npc_chat_builder.commands.get_npc import get_npc
+from admin_dev_tools.npc_chat_builder.commands.create_session import create_session
+from admin_dev_tools.npc_chat_builder.commands.print_npc_data import print_npc_data
 
 cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "commands"))
 chat_data = {}
@@ -26,6 +28,12 @@ def cli(self):
     with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
         self.chat_data = json.load(f)
         click.echo('JSON file opened successfully!')
+
+cli.add_command(get_npc)
+cli.add_command(create_session)
+cli.add_command(print_npc_data)
+if __name__ == '__main__':
+    cli()
 
 '''
 print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
@@ -160,7 +168,3 @@ NPC->fightTheBoss(50)
 NPC->startQuest(1) 
 """
 '''
-
-# cli.add_command(get_npc)
-if __name__ == '__main__':
-    cli()
