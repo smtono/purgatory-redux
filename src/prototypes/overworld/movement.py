@@ -1,6 +1,6 @@
 import pygame
 from prototypes.overworld.game import Camera, Direction
-from prototypes.overworld.game_objects import Npc, Player
+from prototypes.overworld.game_objects import NPC, Player
 
 pygame.init()
 
@@ -23,8 +23,8 @@ npcs = pygame.sprite.Group()
 
 # sprites
 player = Player((255, 0, 0), 20, 20)
-npc1 = Npc((0, 255, 0), 20, 20)
-npc2 = Npc((0, 0, 255), 20, 20)
+npc1 = NPC((0, 255, 0), 20, 20)
+npc2 = NPC((0, 0, 255), 20, 20)
 
 # other game initializations
 camera = Camera()
@@ -83,6 +83,9 @@ while (game_running):
     # TODO: maybe make it so that the NPC does the collision detection?
     npc1.detect_nearby(player)
     npc2.detect_nearby(player)
+
+    # check for interactions by player w/ nearby NPC
+    
     
     player.detect_collision([WIDTH, HEIGHT], npcs)
 
