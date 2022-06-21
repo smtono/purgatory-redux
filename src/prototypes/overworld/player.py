@@ -1,0 +1,186 @@
+"""
+Definitions regarding the player in the overworld
+"""
+import pygame
+
+from prototypes.overworld.game import Direction
+from prototypes.overworld.game_objects import GameObject
+
+
+class Player(GameObject):
+    """
+    Used for representing the object that the user will control in the game while moving in the overworld
+    Is a subclass of the Entity class
+    
+    Attributes:
+        is_facing: Direction
+            Indicated the direction of movement currently from the Direction enum
+            UP, DOWN, LEFT, RIGHT, or NONE
+    
+    Functions:
+        update()
+            
+        set_direction_moving(toggle: Direction {default=NONE})
+            Toggles the is_moving attribute to a new direction of movement
+        move_right(pixels: int)
+            Moves the player sprite right on the screen 'pixels' amount
+        move_left()
+            Moves the player sprite left on the screen 'pixels' amount
+        move_up()
+            Moves the player sprite up on the screen 'pixels' amount
+        move_down()
+            Moves the player sprite down on the screen 'pixels' amount
+    """
+
+    # Constructor
+    def __init__(self, color=None, width=None, height=None) -> None:
+        """
+        Initializes a player object, which is who the user will control
+
+        Args:
+            None
+        Returns:
+            None
+        """
+        super().__init__(color, width, height)
+        self.is_facing = Direction.NONE
+
+   # update function
+    def update(self) -> None:
+        """
+        
+        """
+
+        return
+
+    # getters/setters
+    def set_direction_moving(self, toggle: Direction):
+        """
+        Toggles the direction the player is facing
+
+        Args:
+            toggle: Direction 
+               The direction to switch the character
+        Returns:
+            None
+        """
+        self.is_facing = toggle
+    
+    # Utility functions
+    # TODO: make more efficient? check only objects in acertain range of pixels. change so that it checks for sprite.is_collideable
+    def detect_collision(self, border: list, sprites: pygame.sprite.Group) -> None:
+        '''
+        Adjusts the user's position on the screen if out of bounds, or if they collide with any other sprites
+
+        Args:
+            border: list
+                A set of coordinates for the outer bounds of x and y axis
+            sprites: pygame.sprite.Group
+                A list of sprite objects that the player can collide with
+        Returns: 
+            None
+        '''
+        border_x = border[0]
+        border_y = border[1]
+        # borders detection
+        if self.rect.x < 0:
+            # print("border detected, x < 0")
+            self.rect.x = 0
+        if self.rect.x > border_x - self.width:
+            # print("border detected, x > WIDTH")
+            self.rect.x = border_x - self.width
+        
+        if self.rect.y < 0:
+            # print("border detected, y < 0")
+            self.rect.y = 0
+        if self.rect.y > border_y - self.height:
+            # print("border detected, y > height")
+            self.rect.y = border_y - self.height
+        
+        # other entity detection
+        # Take coords of sprite
+        # move player sprite over player width/height as to not touch sprite
+        # FIXME: Put in NPC class instead?
+        # If you collide with a object, move out
+        for sprite in sprites:
+            # find direction player was moving if collision
+            if self.rect.colliderect(sprite.rect):
+                match self.is_facing:
+                    case Direction.UP:
+                        self.rect.top = sprite.rect.bottom
+                    case Direction.DOWN:
+                        self.rect.bottom = sprite.rect.top
+                    case Direction.LEFT:
+                        self.rect.left = sprite.rect.right
+                    case Direction.RIGHT:
+                        self.rect.right = sprite.rect.left
+
+        # object detection
+
+class PlayerInput():
+    """
+    A class to containerize control schema for the user's overworld inputs
+
+    Some controls include:
+        Moving
+        Interacting with objects
+        Interacting with NPCs
+    """
+
+    # Movement functions
+    # TODO: separate Movement/Input class?
+    def move_right(self, player: Player, pixels: int) -> None:
+        """
+        Call the object and move it in the x direction right
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
+        player.rect.x += pixels
+ 
+    def move_left(self, player: Player, pixels: int) -> None:
+        """
+        Call the object and move it in the x direction left
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
+        player.rect.x -= pixels
+    
+    def move_up(self, player: Player, pixels: int) -> None:
+        """
+        Call the object and move it in the y direction up
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
+        player.rect.y -= pixels
+    
+    def move_down(self, player: Player, pixels: int) -> None:
+        """
+        Call the object and move it in the y direction down
+
+        Args:
+            pixels: int
+                The amount of pixels to move in a given direction
+        Returns:
+            None
+        """
+        player.rect.y += pixels
+
+    def interact(self, npc):
+        """
+        When nearby an NPC and they are interactable, detect button press for interaction
+
+        Returns:
+            _type_: _description_
+        """
