@@ -4,7 +4,7 @@ Definitions regarding the player in the overworld
 import pygame
 
 from prototypes.overworld.game import Direction
-from prototypes.overworld.game_objects import GameObject
+from prototypes.overworld.game_objects import NPC, GameObject
 
 
 class Player(GameObject):
@@ -177,10 +177,22 @@ class PlayerInput():
         """
         player.rect.y += pixels
 
-    def interact(self, npc):
+    def interact(self, game_object: GameObject) -> bool:
         """
         When nearby an NPC and they are interactable, detect button press for interaction
+        If two conditions are met, then return true for the interaction taking place
 
         Returns:
-            _type_: _description_
+            bool
+                Whether or not the 
         """
+        interact = False
+        if game_object.player_nearby and game_object.can_interact:
+            # if press E
+            # return true
+            pass
+
+        # if is NPC
+        #   check if NPC is interactable using can_interact
+        # else
+        #   check if can interact
