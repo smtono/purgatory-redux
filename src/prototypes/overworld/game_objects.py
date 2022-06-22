@@ -30,7 +30,10 @@ class GameObject(pygame.sprite.Sprite):
         get_rect()
             Returns the rect object of the sprite
     """
+    player_nearby = False
     is_collideable: False
+    can_interact = False
+
     image = None
     rect = None
     color = None
@@ -118,7 +121,6 @@ class NPC(GameObject):
     has_quest = False
     is_enemy = False
     is_shopkeeper = False
-    player_nearby = False
 
     #self.image.set_colorkey(COLOR)
 
@@ -173,17 +175,6 @@ class NPC(GameObject):
             None
         """
         self.is_enemy = not self.is_enemy
-
-    def toggle_interact(self) -> None:
-        """
-        Sets this NPC's can_interact marker to it's current opposite
-
-        Args:
-            None
-        Returns:
-            None
-        """
-        self.can_interact = not self.can_interact
     
     def reset_sprite(self):
         """
@@ -213,7 +204,7 @@ class NPC(GameObject):
                 A Player object representing the user
         Returns: 
             bool
-            A boolean if the user is near or not
+                A boolean if the user is near or not
         """
 
         # Create an image of the block, and fill it with a color.
