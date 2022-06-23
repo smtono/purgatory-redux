@@ -1,10 +1,11 @@
 """
 Definitions regarding the player in the overworld
 """
+from typing import Sequence
 import pygame
 
 from prototypes.overworld.game import Direction
-from prototypes.overworld.game_objects import NPC, GameObject
+from prototypes.overworld.game_objects import GameObject
 
 
 class Player(GameObject):
@@ -16,6 +17,8 @@ class Player(GameObject):
         is_facing: Direction
             Indicated the direction of movement currently from the Direction enum
             UP, DOWN, LEFT, RIGHT, or NONE
+        is_moving: boolean
+            Whether the user is currently holding down WASD keys
     
     Functions:
         update()
@@ -31,6 +34,8 @@ class Player(GameObject):
         move_down()
             Moves the player sprite down on the screen 'pixels' amount
     """
+    is_facing = Direction.NONE
+    is_moving = False
 
     # Constructor
     def __init__(self, color=None, width=None, height=None) -> None:
@@ -44,14 +49,7 @@ class Player(GameObject):
         """
         super().__init__(color, width, height)
         self.is_facing = Direction.NONE
-
-   # update function
-    def update(self) -> None:
-        """
-        
-        """
-
-        return
+        self.is_moving = False
 
     # getters/setters
     def set_direction_moving(self, toggle: Direction):
@@ -82,6 +80,7 @@ class Player(GameObject):
         '''
         border_x = border[0]
         border_y = border[1]
+
         # borders detection
         if self.rect.x < 0:
             # print("border detected, x < 0")
@@ -127,8 +126,10 @@ class PlayerInput():
         Interacting with NPCs
     """
 
+    def __init__(self, player: Player) -> None:
+        self.player = player
+
     # Movement functions
-    # TODO: separate Movement/Input class?
     def move_right(self, player: Player, pixels: int) -> None:
         """
         Call the object and move it in the x direction right
@@ -176,23 +177,52 @@ class PlayerInput():
             None
         """
         player.rect.y += pixels
+    
+    def on_move(self, keys: Sequence):
+        """
+        Detects WASD keys and executes appropriate function
 
-    def interact(self, game_object: GameObject) -> bool:
+        Args:
+            keys: Sequence
+                The keys pressed by the user
+        """
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            #print("left")
+            self.player.set_direction_moving(Direction.LEFT)
+            self.move_left(self.player, 5)
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            #print("right")
+            self.player.set_direction_moving(Direction.RIGHT)
+            self.move_right(self.player, 5)
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            #print("down")
+            self.player.set_direction_moving(Direction.DOWN)
+            self.move_down(self.player, 5)
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            #print("up")
+            self.player.set_direction_moving(Direction.UP)
+            self.move_up(self.player, 5)
+
+
+    def on_interact(self, game_object: GameObject, input: pygame.key) -> None:
         """
         When nearby an NPC and they are interactable, detect button press for interaction
         If two conditions are met, then return true for the interaction taking place
 
+        Args:
+            game_object: GameObject
+                The sprite object that the user is interacting upon
+            input: pygame.key
+                The key the user pressed
         Returns:
-            bool
-                Whether or not the 
+            None
         """
-        interact = False
         if game_object.player_nearby and game_object.can_interact:
+            # if is NPC
+            #   check if NPC is interactable using can_interact
+            # else
+            #   check if can interact
+
             # if press E
             # return true
             pass
-
-        # if is NPC
-        #   check if NPC is interactable using can_interact
-        # else
-        #   check if can interact

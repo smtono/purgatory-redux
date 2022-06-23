@@ -1,6 +1,8 @@
 import pygame
 from prototypes.overworld.game import Camera, Direction
-from prototypes.overworld.game_objects import NPC, Player
+from prototypes.overworld.game_objects import NPC
+from prototypes.overworld.player import Player
+from prototypes.overworld.player import PlayerInput
 
 pygame.init()
 
@@ -59,22 +61,15 @@ while (game_running):
         keys = pygame.key.get_pressed()
 
         # TODO: put in Player update() function
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            #print("left")
-            player.set_direction_moving(Direction.LEFT)
-            player.move_left(5)
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            #print("right")
-            player.set_direction_moving(Direction.RIGHT)
-            player.move_right(5)
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            #print("down")
-            player.set_direction_moving(Direction.DOWN)
-            player.move_down(5)
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            #print("up")
-            player.set_direction_moving(Direction.UP)
-            player.move_up(5)
+        # TODO: put this input into a god input function
+        #       go to different functions based on input type
+        #       depending on input, have different things happen
+        #       WASD for movement
+        #       E for interaction
+        #       Esc for menu
+        #       Mouse clicks for dialogue / battles
+        input_detection = PlayerInput(player)
+        input_detection.on_move(keys)
 
     # debug
     #print("playerX=", player.rect.x)
