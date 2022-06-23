@@ -1,8 +1,6 @@
 from abc import abstractmethod
 from typing import Any
 import pygame
-from prototypes.overworld.game import Direction
-from prototypes.overworld.player import Player
 
 # sprite attributes DEFAULT
 COLOR = (255, 0, 0)
@@ -15,6 +13,8 @@ class GameObject(pygame.sprite.Sprite):
     Attributes:
         is_collideable: boolean
             Describes whether this object has collision detection with the player object
+        can_interact: boolean
+            Whether this object can be interacted with or not
         image: pygame.Surface
             A drawing or sprite that represents the Entity character
         rect: pygame.Rect
@@ -195,7 +195,7 @@ class NPC(GameObject):
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
     
-    def detect_nearby(self, player: Player) -> Any:
+    def detect_nearby(self, player: GameObject) -> Any:
         """
         If the player is nearby an NPC object, the NPC will show a notification above their head
 
@@ -206,6 +206,7 @@ class NPC(GameObject):
             bool
                 A boolean if the user is near or not
         """
+        radius = 60
 
         # Create an image of the block, and fill it with a color.
          # This could also be an image loaded from the disk.
@@ -216,7 +217,7 @@ class NPC(GameObject):
         #print("PlayerY:", player.rect.y, "NpcY:", self.rect.y)
 
         # Find if player is within interact bubble, (3 pixels in any direction)
-        if player.rect.x in range(self.rect.x - 30, self.rect.x + 30) and player.rect.y in range(self.rect.y - 30, self.rect.y + 30):
+        if player.rect.x in range(self.rect.x - radius, self.rect.x + radius) and player.rect.y in range(self.rect.y - radius, self.rect.y + radius):
             print("nearby detected")
             #self.rect = self.image.blit(self.notification, (self.rect.x, self.rect.y + 3)) # draw notifcation above head
 
