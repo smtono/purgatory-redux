@@ -5,7 +5,7 @@ from typing import Sequence
 import pygame
 
 from prototypes.overworld.game import Direction
-from prototypes.overworld.game_objects import GameObject
+from prototypes.overworld.game_objects import NPC, GameObject
 
 
 class Player(GameObject):
@@ -124,6 +124,25 @@ class PlayerInput():
         Moving
         Interacting with objects
         Interacting with NPCs
+    
+    Attributes:
+        player: Player
+    
+    Fucntions:
+        move_right(pixels: int)
+            Moves the player sprite right on the screen 'pixels' amount
+        move_left(pixels: int) 
+            Moves the player sprite left on the screen 'pixels' amount
+        move_up(pixels: int)
+            Moves the player sprite up on the screen 'pixels' amount
+        move_down(pixels: int)
+            Moves the player sprite down on the screen 'pixels' amount
+        on_move(keys: Sequence[int])
+            Handles the user's input for moving
+        on_interact(game_objects: GameObject)
+            Handles the user's input for interacting with objects
+        interact_npc(npc: NPC)
+            Handles the user's input for interacting with specifically NPCs
     """
 
     def __init__(self, player: Player) -> None:
@@ -185,7 +204,12 @@ class PlayerInput():
         Args:
             keys: Sequence
                 The keys pressed by the user
+        Returns:
+            None    
+        Raises:
+            None
         """
+        # FIXME: can probably be simplified using getattribute
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             #print("left")
             self.player.set_direction_moving(Direction.LEFT)
@@ -204,7 +228,7 @@ class PlayerInput():
             self.move_up(self.player, 5)
 
 
-    def on_interact(self, game_object: GameObject, input: pygame.key) -> None:
+    def on_interact(self, game_object: GameObject) -> None:
         """
         When nearby an NPC and they are interactable, detect button press for interaction
         If two conditions are met, then return true for the interaction taking place
@@ -216,13 +240,45 @@ class PlayerInput():
                 The key the user pressed
         Returns:
             None
+        Raises:
+            None
         """
         if game_object.player_nearby and game_object.can_interact:
             # if is NPC
             #   check if NPC is interactable using can_interact
+            if isinstance(game_object, NPC):
+                if game_object.can_interact:
+                    # if is interactable, check if button pressed
+                    if pygame.key.get_pressed()[pygame.K_e]:
+                        # if button pressed, interact
+                        game_object.interact_npc()
             # else
-            #   check if can interact
+            #   check for other object types
 
             # if press E
             # return true
             pass
+    
+    def interact_npc(self, npc: NPC):
+        """
+        Interacts with an NPC
+
+        The only interaction to be done with an NPC is dialogue
+        WHich will bring up a separate interface for users to interact with
+
+        Args:
+            npc: NPC
+                The NPC to interact with
+        Returns:
+            None
+        Raises:
+            None
+        """
+        # Find NPC chat sessions from JSON
+        # If NPC has a chat session, then start dialogue
+        # If NPC has no chat session, then put up generic chat session
+        #   These are likely NPCs without a quest or any ramification on morality stats
+
+        # Change flag for NPC to be interacted with
+        npc.in_interaction = True
+
