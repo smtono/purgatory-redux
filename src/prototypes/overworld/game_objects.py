@@ -103,6 +103,8 @@ class NPC(GameObject):
     Is a subclass of the GameObject class
 
     Attributes:
+        in_interaction: boolean
+            Whether the player is currently interacting with this NPC
         has_quest: boolean
             Indicates whether or not this NPC has a mission or quest for the player currently
         is_enemy: boolean
@@ -118,6 +120,7 @@ class NPC(GameObject):
             Changes `is_enemy` attribute to the opposite
         detect_nearby(player: Player)
     """
+    in_interaction = False
     has_quest = False
     is_enemy = False
     is_shopkeeper = False
@@ -128,9 +131,6 @@ class NPC(GameObject):
     # Default constructor
     def __init__(self, color=None, width=None, height=None) -> None:
         super().__init__(color, width, height)
-        self.has_quest = False
-        self.is_enemy = False
-        self.can_interact = False
     
     '''
     # Quest giver constructor
@@ -218,7 +218,7 @@ class NPC(GameObject):
 
         # Find if player is within interact bubble, (3 pixels in any direction)
         if player.rect.x in range(self.rect.x - radius, self.rect.x + radius) and player.rect.y in range(self.rect.y - radius, self.rect.y + radius):
-            print("nearby detected")
+            #print("nearby detected")
             #self.rect = self.image.blit(self.notification, (self.rect.x, self.rect.y + 3)) # draw notifcation above head
 
             # change color for now
