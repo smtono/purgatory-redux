@@ -41,7 +41,7 @@ class GameObject(pygame.sprite.Sprite):
     height = None
 
     @abstractmethod
-    def __init__(self, color=None, width=None, height=None) -> None:
+    def __init__(self, color: int=None, width: int=None, height: int=None, coordinates: tuple=(0,0)) -> None:
         """
         Initializes game object with a color and size
 
