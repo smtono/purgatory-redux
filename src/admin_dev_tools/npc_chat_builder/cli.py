@@ -1,10 +1,6 @@
-# We want to create a json file that contains all the npc chat data
-# This is used to create the npc chat data for the game
-# We will prompt the admin to enter the npc chat data, then provide all the action codes and the response translations
-# options will structure
-
-# in the backend, we will need to map the NPC id with the NPC chat session ids,
-# and then map each of the NPC chat session ids with the NPC chat options, which trigger action codes (which might start another chat session or end the chat session or trigger a different event)
+"""
+This module contains the CLI for the NPC Chat Builder.
+"""
 import json
 import click
 import os
@@ -19,21 +15,22 @@ chat_data = {}
 npc_id = ''
 
 @click.group()
-@click.option('run')
-def cli(self):
+@click.argument('run')
+def cli():
     click.echo('Welcome to the NPC Chat Builder!')
     click.echo('This tool will help you create/modify a JSON file that contains all the NPC chat data for a new NPC')
 
     # Try to open JSON file
     with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
-        self.chat_data = json.load(f)
+        chat_data = json.load(f)
         click.echo('JSON file opened successfully!')
 
 cli.add_command(get_npc)
 cli.add_command(create_session)
 cli.add_command(print_npc_data)
+
 if __name__ == '__main__':
-    cli()
+    cli('run')
 
 '''
 print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')

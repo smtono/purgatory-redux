@@ -281,4 +281,3 @@ class PlayerInput():
 
         # Change flag for NPC to be interacted with
         npc.in_interaction = True
-

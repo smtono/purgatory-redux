@@ -1,5 +1,5 @@
 import click
 
-def create_session(self):
+def create_session():
         click.echo('Creating new NPC chat data for NPC ID: ' + input)
-        self.chat_data[self.npc_id] = {}
+        #chat_data[npc_id] = {}
