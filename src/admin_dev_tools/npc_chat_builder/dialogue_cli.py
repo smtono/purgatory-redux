@@ -213,3 +213,33 @@ NPC->fightTheBoss(50)
 NPC->startQuest(1) 
 '''
 """
+
+def cli() -> int:
+    """
+    Create an interface for creating and managing NPCs.
+
+    Args:
+        None
+    Returns:
+        int: 0 if successful, 1 if not
+    Raises:
+        None
+    """
+    print('Welcome to the NPC creator!')
+    print('What do you want to do?')
+    print('1. Create a new NPC')
+    print('2. Manage an existing NPC')
+    print('3. Exit')
+    selection = input('Choice: ')
+    if selection == '1':
+        #create_npc()
+        pass
+    elif selection == '2':
+        #manage_npc()
+        pass
+    elif selection == '3':
+        print('Goodbye!')
+        return
+    else:
+        print('Invalid selection')
+        cli()
