@@ -1,58 +1,107 @@
 """
 This module contains the CLI for the NPC Chat Builder.
+
+Usage:
+    python3 dialogue_cli.py
 """
 import json
-import click
-import os
 import sys
 
-from admin_dev_tools.npc_chat_builder.commands.get_npc import get_npc
-from admin_dev_tools.npc_chat_builder.commands.create_session import create_session
-from admin_dev_tools.npc_chat_builder.commands.print_npc_data import print_npc_data
+print('Welcome to the NPC Chat Builder!')
+print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
 
-cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "commands"))
-chat_data = {}
-npc_id = ''
+def read_chat_data() -> dict:
+    """
+    Reads the chat data from the chat data file.
 
-@click.group()
-@click.argument('run')
-def cli():
-    click.echo('Welcome to the NPC Chat Builder!')
-    click.echo('This tool will help you create/modify a JSON file that contains all the NPC chat data for a new NPC')
+    Args:
+        None
+    Returns:    
+        The chat data from the chat data file.
+    Raises:
+        None
+    """
+    with open('chat_data.json', 'r') as chat_data_file:
+        chat_data = json.load(chat_data_file)
+    return chat_data
 
-    # Try to open JSON file
-    with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'r') as f:
-        chat_data = json.load(f)
-        click.echo('JSON file opened successfully!')
+def find_npc_id(chat_data: dict) -> int:
+    """
+    Finds the npc_id specified by the user from the chat data.
+    
+    Args:
+        chat_data: The chat data from the chat data file.
+    Returns:
+        The npc_id specified by the user.
+    Raises:
+        None
+    """
+    print('Please enter the NPC ID for the NPC you want to create the NPC chat data for')
+    npc_id = input('\nNPC ID: ')
+    if npc_id not in chat_data:
+        print('Creating new NPC chat data for NPC ID: ' + npc_id)
+        chat_data[npc_id] = {}
+    else:
+        print('NPC chat data already exists for NPC ID: ' + npc_id)
+        print('Do you want to delete the existing NPC chat sessions, or update the data?')
+        print('1. Yes - delete existing chat sessions (overwrite existing sessions)')
+        print('2. No - add new options to existing NPC chat data')
+        overwrite_choice = input('Choice: ')
+        if overwrite_choice == '1':
+            print('Overwriting existing NPC chat data for NPC ID: ' + npc_id)
+            chat_data[npc_id] = {}
+        else:
+            print('Adding/updating new options to existing NPC chat data for NPC ID: ' + npc_id)
 
-cli.add_command(get_npc)
-cli.add_command(create_session)
-cli.add_command(print_npc_data)
+def print_npc_chat_data(chat_data: dict) -> None:
+    """
+    Prints the NPC chat data to the console.
+    
+    Args:
+        chat_data: The chat data from the chat data file.
+    Returns:
+        None
+    Raises:
+        None
+    """
+    print('\nNPC Chat Data:')
+    for npc_id in chat_data:
+        print('NPC ID: ', npc_id)
+        for chat_session in chat_data[npc_id]:
+            print('Chat Session: ', chat_session)
 
-if __name__ == '__main__':
-    cli('run')
+def update_npc_chat_data(chat_data: dict, npc_id: int) -> None:
+    """
+    Updates the NPC chat data.
+    
+    Args:
+        chat_data: The chat data from the chat data file.
+    Returns:
+        None
+    Raises:
+        None
+    """
+    print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
+    chat_session_id = input('Session ID: ')
+    if chat_session_id == '0':
+        print('Creating new NPC chat session')
+        chat_session_id = len(chat_data[npc_id]) + 1
+        chat_data[npc_id][chat_session_id] = {}
+        chat_data[npc_id][chat_session_id]['options'] = []
+        chat_data[npc_id][chat_session_id]['features'] = []
+        chat_data[npc_id][chat_session_id]['requirements'] = {} # requirements to start a session (e.g. min_player_level, completed_quest_id, has_inventory_item, etc)
+    else:
+        # make sure the session id exists
+        if chat_session_id not in chat_data[npc_id]:
+            print('Session ID: ' + chat_session_id + ' does not exist for NPC ID: ' + npc_id)
+            sys.exit()
 
-'''
-print('\nPlease enter the session id for the session you want to update the NPC chat data for, or enter 0 to create a new session')
-chat_session_id = input('Session ID: ')
-if chat_session_id == '0':
-    print('Creating new NPC chat session')
-    chat_session_id = len(chat_data[npc_id]) + 1
-    chat_data[npc_id][chat_session_id] = {}
-    chat_data[npc_id][chat_session_id]['options'] = []
-    chat_data[npc_id][chat_session_id]['features'] = []
-    chat_data[npc_id][chat_session_id]['requirements'] = {} # requirements to start a session (e.g. min_player_level, completed_quest_id, has_inventory_item, etc)
-else:
-    # make sure the session id exists
-    if chat_session_id not in chat_data[npc_id]:
-        print('Session ID: ' + chat_session_id + ' does not exist for NPC ID: ' + npc_id)
-        sys.exit()
+    print('Updating existing NPC chat session')
+    chat_data[npc_id][chat_session_id]['description'] = input('Session description: ')
 
-print('Updating existing NPC chat session')
-chat_data[npc_id][chat_session_id]['description'] = input('Session description: ')
-
-# now we need to add the options for the NPC chat session and specify any unique limiting features (such as CANNOT_EXIT or CANNOT_REPEAT or CANNOT_SKIP or REQUIREMENTS)
 """
+# now we need to add the options for the NPC chat session and specify any unique limiting features (such as CANNOT_EXIT or CANNOT_REPEAT or CANNOT_SKIP or REQUIREMENTS)
+'''
 action codes
     EXIT_CHAT
     TRIGGER_EVENT
@@ -67,7 +116,7 @@ action code parameter
         start_quest
         progress_quest
         end_quest
-"""
+'''
 def add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter, action_code_parameter_type):
     chat_data[npc_id][chat_session_id]['options'].append({
         'id': option_id, # unique id for the option
@@ -153,15 +202,14 @@ if selection == '0':
 
                 
         
-"""
+'''
 new NPC
 -> checks for chat data
 -> loads all the chat sessions for the npc, translates if necessary
-
 NPC->startChatSession(3)
 NPC->rampUpHealth()
 NPC->rampUpMana()
 NPC->fightTheBoss(50)
 NPC->startQuest(1) 
-"""
 '''
+"""
