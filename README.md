@@ -22,4 +22,4 @@ The order of play is dependent on a stat, much like in Octopath. So not all alli
 In the original program, there were different weapons you could use based on the class of the character you made. Your party members were predetermined but used unique weapons of their own. 
 Chase by default will be a cleric,  and Jet a warrior-type, though these classes can be changed later using other game mechanics.
 
-est time: ~1 Year
+bro why you here .-.
