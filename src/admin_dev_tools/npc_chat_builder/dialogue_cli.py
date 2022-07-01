@@ -6,9 +6,7 @@ Usage:
 """
 import json
 import sys
-
-print('Welcome to the NPC Chat Builder!')
-print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
+import os
 
 def read_chat_data() -> dict:
     """
@@ -99,32 +97,55 @@ def update_npc_chat_data(chat_data: dict, npc_id: int) -> None:
     print('Updating existing NPC chat session')
     chat_data[npc_id][chat_session_id]['description'] = input('Session description: ')
 
-"""
-# now we need to add the options for the NPC chat session and specify any unique limiting features (such as CANNOT_EXIT or CANNOT_REPEAT or CANNOT_SKIP or REQUIREMENTS)
-'''
-action codes
-    EXIT_CHAT
-    TRIGGER_EVENT
-    START_NEW_SESSION
-action code parameter
-    with enemies
-        fight
-    with party members, will start a dialogue tree
-        start_confidant_dialogue
-        end_confidant_dialogue
-    with quest givers
-        start_quest
-        progress_quest
-        end_quest
-'''
-def add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter, action_code_parameter_type):
+# FIXME: add types for the arguments
+def add_option(
+    chat_data: dict, 
+    npc_id: int, 
+    chat_session_id: int,
+    option_id: int, 
+    order_id: int, 
+    action_code, 
+    action_code_condition, 
+    translation_code: int=None, 
+    translation_text: str=None):
+    """
+    Adds options to the NPC chat data.
+
+    Some examples for options:
+    action codes
+        EXIT_CHAT
+        TRIGGER_EVENT
+        START_NEW_SESSION
+    action code conditions
+        with enemies
+            fight
+        with party members, will start a dialogue tree
+            start_confidant_dialogue
+            end_confidant_dialogue
+        with quest givers
+            start_quest
+            progress_quest
+            end_quest
+    
+    Args:
+        option_id: the ID of the option
+        order_id: the order of the option
+        action_code: the trigger event for the option
+        action_code_condition: the condition in which the event will be triggered
+        translation_code: the translation code of the option
+        translation_text: the translated text of the option
+    Returns:
+        None
+    Raises:
+        None
+    """
     chat_data[npc_id][chat_session_id]['options'].append({
         'id': option_id, # unique id for the option
         'order': order_id, # this is the order in which the options are displayed to the player
         'translation_code': translation_code, # this is the translation code for the option text
         'action_code': action_code, # e.g. EXIT_CHAT or TRIGGER_EVENT or START_NEW_CHAT_SESSION
-        'action_code_parameter': action_code_parameter, # e.g. None or 'fight' or 'start_quest' or 'progress_quest' or 'end_quest'
-        'action_code_parameter_type': action_code_parameter_type # e.g. None or quest_id (int), or npc_id (int)
+        'action_code_condition': action_code_condition, # e.g. None or 'fight' or 'start_quest' or 'progress_quest' or 'end_quest'
+        #'action_code_parameter_type': action_code_parameter_type # e.g. None or quest_id (int), or npc_id (int)
     })
     # also add the translation text in our translation_data.eng.json file
     with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'r') as f:
@@ -133,7 +154,7 @@ def add_option(option_id, order_id, translation_code, translation_text, action_c
     with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'w') as f:
         json.dump(translation_data, f, indent=4)
 
-
+"""
 print('\nExisting options for NPC chat session')
 for option in chat_data[npc_id][chat_session_id]['options']:
     print(option['id'], ':', option['order'], option['translation_code'], option['action_code'], option['action_code_parameter'], option['action_code_parameter_type'])
@@ -214,6 +235,41 @@ NPC->startQuest(1)
 '''
 """
 
+# FIXME: call functions involved in creating a new NPC
+def create_npc(chat_data: dict, npc_id: int):
+    """
+    Creates a new NPC
+
+    Args:
+        chat_data: the chat data for the NPC
+        npc_id: the ID of the NPC
+    Returns:
+        the NPC
+    Raises:
+        KeyError: if the NPC ID is already in use
+    """
+
+    npc_id = len(chat_data) + 1
+    chat_data[npc_id] = {}
+    return npc_id
+
+# FIXME: call functions involved in creating a new chat session
+def manage_npc(chat_data: dict, npc_id: int):
+    """
+    Manages an NPC
+
+    Args:
+        chat_data: the chat data for the NPC
+        npc_id: the ID of the NPC
+    Returns:
+        the NPC
+    Raises:
+        KeyError: if the NPC ID is not in use
+    """
+
+    npc = chat_data[npc_id]
+    return npc
+
 def cli() -> int:
     """
     Create an interface for creating and managing NPCs.
@@ -225,7 +281,8 @@ def cli() -> int:
     Raises:
         None
     """
-    print('Welcome to the NPC creator!')
+    print('Welcome to the NPC Chat Builder!')
+    print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
     print('What do you want to do?')
     print('1. Create a new NPC')
     print('2. Manage an existing NPC')
