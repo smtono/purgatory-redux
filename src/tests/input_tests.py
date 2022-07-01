@@ -18,3 +18,7 @@ class InputTests(unittest.TestCase):
     def test_down_movement(self):
         player = Player(0, 0)
         self.assertGreater()
+    
+    # create a test for the player input, specifically the interact button
+    def test_interact(self):
+        pass
