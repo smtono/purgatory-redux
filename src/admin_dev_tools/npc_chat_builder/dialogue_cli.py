@@ -154,26 +154,50 @@ def add_option(
     with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'w') as f:
         json.dump(translation_data, f, indent=4)
 
-"""
-print('\nExisting options for NPC chat session')
-for option in chat_data[npc_id][chat_session_id]['options']:
-    print(option['id'], ':', option['order'], option['translation_code'], option['action_code'], option['action_code_parameter'], option['action_code_parameter_type'])
+def print_option(option: dict) -> None:
+    """
+    Prints the option to the console.
+    
+    Args:
+        option: The option to print.
+    Returns:
+        None
+    Raises:
+        None
+    """
+    print('Option ID: ', option['id'])
+    print('Order: ', option['order'])
+    print('Translation Code: ', option['translation_code'])
+    print('Action Code: ', option['action_code'])
+    print('Action Code Condition: ', option['action_code_condition'])
+    print('Action Code Parameter Type: ', option['action_code_parameter_type'])
 
-# ask if they want to add a new option, update an existing option, or enter 0 to finish
-print('What do you want to do?')
-print('1. Add a new option')
-print('2. Update an existing option')
-print('3. Delete an existing option')
-print('.')
-print('0. Finish')
-selection = input('Choice: ')
-
-# finally, we can save the updated chat data to the chat_session_data.json file
-# FIXME: write to the same file that it opened at the start
-def saveFile():
+def print_all_options(chat_data: dict, npc_id: int, chat_session_id: int) -> None:
+    """
+    Prints all options for the NPC chat data.
+    
+    Args:
+        chat_data: The chat data from the chat data file.
+    Returns:
+        None
+    Raises:
+        None
+    """
+    print('\nExisting options for NPC chat session')
+    for option in chat_data[npc_id][chat_session_id]['options']:
+        print(
+            option['id'], ':', 
+            option['order'], 
+            option['translation_code'], 
+            option['action_code'], 
+            option['action_code_parameter'], 
+            option['action_code_parameter_type'])
+        
+def saveFile(chat_data: dict, file_path: str) -> None:
     with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'w') as f:
         json.dump(chat_data, f)
 
+"""
 while selection != '0':
     if selection == '1':
         print('Adding a new option')
@@ -248,7 +272,6 @@ def create_npc(chat_data: dict, npc_id: int):
     Raises:
         KeyError: if the NPC ID is already in use
     """
-
     npc_id = len(chat_data) + 1
     chat_data[npc_id] = {}
     return npc_id
@@ -266,9 +289,13 @@ def manage_npc(chat_data: dict, npc_id: int):
     Raises:
         KeyError: if the NPC ID is not in use
     """
-
-    npc = chat_data[npc_id]
-    return npc
+    print('What do you want to do?')
+    print('1. Add a new option')
+    print('2. Update an existing option')
+    print('3. Delete an existing option')
+    print('.')
+    print('0. Finish')
+    selection = input('Choice: ')
 
 def cli() -> int:
     """
