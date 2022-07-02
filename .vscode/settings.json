@@ -1,9 +1,11 @@
 {
     "python.envFile": "${workspaceFolder}/.env",
     "python.linting.enabled": true,
-    
+    "python.linting.pylintEnabled": true,
     "python.analysis.extraPaths": [
         "./src"
     ],
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=pygame",
+    ],
 }

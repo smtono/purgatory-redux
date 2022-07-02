@@ -1,3 +1,8 @@
+"""
+This module contains the classes that represent the game objects in the overworld.
+Add more later
+"""
+
 from abc import abstractmethod
 from typing import Any
 import pygame
@@ -55,11 +60,11 @@ class GameObject(pygame.sprite.Sprite):
         self.height = height
 
         pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
-    
+
         ######## DEFAULT RECT ########
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        if color == None and width == None and height == None:
+        if color is None and width is None and height is None:
             self.image = pygame.Surface([WIDTH, HEIGHT])
             pygame.draw.rect(self.image, COLOR, pygame.Rect(0, 0, WIDTH, HEIGHT))
         ######## PARAMETERIZED RECT ########
@@ -84,7 +89,7 @@ class GameObject(pygame.sprite.Sprite):
         """
         self.image = pygame.Surface([self.width, self.height])
         pygame.draw.rect(self.image, color, pygame.Rect(0, 0, self.width, self.height))
-    
+
     def reset_color(self) -> None:
         """
         Resets the current rect to its original color
@@ -131,7 +136,8 @@ class NPC(GameObject):
     # Default constructor
     def __init__(self, color=None, width=None, height=None) -> None:
         super().__init__(color, width, height)
-    
+
+    # pylint: disable=pointless-string-statement
     '''
     # Quest giver constructor
     def __init__(self) -> None:
@@ -148,11 +154,9 @@ class NPC(GameObject):
 
     def update(self) -> None:
         """
-
+        Does things
         """
         return
-
-    # TODO: getters?
 
     def toggle_quest(self) -> None:
         """
@@ -164,7 +168,7 @@ class NPC(GameObject):
             None
         """
         self.has_quest = not self.has_quest
-    
+
     def toggle_enemy(self) -> None:
         """
         Sets this NPC's is_enemy marker to it's current opposite
@@ -175,7 +179,7 @@ class NPC(GameObject):
             None
         """
         self.is_enemy = not self.is_enemy
-    
+
     def reset_sprite(self):
         """
         Resets to original sprite state
@@ -188,13 +192,13 @@ class NPC(GameObject):
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
         self.image = pygame.Surface([self.width, self.height]) # .fill(self.COLOR)
- 
+
         pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.width, self.height))
 
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
-    
+
     def detect_nearby(self, player: GameObject) -> Any:
         """
         If the player is nearby an NPC object, the NPC will show a notification above their head
@@ -202,7 +206,7 @@ class NPC(GameObject):
         Args:
             player: Player
                 A Player object representing the user
-        Returns: 
+        Returns:
             bool
                 A boolean if the user is near or not
         """
@@ -234,7 +238,7 @@ class NPC(GameObject):
             '''
             self.player_nearby = True
             return True
-        else:
-            # TODO: maybe make it so it doesn't have to do this every time?
-            self.reset_color()
-            return False
+
+        # TODO: maybe make it so it doesn't have to do this every time?
+        self.reset_color()
+        return False

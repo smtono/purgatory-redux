@@ -1,5 +1,5 @@
 from enum import Enum
-import pygame, sys
+import pygame
 
 pygame.init()
 
@@ -11,7 +11,6 @@ class Settings():
 
     Functions:
     """
-
     def __init__(self) -> None:
         pass
 
@@ -43,7 +42,7 @@ class Camera:
             The x coordinate  of the top right of the screen
         y: int
             The y coordinate of the top right of the screen
-    
+
     Functions:
         move_camera(x: int, y: int, screen: pygame.Surface)
             Moves the `x` and `y` coordinates on the `screen` object so that the player is still visible
@@ -61,7 +60,7 @@ class Camera:
             Each time the user moves, move the camera one unit that way. The user will always be in the middle of the screen
             Have a static screen, with all elements on it already
         """
-        
+
         w, h = screen.get_size()
         if x > w / 2 * 3: #or x < w / 3:
             print("Updating x of camera")
@@ -71,6 +70,16 @@ class Camera:
             self.y += 5
     
     def reset(self):
+        """
+        Resets the x and y coordinates of the camera to 0
+        
+        Args:
+            None
+        Returns:
+            None
+        Raises:
+            None
+        """
         self.x = 0
         self.y = 0
 

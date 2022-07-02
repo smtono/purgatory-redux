@@ -156,7 +156,7 @@ def add_option(
 def print_option(option: dict) -> None:
     """
     Prints the option to the console.
- 
+
     Args:
         option: The option to print.
     Returns:
@@ -174,7 +174,7 @@ def print_option(option: dict) -> None:
 def print_all_options(chat_data: dict, npc_id: int, chat_session_id: int) -> None:
     """
     Prints all options for the NPC chat data.
-    
+
     Args:
         chat_data: The chat data from the chat data file.
     Returns:
