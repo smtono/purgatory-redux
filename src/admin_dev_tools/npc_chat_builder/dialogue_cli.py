@@ -6,9 +6,8 @@ Usage:
 """
 import json
 import sys
-import os
 
-def read_chat_data() -> dict:
+def read_chat_data(file_path: str) -> dict:
     """
     Reads the chat data from the chat data file.
 
@@ -19,9 +18,8 @@ def read_chat_data() -> dict:
     Raises:
         None
     """
-    with open('chat_data.json', 'r') as chat_data_file:
-        chat_data = json.load(chat_data_file)
-    return chat_data
+    with open(file_path, 'r', encoding='UTF-8') as chat_data_file:
+        return json.load(chat_data_file)
 
 def find_npc_id(chat_data: dict) -> int:
     """
@@ -54,7 +52,7 @@ def find_npc_id(chat_data: dict) -> int:
 def print_npc_chat_data(chat_data: dict) -> None:
     """
     Prints the NPC chat data to the console.
-    
+
     Args:
         chat_data: The chat data from the chat data file.
     Returns:
@@ -71,7 +69,7 @@ def print_npc_chat_data(chat_data: dict) -> None:
 def update_npc_chat_data(chat_data: dict, npc_id: int) -> None:
     """
     Updates the NPC chat data.
-    
+
     Args:
         chat_data: The chat data from the chat data file.
     Returns:
@@ -99,15 +97,16 @@ def update_npc_chat_data(chat_data: dict, npc_id: int) -> None:
 
 # FIXME: add types for the arguments
 def add_option(
-    chat_data: dict, 
-    npc_id: int, 
+    chat_data: dict,
+    npc_id: int,
     chat_session_id: int,
-    option_id: int, 
-    order_id: int, 
-    action_code, 
-    action_code_condition, 
-    translation_code: int=None, 
-    translation_text: str=None):
+    option_id: int,
+    order_id: int,
+    action_code,
+    action_code_condition,
+    translation_code: int=None,
+    translation_text: str=None,
+    translation_file_path: str=None):
     """
     Adds options to the NPC chat data.
 
@@ -126,7 +125,7 @@ def add_option(
             start_quest
             progress_quest
             end_quest
-    
+
     Args:
         option_id: the ID of the option
         order_id: the order of the option
@@ -148,16 +147,16 @@ def add_option(
         #'action_code_parameter_type': action_code_parameter_type # e.g. None or quest_id (int), or npc_id (int)
     })
     # also add the translation text in our translation_data.eng.json file
-    with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'r') as f:
+    with open(translation_file_path, 'r', encoding='UTF-8') as f:
         translation_data = json.load(f)
     translation_data[translation_code] = translation_text
-    with open(os.path.join(sys.path[0], 'translation_data.eng.json'), 'w') as f:
+    with open(translation_file_path, 'w', encoding='UTF-8') as f:
         json.dump(translation_data, f, indent=4)
 
 def print_option(option: dict) -> None:
     """
     Prints the option to the console.
-    
+ 
     Args:
         option: The option to print.
     Returns:
@@ -192,11 +191,23 @@ def print_all_options(chat_data: dict, npc_id: int, chat_session_id: int) -> Non
             option['action_code'], 
             option['action_code_parameter'], 
             option['action_code_parameter_type'])
-        
-def saveFile(chat_data: dict, file_path: str) -> None:
-    with open(os.path.join(sys.path[0], 'chat_session_data.json'), 'w') as f:
+
+def save_file(chat_data: dict, file_path: str) -> None:
+    """
+    Saves the chat data to a file.
+
+    Args:
+        chat_data: The chat data from the chat data file.
+        file_path: The path to the file to save the chat data to.
+    Returns:
+        None
+    Raises:
+        None
+    """
+    with open(file_path, 'w', encoding='UTF-8') as f:
         json.dump(chat_data, f)
 
+# pylint: disable=pointless-string-statement
 """
 while selection != '0':
     if selection == '1':
