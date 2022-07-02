@@ -13,12 +13,22 @@ def read_chat_data(file_path: str) -> dict:
 
     Args:
         None
-    Returns:    
+    Returns:
         The chat data from the chat data file.
     Raises:
         None
     """
-    with open(file_path, 'r', encoding='UTF-8') as chat_data_file:
+    print('Opening chat data file...')
+    try:
+        with open(file_path, 'r', encoding='UTF-8') as chat_data_file:
+            return json.load(chat_data_file)
+    except FileNotFoundError:
+        print('An error occurred while opening the chat data file')
+        print('Attempting to create a new chat data file...')
+        # Create a new chat data json file in place of
+        with open('src\\admin_dev_tools\\data\\chat_sesstion_data.json', 'x', encoding='UTF-8') \
+                as chat_data_file:
+            json.dump({}, chat_data_file)
         return json.load(chat_data_file)
 
 def find_npc_id(chat_data: dict) -> int:
@@ -95,7 +105,6 @@ def update_npc_chat_data(chat_data: dict, npc_id: int) -> None:
     print('Updating existing NPC chat session')
     chat_data[npc_id][chat_session_id]['description'] = input('Session description: ')
 
-# FIXME: add types for the arguments
 def add_option(
     chat_data: dict,
     npc_id: int,
@@ -287,28 +296,23 @@ def create_npc(chat_data: dict, npc_id: int):
     chat_data[npc_id] = {}
     return npc_id
 
-# FIXME: call functions involved in creating a new chat session
-def manage_npc(chat_data: dict, npc_id: int):
+def manage_npc(chat_data: dict, npc_id: int, input: int):
     """
     Manages an NPC
 
     Args:
         chat_data: the chat data for the NPC
         npc_id: the ID of the NPC
+        input: input from the user for what specific operation
     Returns:
         the NPC
     Raises:
         KeyError: if the NPC ID is not in use
     """
-    print('What do you want to do?')
-    print('1. Add a new option')
-    print('2. Update an existing option')
-    print('3. Delete an existing option')
-    print('.')
-    print('0. Finish')
-    selection = input('Choice: ')
 
-def cli() -> int:
+def cli(
+    chat_file_path: str='src\\admin_dev_tools\\data\\chat_session_data.json',
+    translation_file_path: str='src\\admin_dev_tools\\data\\translation_data.eng.json') -> int:
     """
     Create an interface for creating and managing NPCs.
 
@@ -319,8 +323,11 @@ def cli() -> int:
     Raises:
         None
     """
-    print('Welcome to the NPC Chat Builder!')
-    print('This tool will help you create a json file that contains all the npc chat data for a new NPC')
+    # Try to open the chat data file
+    chat_data = read_chat_data(chat_file_path)
+
+    print('\nWelcome to the NPC Chat Builder!')
+    print('This tool will help you manage NPCs.')
     print('What do you want to do?')
     print('1. Create a new NPC')
     print('2. Manage an existing NPC')
@@ -330,11 +337,19 @@ def cli() -> int:
         #create_npc()
         pass
     elif selection == '2':
-        #manage_npc()
-        pass
+        print('Please enter the ID of the NPC you want to manage')
+        npc = input('NPC ID: ')
+        print('What do you want to do?')
+        print('1. Add a new option')
+        print('2. Update an existing option')
+        print('3. Delete an existing option')
+        print('.')
+        print('0. Finish')
+        selection = input('Choice: ')
+        manage_npc(chat_data, npc, selection)
     elif selection == '3':
         print('Goodbye!')
-        return
+        return 0
     else:
         print('Invalid selection')
         cli()
