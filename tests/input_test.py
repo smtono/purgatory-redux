@@ -22,3 +22,6 @@ class InputTests(unittest.TestCase):
     # create a test for the player input, specifically the interact button
     def test_interact(self):
         pass
+
+if __name__ == '__main__':
+    unittest.main()
