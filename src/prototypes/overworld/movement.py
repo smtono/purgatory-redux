@@ -1,8 +1,40 @@
+"""
+This module contains the Movement class.
+
+This tests and prototypes the movement of the player in the overworld.
+A set of game objects is placed in a map along with the player, simulating an interactable environment.
+
+Attributes:
+game_running: bool
+    A boolean indicating whether the game is running.
+window: pygame.display.Window
+    The window object that is used to display the game.
+clock: pygame.time.Clock
+    The clock object that is used to control the game's framerate.
+camera: Camera
+    The camera object that is used to control the view of the game.
+player: Player
+    The player object that is being controlled by the user.
+npcs: List[NPC]
+    A list of NPC objects that are in the game.
+sprites: List[pygame.sprite.Sprite]
+    A list of all sprites in the game.
+FPS: int
+    The frames per second of the game.
+WIDTH: int
+    The width of the game window.
+HEIGHT: int
+    The height of the game window.
+BG_COLOR: tuple
+    The color of the background of the game.
+
+Functions:
+"""
 import pygame
 from prototypes.overworld.game import Camera, Direction
 from prototypes.overworld.game_objects import NPC
-from prototypes.overworld.player import Player
-from prototypes.overworld.player import PlayerInput
+from prototypes.player.player import Player
+from prototypes.player.player import PlayerInput
 
 pygame.init()
 
