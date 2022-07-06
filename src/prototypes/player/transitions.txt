@@ -1,0 +1,3 @@
+idle -> moving, interacting
+moving -> idle
+interacting -> moving, idle
