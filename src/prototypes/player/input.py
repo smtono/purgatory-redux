@@ -6,7 +6,6 @@ These inputs can correspond to different actions, such as moving, interacting, e
 This class serves as a container for the user's input, 
 and a state machine to handle the input correctly and predictably.
 """
-from typing import Sequence
 import pygame
 
 class StateMachine():
@@ -16,22 +15,22 @@ class StateMachine():
     Attributes:
         states: Sequence[str]
             The possible states of the input.
-        states_transitions: Dict[str, str]
+        states_transitions: Dict[str, [str]]
             A dictionary mapping the states to the states that can be transitioned to from that state.
         current_state: str
             The current state of the input.
     """
     states = {
-            "idle": [pygame.K_d, pygame.K_a, pygame.K_w, pygame.K_s],
+            "idle": [],
             "moving": [pygame.K_d, pygame.K_a, pygame.K_w, pygame.K_s],
-            "interacting": [pygame.K_e],
+            "interacting_object": [pygame.K_e],
             "interacting_npc": [pygame.K_e]
         }
     states_transitions = {
-        "idle": "idle",
-        "moving": "idle",
-        "interacting": "idle",
-        "interacting_npc": "idle"
+        "idle": ["idle", "moving", "interacting_object", "interacting_npc"],
+        "moving": ["idle"],
+        "interacting": ["idle", "moving"],
+        "interacting_npc": ["idle", "moving"],
     }
         
     def __init__(self) -> None:
@@ -46,6 +45,21 @@ class StateMachine():
         """
         self.current_state = self.states[0]
         self.state_machine = StateMachine
+    
+    def transition(self, state: str) -> str:
+        """
+        Transition to a new state based on the current state and the new state.
+        
+        Args:
+            state: str
+                The new state to transition to.
+        Returns:
+            str: The new state.
+        Raises:
+            None
+        """
+        # Check if the new state is valid, based on states_transitions.
+        self.current_state = state
 
 class Input():
     """
