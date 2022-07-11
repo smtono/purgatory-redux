@@ -242,3 +242,17 @@ class NPC(GameObject):
         # TODO: maybe make it so it doesn't have to do this every time?
         self.reset_color()
         return False
+
+    def detect_interaction(self):
+        """
+        If player interacted with an NPC, the NPC will show a notification above their head
+
+        Args:
+            None
+        Returns:
+            None
+        """
+        if self.in_interaction:
+            self.change_color((0, 255, 0)) # turn green
+            if self.player_nearby:
+                self.reset_color()

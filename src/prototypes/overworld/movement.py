@@ -109,7 +109,10 @@ while (game_running):
     
     # TODO: maybe make it so that the NPC does the collision detection?
     npc1.detect_nearby(player)
+    npc1.detect_interaction()
+    
     npc2.detect_nearby(player)
+    npc2.detect_interaction()
 
     # check for interactions by player w/ nearby NPC
     
