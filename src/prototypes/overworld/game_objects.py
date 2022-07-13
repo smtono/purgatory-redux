@@ -253,6 +253,7 @@ class NPC(GameObject):
             None
         """
         if self.in_interaction:
+            print("Interaction detected")
             self.change_color((0, 255, 0)) # turn green
-            if self.player_nearby:
+            if not self.player_nearby:
                 self.reset_color()
