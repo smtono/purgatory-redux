@@ -228,7 +228,7 @@ class PlayerInput():
             self.move_up(self.player, 5)
 
 
-    def on_interact(self, game_object: GameObject) -> None:
+    def on_interact(self, game_object: GameObject, keys: Sequence) -> None:
         """
         When nearby an NPC and they are interactable, detect button press for interaction
         If two conditions are met, then return true for the interaction taking place
@@ -249,7 +249,7 @@ class PlayerInput():
             if isinstance(game_object, NPC):
                 if game_object.can_interact:
                     # if is interactable, check if button pressed
-                    if pygame.key.get_pressed()[pygame.K_e]:
+                    if keys[pygame.K_e]:
                         # if button pressed, interact
                         game_object.interact_npc()
             # else
