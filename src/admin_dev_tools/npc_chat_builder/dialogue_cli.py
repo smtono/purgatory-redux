@@ -34,7 +34,7 @@ def read_chat_data(file_path: str) -> dict:
 def find_npc_id(chat_data: dict) -> int:
     """
     Finds the npc_id specified by the user from the chat data.
-    
+
     Args:
         chat_data: The chat data from the chat data file.
     Returns:
@@ -296,7 +296,7 @@ def create_npc(chat_data: dict, npc_id: int):
     chat_data[npc_id] = {}
     return npc_id
 
-def manage_npc(chat_data: dict, npc_id: int, input: int):
+def manage_npc(chat_data: dict, npc_id: int, user_input: int):
     """
     Manages an NPC
 
@@ -309,6 +309,39 @@ def manage_npc(chat_data: dict, npc_id: int, input: int):
     Raises:
         KeyError: if the NPC ID is not in use
     """
+    if user_input == 1:
+        # Add a new option
+        print('Adding a new option')
+        option_id = len(chat_data[npc_id][chat_session_id]['options']) + 1
+        order_id = user_input('Order ID: ')
+        translation_code = user_input(
+            'Translation code \
+            (translation code to be looked up in the translation dictionary) \
+            e.g. GANON_BOSS_FIGHT_1: ')
+        translation_text = user_input('Translation text (text to be displayed to the player): ')
+        action_code = user_input('Action code (e.g. EXIT_CHAT or TRIGGER_EVENT or START_CHAT)  : ')
+        action_code_parameter = user_input('Action code parameter (leave blank for None):')
+        action_code_parameter_type = user_input('Action code parameter type (leave blank for None): ')
+        if action_code_parameter == '':
+            action_code_parameter = None
+        if action_code_parameter_type == '':
+            action_code_parameter_type = None
+        add_option(option_id,
+                   order_id, 
+                   translation_code, 
+                   translation_text, 
+                   action_code, 
+                   action_code_parameter,
+                   action_code_parameter_type)
+    elif user_input == 2:
+        # Update an existing option
+        pass
+    elif user_input == 3:
+        # Delete an existing option
+        pass
+    else:
+        print('Invalid input')
+    return npc_id
 
 def cli(
     chat_file_path: str='src\\admin_dev_tools\\data\\chat_session_data.json',
