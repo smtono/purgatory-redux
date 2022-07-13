@@ -102,6 +102,10 @@ while (game_running):
         #       Mouse clicks for dialogue / battles
         input_detection = PlayerInput(player)
         input_detection.on_move(keys)
+        
+        # Check for interaction with NPCs
+        for npc in npcs:
+            input_detection.on_interact(npc, keys)
 
     # debug
     #print("playerX=", player.rect.x)
