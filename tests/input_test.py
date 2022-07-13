@@ -1,5 +1,5 @@
 import unittest
-from prototypes.overworld.player import Player, PlayerInput
+from prototypes.player.player import Player, PlayerInput
 
 # create a unit test to test the movement of the player from src\prototypes\overworld\movement.py
 class InputTests(unittest.TestCase):
