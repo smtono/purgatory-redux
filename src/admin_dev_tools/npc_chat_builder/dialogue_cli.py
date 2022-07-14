@@ -214,58 +214,7 @@ def save_file(chat_data: dict, file_path: str) -> None:
         None
     """
     with open(file_path, 'w', encoding='UTF-8') as f:
-        json.dump(chat_data, f)
-
-# pylint: disable=pointless-string-statement
-"""
-while selection != '0':
-    if selection == '1':
-        print('Adding a new option')
-        option_id = len(chat_data[npc_id][chat_session_id]['options']) + 1
-        order_id = input('Order ID: ')
-        translation_code = input(
-            'Translation code (translation code to be looked up in the translation dictionary) e.g. GANON_BOSS_FIGHT_1: ')
-        translation_text = input('Translation text (text to be displayed to the player): ')
-        action_code = input('Action code (e.g. EXIT_CHAT or TRIGGER_EVENT or START_CHAT)  : ')
-        action_code_parameter = input('Action code parameter (leave blank for None):')
-        action_code_parameter_type = input('Action code parameter type (leave blank for None): ')
-        if action_code_parameter == '':
-            action_code_parameter = None
-        if action_code_parameter_type == '':
-            action_code_parameter_type = None
-        add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter,
-                   action_code_parameter_type)
-    elif selection == '2':
-        # TODO: make sure the option exists, otherwise ask again
-        # TODO: add a proper menu system instead of just doing everything linearly
-        print('Updating an existing option')
-        option_id = input('Option ID: ')
-        order_id = input('Order ID: ')
-        translation_code = input(
-            'Translation code (translation code to be looked up in the translation dictionary) e.g. GANON_BOSS_FIGHT_1: ')
-        translation_text = input('Translation text (text to be displayed to the player): ')
-        action_code = input('Action code (e.g. EXIT_CHAT or TRIGGER_EVENT or START_CHAT)  : ')
-        action_code_parameter = input('Action code parameter (leave blank for None):')
-        action_code_parameter_type = input('Action code parameter type (leave blank for None): ')
-        if action_code_parameter == '':
-            action_code_parameter = None
-        if action_code_parameter_type == '':
-            action_code_parameter_type = None
-        add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter,
-                   action_code_parameter_type)
-    elif selection == '3':
-        print('Deleting an existing option')
-        option_id = input('Option ID: ')
-        for option in chat_data[npc_id][chat_session_id]['options']:
-            if option['id'] == option_id:
-                chat_data[npc_id][chat_session_id]['options'].remove(option)
-                break
-
-if selection == '0':
-    saveFile()
-    print('Done!')
-
-                
+        json.dump(chat_data, f) 
         
 '''
 new NPC
@@ -277,7 +226,6 @@ NPC->rampUpMana()
 NPC->fightTheBoss(50)
 NPC->startQuest(1) 
 '''
-"""
 
 # FIXME: call functions involved in creating a new NPC
 def create_npc(chat_data: dict, npc_id: int):
@@ -335,10 +283,31 @@ def manage_npc(chat_data: dict, npc_id: int, user_input: int):
                    action_code_parameter_type)
     elif user_input == 2:
         # Update an existing option
-        pass
+        # TODO: make sure the option exists, otherwise ask again
+        # TODO: add a proper menu system instead of just doing everything linearly
+        print('Updating an existing option')
+        option_id = input('Option ID: ')
+        order_id = input('Order ID: ')
+        translation_code = input(
+            'Translation code (translation code to be looked up in the translation dictionary) e.g. GANON_BOSS_FIGHT_1: ')
+        translation_text = input('Translation text (text to be displayed to the player): ')
+        action_code = input('Action code (e.g. EXIT_CHAT or TRIGGER_EVENT or START_CHAT)  : ')
+        action_code_parameter = input('Action code parameter (leave blank for None):')
+        action_code_parameter_type = input('Action code parameter type (leave blank for None): ')
+        if action_code_parameter == '':
+            action_code_parameter = None
+        if action_code_parameter_type == '':
+            action_code_parameter_type = None
+        add_option(option_id, order_id, translation_code, translation_text, action_code, action_code_parameter,
+                   action_code_parameter_type)
     elif user_input == 3:
         # Delete an existing option
-        pass
+        print('Deleting an existing option')
+        option_id = input('Option ID: ')
+        for option in chat_data[npc_id][chat_session_id]['options']:
+            if option['id'] == option_id:
+                chat_data[npc_id][chat_session_id]['options'].remove(option)
+                break
     else:
         print('Invalid input')
     return npc_id

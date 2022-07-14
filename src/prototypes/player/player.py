@@ -250,6 +250,7 @@ class PlayerInput():
                 if game_object.can_interact:
                     # if is interactable, check if button pressed
                     if keys[pygame.K_e]:
+                        print("Interaction Detected")
                         # if button pressed, interact
                         game_object.interact_npc()
             # else
