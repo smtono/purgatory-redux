@@ -1,15 +1,6 @@
 """
-THis file deals with Entity characters, the player, enemies, party members, bosses and otherwise
-That you would encounter in battle
+Module containing the Entity class.
 """
-import enum
-
-
-class EntityType(enum):
-    """
-    Describes the kind of entity that is represented by an object
-    """
-
 class Entity():
     """
     Class declaration for an entity object
@@ -28,26 +19,26 @@ class Entity():
             Determines the order that this entity will go in battle
         accuracy: double
             How likely an attack is going to hit
-        strength: double 
+        strength: double
             How many extra points go into physical attacks
         magic: double
             How many extra points go into magical attacks
         defense: double
             Determines how much damage this entity can withstand from enemies
-            
+
     Functions:
 
     """
-    def __init__(self, 
-                name="", 
+    def __init__(self,
+                name="",
                 level=0,
-                entity_type=None, 
-                MAX_HEALTH=300, 
-                mana=50, 
-                speed=10, 
-                accuracy=0.6, 
-                strength=0.0, 
-                magic=0.0, 
+                entity_type=None,
+                MAX_HEALTH=300,
+                mana=50,
+                speed=10,
+                accuracy=0.6,
+                strength=0.0,
+                magic=0.0,
                 defense=0.0) -> None:
         """
         Initializes an Entity object
@@ -91,7 +82,8 @@ class Entity():
 
     def level_up(self) -> None:
         """
-        Increases the entity object's level by one, and stat increases by a factor of their current level
+        Increases the entity object's level by one, 
+        and stat increases by a factor of their current level
 
         Args:
         Returns:
@@ -109,11 +101,11 @@ class Entity():
             self.defense += 0.1
         # Increase by a larger factor
         else:
-            self.MAX_HEALTH += 500;
-            self.mana += 100;
-            self.speed += 5;
-            self.accuracy += 0.05;
-            self.magic += 0.1;
-            self.strength += 0.1;
-            self.defense += 0.1;
-        level += 1
+            self.MAX_HEALTH += 500
+            self.mana += 100
+            self.speed += 5
+            self.accuracy += 0.05
+            self.magic += 0.1
+            self.strength += 0.1
+            self.defense += 0.1
+        self.level += 1
