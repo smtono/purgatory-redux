@@ -1,0 +1,25 @@
+entity
+    hero/party
+        cleric
+        warrior
+        etc
+    enemy
+        enemy type
+        enemy type
+        etc
+    boss
+
+hero
+    levels up
+    chooses skills
+    chooses stats to boost
+
+enemy
+    stats are set
+    base entities for certain types made with entity builder
+    stats are changed during battle
+
+boss
+    similar to enemy
+    stats are set by entity builder
+    has certain "special moves" that change stats directly
