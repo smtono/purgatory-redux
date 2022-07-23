@@ -46,9 +46,13 @@ class GameObject(pygame.sprite.Sprite):
     height = None
 
     @abstractmethod
-    def __init__(self, color: int=None, width: int=None, height: int=None, coordinates: tuple=(0,0)) -> None:
+    def __init__(self, 
+                 color: int=None, 
+                 width: int=None, 
+                 height: int=None, 
+                 coordinates: tuple=(0,0)) -> None:
         """
-        Initializes game object with a color and size
+        Initializes game object's image with a color and size
 
         Args:
             None
@@ -59,25 +63,20 @@ class GameObject(pygame.sprite.Sprite):
         self.width = width
         self.height = height
 
-        pygame.sprite.Sprite.__init__(self) # must call the Sprite initialization before we can use
+        pygame.sprite.Sprite.__init__(self)
 
-        ######## DEFAULT RECT ########
-        # Create an image of the block, and fill it with a color.
-        # This could also be an image loaded from the disk.
-        if color is None and width is None and height is None:
+        # Default rect
+        if not color and not width and not height:
             self.image = pygame.Surface([WIDTH, HEIGHT])
             pygame.draw.rect(self.image, COLOR, pygame.Rect(0, 0, WIDTH, HEIGHT))
-        ######## PARAMETERIZED RECT ########
+        # Parameterized rect
         else:
             self.image = pygame.Surface([width, height])
             pygame.draw.rect(self.image, color, pygame.Rect(0, 0, width, height))
 
-        # Fetch the rectangle object that has the dimensions of the image
-        # Update the position of this object by setting the values of rect.x and rect.y
-        self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
+        self.rect = self.image.get_rect()
 
-    # FIXME: not DRY
-    def change_color(self, color) -> None:
+    def change_color(self, color: tuple) -> None:
         """
         Changes the current rect color to a new color
 
@@ -85,6 +84,8 @@ class GameObject(pygame.sprite.Sprite):
             color: tuple
                 The new color to be changed to
         Returns:
+            None
+        Raises:
             None
         """
         self.image = pygame.Surface([self.width, self.height])
@@ -97,6 +98,8 @@ class GameObject(pygame.sprite.Sprite):
         Args:
             None
         Returns:
+            None
+        Raises:
             None
         """
         self.image = pygame.Surface([self.width, self.height])
@@ -112,13 +115,11 @@ class NPC(GameObject):
             Whether the player is currently interacting with this NPC
         has_quest: boolean
             Indicates whether or not this NPC has a mission or quest for the player currently
-        is_enemy: boolean
-            Indicates whether or not this NPC is hostile towards the player
-        is_shopkeeper: boolean
-            Indicates whether or not this NPC has a shop menu
+        npc_type: list[str]
+            The different types of NPC this is
+            quest_giver, enemy, shopkeeper, etc.
 
     Functions:
-        update()
         toggle_quest()
             Changes `has_quest` attribute to the opposite
         toggle_enemy()
@@ -126,37 +127,15 @@ class NPC(GameObject):
         detect_nearby(player: Player)
     """
     in_interaction = False
-    has_quest = False
-    is_enemy = False
-    is_shopkeeper = False
+    npc_type = []
 
-    #self.image.set_colorkey(COLOR)
-
-    # FIXME: make it so 1 constructor is overloaded, one is default instead of 3 separate ones
-    # Default constructor
-    def __init__(self, color=None, width=None, height=None) -> None:
+    def __init__(self, 
+                 npc_type: str=None, 
+                 color: tuple=None, 
+                 width: int=None, 
+                 height: int=None) -> None:
         super().__init__(color, width, height)
-
-    # pylint: disable=pointless-string-statement
-    '''
-    # Quest giver constructor
-    def __init__(self) -> None:
-        super().__init__()
-        self.has_quest = True
-        self.is_enemy = False
-    
-    # Enemy (potential) constructor
-    def __init__(self) -> None:
-        super().__init__()
-        self.has_quest = False
-        self.is_enemy = True
-    '''
-
-    def update(self) -> None:
-        """
-        Does things
-        """
-        return
+        self.npc_type = npc_type
 
     def toggle_quest(self) -> None:
         """
@@ -166,8 +145,10 @@ class NPC(GameObject):
             None
         Returns:
             None
+        Raises:
+            None
         """
-        self.has_quest = not self.has_quest
+        self.npc_type.add('quest_giver')
 
     def toggle_enemy(self) -> None:
         """
@@ -177,8 +158,10 @@ class NPC(GameObject):
             None
         Returns:
             None
+        Raises:
+            None
         """
-        self.is_enemy = not self.is_enemy
+        self.npc_type.add('enemy')
 
     def reset_sprite(self):
         """
@@ -187,6 +170,8 @@ class NPC(GameObject):
         Args:
             None
         Returns:
+            None
+        Raises:
             None
         """
         # Create an image of the block, and fill it with a color.
@@ -212,34 +197,13 @@ class NPC(GameObject):
         """
         radius = 60
 
-        # Create an image of the block, and fill it with a color.
-         # This could also be an image loaded from the disk.
-        notification = pygame.Surface([3, 3])
-        notification.fill((255, 255, 0))
-
-        #print("PlayerX:", player.rect.x, "NpcX:", self.rect.x)
-        #print("PlayerY:", player.rect.y, "NpcY:", self.rect.y)
-
-        # Find if player is within interact bubble, (3 pixels in any direction)
-        if player.rect.x in range(self.rect.x - radius, self.rect.x + radius) and player.rect.y in range(self.rect.y - radius, self.rect.y + radius):
-            #print("nearby detected")
-            #self.rect = self.image.blit(self.notification, (self.rect.x, self.rect.y + 3)) # draw notifcation above head
-
-            # change color for now
+        # Find if player is within interact bubble
+        if player.rect.x in range(self.rect.x - radius, self.rect.x + radius) \
+                and player.rect.y in range(self.rect.y - radius, self.rect.y + radius):
             self.change_color((255, 255, 255))
-
-            # Redrawing surface image with notification blit
-            # FIXME: what
-            '''
-            self.image = pygame.Surface([self.width + 5, self.height + 5]) # .fill(self.COLOR)
-            pygame.draw.rect(self.image, self.COLOR, pygame.Rect(0, 0, self.width - 5, self.height - 5))
-            self.image.blit(notification, (self.rect.x, self.rect.y))
-            self.rect = self.image.get_rect() # this is what we would manipulate to place a real sprite
-            '''
             self.player_nearby = True
             return True
 
-        # TODO: maybe make it so it doesn't have to do this every time?
         self.reset_color()
         return False
 
