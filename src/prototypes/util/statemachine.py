@@ -1,4 +1,13 @@
 """
+This module contains the abstract class for a State Machine.
+
+A state machine is a finite state machine
+that can be used to control the flow of the game using transitions.
+Transitions are defined by a set of conditions that must be met
+in order for the state machine to transition to a new state.
+
+This Base State Machine class can be used in various other classes
+to create a predictable loop of states.
 """
 
 from abc import ABC, abstractmethod
