@@ -75,7 +75,7 @@ class DialogueSet():
     def __init__(self, dialogue_list: list) -> None:
         """
         Initizalizes a Dialogue Set object with a list of Dialogue objects
-        
+
         Args:
             dialogue_list: list
                 A list of however many Dialogue objects are associated with this set

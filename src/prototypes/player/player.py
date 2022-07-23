@@ -4,7 +4,7 @@ Definitions regarding the player in the overworld
 from typing import Sequence
 import pygame
 
-from prototypes.overworld.game import Direction
+from prototypes.util.game import Direction
 from prototypes.overworld.game_objects import NPC, GameObject
 
 
