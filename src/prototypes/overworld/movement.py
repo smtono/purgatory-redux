@@ -31,7 +31,7 @@ BG_COLOR: tuple
 Functions:
 """
 import pygame
-from prototypes.util.game import Camera, Direction
+from prototypes.overworld.camera import Camera
 from prototypes.overworld.game_objects import NPC
 from prototypes.player.player import Player
 from prototypes.player.player import PlayerInput
