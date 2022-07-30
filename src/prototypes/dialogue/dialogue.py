@@ -7,13 +7,9 @@ something happens
                 [ different chat options ]
                 EXIT_CHAT -> "cya l8r alig8r"
 """
+from enum import Enum
 
-# TODO: incorporate npc chat builder into this somehow
-# For now, just from classes/hard coded values
-
-import enum
-
-class Morality(enum):
+class Morality(Enum):
     """
     A gauge to how good or bad a choice of dialogue is
     Each enum value will add or subtract from a morality stat in the user's stats
@@ -83,3 +79,53 @@ class DialogueSet():
             None
         """
         self.choices = dialogue_list
+
+class DialogueBox():
+    """
+    A window for text during a dialogue sequence, as well as dialogue options to appear in
+
+    Attributes:
+
+    Functions:
+    """
+    window = None
+
+    def __init__(self) -> None:
+        """
+        Initializes a DialogueBox object
+        """
+
+    def display_dialogue(self, dialogue: str) -> None:
+        """
+        Displays the dialogue set to the user
+        """
+        pass
+
+    def display_choices(self, dialogue_set: DialogueSet) -> None:
+        """
+        Displays the choices the user can make
+
+        Args:
+            dialogue_set: DialogueSet
+                The set of dialogue options to display
+        Returns:
+            None
+        Raises:
+            None
+        """
+        pass
+
+    def determine_choice(self, dialogue_set: DialogueSet, choice: Dialogue) -> Dialogue:
+        """
+        Determines which choice the user made, then displays the next dialogue in the tree.
+
+        Args:
+            dialogue_set: DialogueSet
+                The set of dialogue options to display
+        Returns:
+            Dialogue
+                The choice the user made
+        Raises:
+            None
+        """
+        pass
