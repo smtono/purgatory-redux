@@ -9,6 +9,8 @@ something happens
 """
 from enum import Enum
 
+import pygame
+
 class Morality(Enum):
     """
     A gauge to how good or bad a choice of dialogue is
@@ -85,10 +87,29 @@ class DialogueBox():
     A window for text during a dialogue sequence, as well as dialogue options to appear in
 
     Attributes:
+        window: pygame.Surface
+            the window to display the dialogue in
+        portrait: pygame.Surface
+            the portrait to display on the left of the window
+        dialoge: str
+            the dialogue to display in the window
+        options: list
+            the dialogue options for the user to choose from
 
     Functions:
+        display_dialogue(self, dialogue: str) -> None
+            Displays the dialogue in the window
+        display_choices(self, dialogue_set: DialogueSet) -> None
+            Displays the dialogue options in the window
+        determine_choice(self, dialogue_set: DialogueSet, choice: Dialogue) -> Dialogue
+            Determines which choice the user made, then displays the next dialogue in the tree.
+        draw_window() -> pygame.Surface
+            Draws the current window to store in the screen
     """
     window = None
+    portrait = None
+    dialogue = ""
+    options = []
 
     def __init__(self) -> None:
         """
@@ -99,7 +120,7 @@ class DialogueBox():
         """
         Displays the dialogue set to the user
         """
-        pass
+        self.dialogue = dialogue
 
     def display_choices(self, dialogue_set: DialogueSet) -> None:
         """
@@ -113,7 +134,7 @@ class DialogueBox():
         Raises:
             None
         """
-        pass
+        self.options = dialogue_set.choices
 
     def determine_choice(self, dialogue_set: DialogueSet, choice: Dialogue) -> Dialogue:
         """
@@ -129,3 +150,15 @@ class DialogueBox():
             None
         """
         pass
+
+    def draw_window(self) -> pygame.Surface:
+        """
+        Draws the current dialogue box to display to the user
+        
+        Args:
+            None
+        Returns:
+            A pygame surface to draw to the game window
+        Raises:
+            None
+        """
