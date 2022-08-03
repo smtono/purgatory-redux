@@ -37,19 +37,24 @@ class Dialogue():
     Functions:
 
     """
-
     text = ""
     position = -1
     moral_status = Morality.NONE
+    next_dialogue = -1
 
-    def __init__(self, text: str, position: int, moral_status: Morality) -> None:
+    def __init__(self, text: str, position: int, moral_status: Morality, next_dialogue: int) -> None:
         """
         Initializes a Dialogue object with a set of text, position to be in the menu, and which Morality it coaligns with
 
         Args:
-            text (str): _description_
-            position (int): _description_
-            moral_status (Morality): _description_
+            text: str
+                The text of this dialogue option
+            position: int
+                The position this option will appear in the screen
+            moral_status: Morality
+                The alignment of this choice
+            next_dialogue: int
+                A pointer to the identifier of the next dialogue prompt
 
         Returns:
             None
@@ -68,19 +73,28 @@ class DialogueSet():
 
     Functions:
     """
+    prompt = None
     choices = None
 
-    def __init__(self, dialogue_list: list) -> None:
+    def __init__(self, identifier: int, prompt: str, choices: list[str]) -> None:
         """
         Initizalizes a Dialogue Set object with a list of Dialogue objects
 
         Args:
-            dialogue_list: list
+            identifier: int
+                The id associated with this dialogue scene
+            prompt: str
+                The text to begin this dialogue scene
+            choices: list
                 A list of however many Dialogue objects are associated with this set
         Returns:
             None
+        Raises:
+            None
         """
-        self.choices = dialogue_list
+        self.identifier = identifier
+        self.prompt = prompt
+        self.choices = choices
 
 class DialogueBox():
     """
@@ -116,6 +130,21 @@ class DialogueBox():
         Initializes a DialogueBox object
         """
 
+    def set_text(self, dialouge_set: DialogueSet):
+        """
+        Sets the text up for the next time the window is drawn
+
+        Args:
+            dialogue_set: DialogueSet
+                The prompt and dialogue options available for the current screen
+        Returns:
+            None
+        Raises:
+            None
+        """
+        self.dialogue = dialouge_set.prompt
+        self.options = dialouge_set.choices
+    
     def display_dialogue(self, dialogue: str) -> None:
         """
         Displays the dialogue set to the user
@@ -138,7 +167,7 @@ class DialogueBox():
 
     def determine_choice(self, dialogue_set: DialogueSet, choice: Dialogue) -> Dialogue:
         """
-        Determines which choice the user made, then displays the next dialogue in the tree.
+        Determines which choice the user made, then changes to the next dialogue in the tree.
 
         Args:
             dialogue_set: DialogueSet
@@ -162,3 +191,25 @@ class DialogueBox():
         Raises:
             None
         """
+        # Parameters
+        width = 600
+        height = 100
+        window = pygame.Surface((width, height))
+        
+        # Parts
+        background = pygame.Surface
+        portrait = None
+        dialogue = self.dialogue
+        options = self.options
+
+        # Draw the dialogue box background
+        
+        # Add in the character portrait on the top left of the box
+        
+        # Add the character name to the right of the portrait
+        
+        # Add in the dialogue below the name
+        
+        # Add in dialogue options below the dialogue
+        
+        # Choose option, return
