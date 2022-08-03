@@ -11,7 +11,7 @@
                         },
                         {
                             "text": "This is the text for one of the options to reply",
-                            "next_dialogue_id": "This is the next dialogue id"
+                            "next_dialogue_id": "This is the next dialogue id. Can also lead to the universal end_dialogue_id, 0000"
                         }
                     ]
                 }
