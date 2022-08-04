@@ -16,18 +16,10 @@
             "name": "NPC Chat Builder",
             "type": "python",
             "request": "launch",
-            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\admin_dev_tools\\npc_chat_builder.py",
+            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\admin_dev_tools\\npc_chat_builder\\dialogue_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": []
         },
-        {
-            "name": "Base Entity Builder",
-            "type": "python",
-            "request": "launch",
-            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\admin_dev_tools\\base_entity_builder.py",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        }
     ]
 }

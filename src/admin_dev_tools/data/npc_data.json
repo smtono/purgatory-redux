@@ -3,7 +3,7 @@
         "name": "This is the name of the NPC",
         "portrait": "This is the filepath to the portrait of this NPC",
         "type": "This is the type of NPC (shopkeeper, quest giver, confidant, generic)",
-        "mood": "This is the starting mood of this NPC (good, bad, neutral)",
+        "mood": "This is the starting mood of this NPC as an integer (positive means good, negative means bad)",
         "actions": {
             "START_SESSION": {
                 "good": [
