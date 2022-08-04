@@ -5,7 +5,8 @@ from typing import Sequence
 import pygame
 
 from prototypes.util.game import Direction
-from prototypes.overworld.game_objects import NPC, GameObject
+from prototypes.game_objects.game_object import GameObject
+from prototypes.game_objects.npc import NPC
 
 
 class Player(GameObject):
@@ -19,6 +20,8 @@ class Player(GameObject):
             UP, DOWN, LEFT, RIGHT, or NONE
         is_moving: boolean
             Whether the user is currently holding down WASD keys
+        current_state: State
+            The state of the player character currently (idle, moving, interacting, etc)
     
     Functions:
         update()

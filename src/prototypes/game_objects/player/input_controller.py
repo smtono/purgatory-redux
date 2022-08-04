@@ -1,5 +1,5 @@
 """
-This module contains the Input class.
+This module contains the state machine for controller player input
 
 Input in the overworld is a sequence of inputs made by the user.
 These inputs can correspond to different actions, such as moving, interacting, etc.
@@ -8,45 +8,46 @@ and a state machine to handle the input correctly and predictably.
 """
 import pygame
 
-from prototypes.tools.statemachine import StateMachine
+from prototypes.util.state_machine import StateMachine
 
-class MovementStateMachine(StateMachine):
+class InputController(StateMachine):
     """
     State machine class to handle the input states.
     
     Attributes:
         states: Sequence[str]
             The possible states of the input.
-        states_transitions: Dict[str, [str]]
+        transitions: Dict[str, [str]]
             A dictionary mapping the states to the states that can be transitioned to from that state.
         current_state: str
             The current state of the input.
     """
     states = {
             "idle": [],
-            "moving": [pygame.K_d, pygame.K_a, pygame.K_w, pygame.K_s],
+            "moving": [pygame.K_d, pygame.K_a, pygame.K_w, pygame.K_s, pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT],
             "interacting_object": [pygame.K_e],
-            "interacting_npc": [pygame.K_e]
         }
-    states_transitions = {
-        "idle": ["idle", "moving", "interacting_object", "interacting_npc"],
+    transitions = {
+        "idle": ["idle", "moving", "interacting_object"],
         "moving": ["idle"],
         "interacting": ["idle", "moving"],
         "interacting_npc": ["idle", "moving"],
     }
+    current_state = None
         
     def __init__(self) -> None:
         """
         Initialize the state machine class.
         
         Args:
-            states: Sequence[str]
-                The possible states of the input.
-            transitions: Dict[str, str]
-                A dictionary mapping the states to the states that can be transitioned to from that state.
+            None
+        Returns:
+            None
+        Raises:
+            None
         """
         self.current_state = self.states[0]
-        self.state_machine = MovementStateMachine
+        self.state_machine = InputController
     
     def transition(self, state: str) -> str:
         """
@@ -88,6 +89,6 @@ class Input():
         self.player = None
         self.keys = []
         self.state = "idle"
-        self.states = ["idle", "moving", "interacting", "interacting_npc"]
-        self.state_machine = MovementStateMachine(self.states, self.states)
+        self.states = ["idle", "moving", "interact_object", "interact_npc", "interact_enemy"]
+        self.state_machine = InputController(self.states, self.states)
     
