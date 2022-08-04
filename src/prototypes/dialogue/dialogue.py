@@ -8,21 +8,9 @@ something happens
                 EXIT_CHAT -> "cya l8r alig8r"
 """
 from enum import Enum
-
 import pygame
 
-class Morality(Enum):
-    """
-    A gauge to how good or bad a choice of dialogue is
-    Each enum value will add or subtract from a morality stat in the user's stats
-    """
-    GOOD = 10
-    NEUTRAL = 0
-    BAD = -10
-    NONE = None
-
-
-class Dialogue():
+class DialogueOption():
     """
     Represents a single dialogue choice with attributes pertaining to morality
 
@@ -31,18 +19,20 @@ class Dialogue():
             The actual dialogue in text
         position: int
             The position of this choice in the menu
-        moral_status: Morality
+        morality: int
             Represents whether the choice is good, neutral, or bad
+        next_dialogue: int
+            A pointer to the identifier of the next dialogue prompt
 
     Functions:
 
     """
     text = ""
     position = -1
-    moral_status = Morality.NONE
+    morality = 0
     next_dialogue = -1
 
-    def __init__(self, text: str, position: int, moral_status: Morality, next_dialogue: int) -> None:
+    def __init__(self, text: str, position: int, morality: int, next_dialogue: int) -> None:
         """
         Initializes a Dialogue object with a set of text, position to be in the menu, and which Morality it coaligns with
 
@@ -51,17 +41,19 @@ class Dialogue():
                 The text of this dialogue option
             position: int
                 The position this option will appear in the screen
-            moral_status: Morality
-                The alignment of this choice
+            morality: int
+                The alignment of this choice, positive is good, negative is bad, 0 is neutral
             next_dialogue: int
                 A pointer to the identifier of the next dialogue prompt
-
         Returns:
+            None
+        Raises:
             None
         """
         self.text = text
         self.position = position
-        self.moral_status = moral_status
+        self.morality = morality
+        self.next_dialogue = next_dialogue
 
 class DialogueSet():
     """
@@ -73,10 +65,11 @@ class DialogueSet():
 
     Functions:
     """
-    prompt = None
-    choices = None
+    identifier = 0000
+    prompt = ""
+    choices = []
 
-    def __init__(self, identifier: int, prompt: str, choices: list[str]) -> None:
+    def __init__(self, identifier: int, prompt: str, choices: list[DialogueOption]) -> None:
         """
         Initizalizes a Dialogue Set object with a list of Dialogue objects
 
@@ -165,7 +158,7 @@ class DialogueBox():
         """
         self.options = dialogue_set.choices
 
-    def determine_choice(self, dialogue_set: DialogueSet, choice: Dialogue) -> Dialogue:
+    def determine_choice(self, dialogue_set: DialogueSet, choice: DialogueOption) -> DialogueOption:
         """
         Determines which choice the user made, then changes to the next dialogue in the tree.
 

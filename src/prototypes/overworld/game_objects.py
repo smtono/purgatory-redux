@@ -39,6 +39,7 @@ class GameObject(pygame.sprite.Sprite):
     is_collideable: False
     can_interact = False
 
+    identifier = None
     image = None
     rect = None
     color = None
@@ -46,7 +47,8 @@ class GameObject(pygame.sprite.Sprite):
     height = None
 
     @abstractmethod
-    def __init__(self, 
+    def __init__(self,
+                 identifier: int,
                  color: int=None, 
                  width: int=None, 
                  height: int=None, 
@@ -59,6 +61,7 @@ class GameObject(pygame.sprite.Sprite):
         Returns:
             None
         """
+        self.identifier = identifier
         self.color = color
         self.width = width
         self.height = height
