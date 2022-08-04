@@ -68,11 +68,13 @@ class StateMachine(ABC):
         """
 
     @ abstractmethod
-    def transition(self, state: str) -> str:
+    def transition(self, state_input, current_state: str) -> str:
         """
         Transition to a new state based on the current state and the new state.
 
         Args:
+            state_input: Any
+                The input by the user or machine to determine the next step in the state machine.
             state: str
                 The new state to transition to
         Returns:
@@ -80,5 +82,3 @@ class StateMachine(ABC):
         Raises:
             None
         """
-        # Check if the new state is valid, based on states_transitions.
-        self.current_state = state
