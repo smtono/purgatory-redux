@@ -68,8 +68,7 @@ class Player(GameObject):
         self.is_facing = toggle
     
     # Utility functions
-    # TODO: make more efficient? check only objects in acertain range of pixels. change so that it checks for sprite.is_collideable
-    def detect_collision(self, border: list, sprites: pygame.sprite.Group) -> None:
+    def detect_collision(self, border: list, nearby_objects: list[GameObject]) -> None:
         '''
         Adjusts the user's position on the screen if out of bounds, or if they collide with any other sprites
 
@@ -84,6 +83,7 @@ class Player(GameObject):
         border_x = border[0]
         border_y = border[1]
 
+        # Extract to separate function
         # borders detection
         if self.rect.x < 0:
             # print("border detected, x < 0")
@@ -102,20 +102,20 @@ class Player(GameObject):
         # other entity detection
         # Take coords of sprite
         # move player sprite over player width/height as to not touch sprite
-        # FIXME: Put in NPC class instead?
         # If you collide with a object, move out
-        for sprite in sprites:
-            # find direction player was moving if collision
-            if self.rect.colliderect(sprite.rect):
-                match self.is_facing:
-                    case Direction.UP:
-                        self.rect.top = sprite.rect.bottom
-                    case Direction.DOWN:
-                        self.rect.bottom = sprite.rect.top
-                    case Direction.LEFT:
-                        self.rect.left = sprite.rect.right
-                    case Direction.RIGHT:
-                        self.rect.right = sprite.rect.left
+        for game_object in nearby_objects:
+            if game_object.is_collideable:
+                # find direction player was moving if collision
+                if self.rect.colliderect(game_object.rect):
+                    match self.is_facing:
+                        case Direction.UP:
+                            self.rect.top = game_object.rect.bottom
+                        case Direction.DOWN:
+                            self.rect.bottom = game_object.rect.top
+                        case Direction.LEFT:
+                            self.rect.left = game_object.rect.right
+                        case Direction.RIGHT:
+                            self.rect.right = game_object.rect.left
 
         # object detection
 
@@ -212,21 +212,16 @@ class PlayerInput():
         Raises:
             None
         """
-        # FIXME: can probably be simplified using getattribute
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            #print("left")
             self.player.set_direction_moving(Direction.LEFT)
             self.move_left(self.player, 5)
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            #print("right")
             self.player.set_direction_moving(Direction.RIGHT)
             self.move_right(self.player, 5)
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            #print("down")
             self.player.set_direction_moving(Direction.DOWN)
             self.move_down(self.player, 5)
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            #print("up")
             self.player.set_direction_moving(Direction.UP)
             self.move_up(self.player, 5)
 
