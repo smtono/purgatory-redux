@@ -19,47 +19,37 @@ def confirm(user_input: str):
     Raises:
         None
     """
-    accept = input(f"Is '{user_input}' OK? (y/n)")
+    accept = input(f"Is '{user_input}' OK? (y/n) ")
     if accept == 'y':
         print(f"Adding '{user_input}' to NPC. . .")
         return True
-    else:
-        print("Trying again. . .")
-        return False
+    print("Trying again. . .")
+    return False
 
-def create(args: list) -> None:
+def add_actions():
     """
-    Creates a new instance of an NPC or a scene
+    Adds inital dialgoue for an NPC
 
     Args:
-        args: list
-            the arguments passed to the command
-    Returns:
         None
+    Returns:
+        A dict of inital dialogue points for the NPC
     Raises:
         None
     """
-    info = {
-        "help": "create a new instance of NPC or scene.\n\
-        Args:\n\
-            type: The type of instance you want to create (NPC or Scene)\n\
-            npc_id: The new ID for this NPC or scene, or pass none to automatically generate one.",
-        "args": ['type', 'npc_id']
-    }
-    npc_id = None
 
-    if not args:
-        print("Arguments required for create command. Type 'help' for more information.")
-        return
+def create_npc() -> dict:
+    """
+    Creates a new instance of an NPC
 
-    if args[0] == 'help':
-        print(info['help'])
-    if len(args) == 2:
-        npc_id = args[1]
-
-    # NPC Creation
-    elif args[0].lower() == 'npc':
-        npc = {
+    Args:
+        None
+    Returns:
+        A dict containing information on the new NPC
+    Raises:
+        None
+    """
+    npc = {
             "id": "",
             "name": "",
             "portrait": "",
@@ -90,109 +80,152 @@ def create(args: list) -> None:
                 }
             },
         }
-        print("Creating a new NPC")
+    print("Creating a new NPC")
+    # ID
+    accepted = False
+    while not accepted:
+        npc_id = input("Please enter the NPC's ID, or nothing for automatic assignment: ")
         if npc_id:
-            # Check numeric
-            npc['id'] = npc_id
+            # Check if numeric
+            try:
+                float(npc_id)
+            except ValueError:
+                print("ID Must be numeric with four digits")
+
+            # Check correct length
+            if len(npc_id) != 4:
+                print("ID Must be numeric with four digits")
+
+            # Check doesn't already exist
+
+            # Check if user satisfied
+            accept = confirm(npc_id)
+            if accept:
+                npc['id'] = npc_id
+                accepted = True
+        # Create ID automatically
         else:
-            # ID
-            accepted = False
-            while not accepted:
-                npc_id = input("Please enter the NPC's ID, or nothing for automatic assignment: ")
-                if npc_id:
-                    # Check if numeric
-                    try:
-                        float(npc_id)
-                    except ValueError:
-                        print("ID Must be numeric with four digits")
-
-                    # Check correct length
-                    if len(npc_id) != 4:
-                        print("ID Must be numeric with four digits")
-
-                    # Check doesn't already exist
-
-                    # Check if user satisfied
-                    accept = confirm(npc_id)
-                    if accept:
-                        npc['id'] = npc_id
-                        accepted = True
-                # Create ID automatically
-                else:
-                    # Read latest ID
-                    # Add one to it
-                    npc_id = '0000'
-                    print(f"Creating an NPC with ID '{npc_id}'")
-                    break
-            # Name
-            accepted = False
-            while not accepted:
-                npc_name = input("Please enter the NPC's name: ")
-                if npc_name:
-                    accept = confirm(npc_name)
-                    if accept:
-                        npc['name'] = npc_name
-                        accepted = True
-                else:
-                    print("No input detected. Trying again. . .")
-            # Portrait
-            # Type
-            accepted = False
-            while not accepted:
-                npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
-                npc_type = input("Please enter the NPC's type. For a list of types enter 'types': ")
-                if npc_type == 'types':
-                    print("NPC Types:")
-                    print("\t", npc_types)
-                elif npc_type in npc_types:
-                    accept = confirm(npc_type)
-                    if accept:
-                        npc['type'] = npc_type
-                        accepted = True
-                else:
-                    print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
-            # Mood
-            accepted = False
-            while not accepted:
-                print("Please enter the starting integer for the mood of this NPC, from -10 to 10")
-                npc_mood = input("Positive integers means positive mood, negative means a starting negative mood: ")
-                if npc_mood:
-                    # Check numeric
-                    try:
-                        float(npc_mood)
-                    except ValueError:
-                        print("Input must be numeric, from -10 to 10. Trying again. . .")
-                    if npc_mood > 10 or npc_mood < -10:
-                        print("Input must be between -10 and 10. Trying again. . .")
-                    else:
-                        accept = confirm(npc_mood)
-                        if accept:
-                            npc['mood'] = npc_mood
-                            accepted = True
-                else:
-                    print("No input detected. Trying again. . .")
-
-            # Actions
-            user_input = input("Now adding dialogue actions to this NPC, continue? (y/n)")
-            if user_input == 'y':
-                add_actions()
+            # Read latest ID
+            # Add one to it
+            npc_id = '0000'
+            print(f"Creating an NPC with ID '{npc_id}'")
+            break
+    # Name
+    accepted = False
+    while not accepted:
+        npc_name = input("Please enter the NPC's name: ")
+        if npc_name:
+            accept = confirm(npc_name)
+            if accept:
+                npc['name'] = npc_name
+                accepted = True
+        else:
+            print("No input detected. Trying again. . .")
+    # Portrait
+    # Type
+    accepted = False
+    while not accepted:
+        npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
+        npc_type = input("Please enter the NPC's type. For a list of types enter 'types': ")
+        if npc_type == 'types':
+            print("NPC Types:")
+            print("\t", npc_types)
+        elif npc_type in npc_types:
+            accept = confirm(npc_type)
+            if accept:
+                npc['type'] = npc_type
+                accepted = True
+        else:
+            print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
+    # Mood
+    accepted = False
+    while not accepted:
+        print("Please enter the starting integer for the mood of this NPC, from -10 to 10")
+        npc_mood = input("Positive integers means positive mood,"
+                            "negative means a starting negative mood: ")
+        if npc_mood:
+            # Check numeric
+            try:
+                float(npc_mood)
+            except ValueError:
+                print("Input must be numeric, from -10 to 10. Trying again. . .")
+            if float(npc_mood) > 10 or float(npc_mood) < -10:
+                print("Input must be between -10 and 10. Trying again. . .")
             else:
-                print("You can modify this NPC at a later time.")
+                accept = confirm(npc_mood)
+                if accept:
+                    npc['mood'] = npc_mood
+                    accepted = True
+        else:
+            print("No input detected. Trying again. . .")
 
+    # Actions
+    user_input = input("Now adding dialogue actions to this NPC, continue? (y/n) ")
+    if user_input == 'y':
+        add_actions()
+    else:
+        print("You can modify this NPC at a later time.")
 
+    print("Now exiting NPC creation. . .")
+    return npc
+
+def create_scene(npc_id: str) -> dict:
+    """
+    Creates a new instance of a scene in regard to a particular NPC
+    
+    Args:
+        npc_id: str
+            The ID of the NPC that is associated with this scene
+    Returns:
+        A dictionary of the scene object
+    Raises:
+        None
+    """
+    scene = {}
+    print(f"Creating a new scene for NPC {npc_id}")
+    # grab the ID of the NPC used
+
+    # Add the scene ID to the NPC's data
+
+    # create scene
+
+    return scene
+
+def create(args: list) -> None:
+    """
+    Creates a new instance of an NPC or a scene
+
+    Args:
+        args: list
+            the arguments passed to the command
+    Returns:
+        None
+    Raises:
+        None
+    """
+    info = {
+        "help": "create a new instance of NPC or scene.\n\
+        Args:\n\
+            type: The type of instance you want to create (NPC or Scene)\n\
+            npc_id: The new ID for this NPC or scene, or pass none to automatically generate one.",
+        "args": ['type', 'npc_id']
+    }
+
+    if not args:
+        print("Arguments required for create command. Type 'help' for more information.")
+        return
+
+    if args[0] == 'help':
+        print(info['help'])
+
+    # NPC Creation
+    elif args[0].lower() == 'npc':
+        npc = create_npc()
     # Scene Creation
     elif args[0].lower() == 'scene':
-        scene = {
-
-        }
-
-        # grab the ID of the NPC used
-
-        # Add the scene ID to the NPC's data
-
-        # create scene
-
-        print("Creating a new scene")
+        # TODO: prompt NPC id, check if exists
+        npc_id = 0000
+        scene = create_scene(npc_id)
     else:
         pass
 
@@ -291,18 +324,20 @@ def cli():
         None
     """
     # Check data exists
-    
+
     # Read data
-    
+
     # Welcome
     print("Welcome to the NPC Chat Builder CLI!")
     print("Type 'help' for a list of commands.")
-    
+
     # Wait for command
     while True:
         command = input(">>> ")
         if command == "help":
-            print("Here's a list of commands you can use to get started:\n\tcreate\n\tmodify\n\tdelete\n\thelp\nType 'help' after any command for additional info")
+            print("Here's a list of commands you can use to get started:",
+                  "\n\tcreate\n\tmodify\n\tdelete\n\thelp\n",
+                  "Type 'help' after any command for additional info")
         elif command == 'exit':
             print("Now exiting NPC Chat Builder CLI. . .")
             # Cleanup
