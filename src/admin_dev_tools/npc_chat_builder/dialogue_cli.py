@@ -21,7 +21,7 @@ def confirm(user_input: str):
     """
     accept = input(f"Is '{user_input}' OK? (y/n) ")
     if accept == 'y':
-        print(f"Adding '{user_input}' to NPC. . .")
+        print(f"Adding '{user_input}'. . .")
         return True
     print("Trying again. . .")
     return False
@@ -172,7 +172,7 @@ def create_npc() -> dict:
 def create_scene(npc_id: str) -> dict:
     """
     Creates a new instance of a scene in regard to a particular NPC
-    
+
     Args:
         npc_id: str
             The ID of the NPC that is associated with this scene
@@ -181,13 +181,44 @@ def create_scene(npc_id: str) -> dict:
     Raises:
         None
     """
-    scene = {}
+    scene = {
+        "npc_id": "",
+        "trigger": "",
+        "scene_id": "",
+        "dialogues": []
+    }
+
     print(f"Creating a new scene for NPC {npc_id}")
-    # grab the ID of the NPC used
+    scene['npc_id'] = npc_id
 
-    # Add the scene ID to the NPC's data
+    # Trigger Event
+    accepted = False
+    while not accepted:
+        trigger = input(
+            "Please enter the trigger event name "
+            "(ex. quest_name_begin, confidant_event_1, etc.): )")
+        if trigger:
+            accept = confirm(trigger)
+            if accept:
+                scene['trigger'] = trigger
+                accepted = True
+        else:
+            print("No input detected. Trying again. . .")
 
-    # create scene
+    # Scene ID
+    accepted = False
+    while not accepted:
+        scene_id = input("Please enter an ID for this scene, "
+                         "or nothing for automatic assignment: ")
+        if scene_id:
+            accept = confirm(scene_id)
+            if accept:
+                scene['scene_id'] = scene_id
+                accepted = True
+        else:
+            print("Generating ID automatically. . .")
+            # create random 4 digit ID
+
 
     return scene
 
