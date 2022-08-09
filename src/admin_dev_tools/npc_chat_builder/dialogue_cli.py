@@ -8,50 +8,8 @@ Usage:
 """
 
 import os
+import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
-
-def confirm(user_input: str):
-    """
-    Prompts user to confirm their input
-
-    Args:
-        user_input: str
-            The input by the user
-    Returns:
-        Whether or not the user accepts the input
-    Raises:
-        None
-    """
-    accept = input(f"Is '{user_input}' OK? (y/n) ")
-    if accept in ('y', ''):
-        print(f"Adding '{user_input}'. . .")
-        return True
-    print("Trying again. . .")
-    return False
-
-def prompt(input_prompt: str, null_allowed: bool):
-    """
-    Prompts the user for input and returns the input
-
-    Args:
-        input_prompt: str
-            The prompt to display to the user
-        null_allowed: bool
-            Whether or not the user can input nothing
-    Returns:
-        The input from the user
-    Raises:
-        None
-    """
-    os.system('clear')
-    while True:
-        text = input(input_prompt)
-        if text or null_allowed:
-            accept = confirm(text)
-            if accept:
-                return text
-        else:
-            print("No input detected. Trying again. . .")
 
 def add_actions():
     """
@@ -61,12 +19,20 @@ def add_actions():
         None
     Returns:
         A dict of inital dialogue points for the NPC
-    Raises:
-        None
     """
     # TODO: add actions
 
-def create_dialogue() -> dict:
+def create_branch() -> dict:
+    """
+    Creates a new instance of a branch in an existing dialogue tree
+
+    Args:
+
+    Returns:
+        A dict containing information about the current working branch
+    """
+
+def create_tree() -> dict:
     """
     Creates a new instance of a dialogue tree in regard to a particular scene
 
@@ -74,51 +40,52 @@ def create_dialogue() -> dict:
         None
     Returns:
         A dictionary containing dialogue tree data
-    Raises:
-        None
     """
     dialogue_tree = {
+        "npc_id": "",
+        "branches": [
 
-    }
-
-    current_branch = {
-
+        ]
     }
 
     creating = True
+    branch_num = 0
     while creating:
+        current_branch = {
+            "dialogue_id": {
+                "text": "",
+                "options": []
+            },
+        }
         # Dialogue ID
-        dialogue_id = prompt("Please enter an ID for this dialogue prompt, "
-                            "or nothing for automatic assignment: ", True)
+        dialogue_id = util.prompt_string("Please enter an ID for this dialogue prompt, "
+                            "or nothing for automatic assignment", True)
 
         if dialogue_id:
-            current_branch['dialogue_id'] = dialogue_id
+            current_branch[dialogue_id] = current_branch.pop('dialogue_id')
         else:
             print("Generating ID automatically. . .")
-            # create random 4 digit ID
+            # TODO: create random 4 digit ID
+            dialogue_id = '0000'
+            current_branch[dialogue_id] = current_branch.pop('dialogue_id')
 
         # Dialogue prompt
-        current_branch['dialogue_id']['text'] = \
-            prompt("Please enter the the prompt for this dialogue:\n", False)
+        current_branch[dialogue_id]['text'] = \
+            util.prompt_string("Please enter the the prompt for this dialogue:\n", False)
 
         # Dialogue options
         print("Now beginning option creation. . .")
         print("How many dialogue choices will there be for this prompt?\n"
             "Please note that additional prompts may be necessary for each option.")
-
-        while True:
-            num = prompt("Enter the amount now: ", False)
-            # Check if a number
-            try:
-                float(num)
-                break
-            except ValueError:
-                print("Please enter a numeric value")
+        num = util.prompt_number(False)
 
         for i in range(int(num)):
-            text = prompt(f"Please input the text for option #{i}: ", False)
-            user_input = prompt(f"Please input the ID of the next dialogue prompt for option #{i}, "
-                                      "or enter 'ids' for a list of prompts and their ids: ", False)
+            text = util.prompt_string(f"Please input the text for option #{i}", False)
+            user_input = util.prompt_string(
+                f"Please input the ID of the next dialogue prompt for option #{i}, "
+                "or enter 'ids' for a list of prompts and their ids", False
+            )
+
             if user_input == 'ids':
                 # TODO: print list of dialogue prompts and their ids, prompt again
                 pass
@@ -126,19 +93,20 @@ def create_dialogue() -> dict:
                 next_dialogue_id = user_input
 
             # Add to current branch
-            current_branch['dialogue_id']['options'][i] = {
+            current_branch[dialogue_id]['options'][i] = {
                 'text': text,
                 'next_dialogue_id': next_dialogue_id
             }
 
         # TODO: prompt if current branch correct, and if anything should change
-        
+        dialogue_tree['branches'][branch_num] = current_branch
+        branch_num += 1
+
         # Clear branch for new one
         current_branch.clear()
-        
+
         # Continue to branch off each option
             # Ask if new branch needs to be created
-            
 
     return dialogue_tree
 
@@ -151,8 +119,6 @@ def create_scene(npc_id: str) -> dict:
             The ID of the NPC that is associated with this scene
     Returns:
         A dictionary of the scene object
-    Raises:
-        None
     """
     scene = {
         "npc_id": "",
@@ -165,11 +131,11 @@ def create_scene(npc_id: str) -> dict:
     scene['npc_id'] = npc_id
 
     # Trigger Event
-    scene['trigger'] = prompt("Please enter the trigger event name "
-                            "(ex. quest_name_begin, confidant_event_1, etc.): ", False)
+    scene['trigger'] = util.prompt_string("Please enter the trigger event name "
+                            "(ex. quest_name_begin, confidant_event_1, etc.)", False)
 
-    scene_id = prompt("Please enter the scene ID "
-                               "or nothing for automatic assignment: ", True)
+    scene_id = util.prompt_string("Please enter the scene ID "
+                               "or nothing for automatic assignment", True)
     # Scene ID
     if scene_id:
         scene['scene_id'] = scene_id
@@ -178,11 +144,11 @@ def create_scene(npc_id: str) -> dict:
         # create random 4 digit ID
 
     # Dialogues
-    print("Now beginning dialogue tree creation")
+    print("\nNow beginning dialogue tree creation")
     accept = input("Continue? (y/n): ")
     if accept == 'y':
         print("Now starting dialogue tree creation. . .")
-        create_dialogue()
+        create_tree()
     else:
         print("You can create a dialogue tree at any time")
         print("Adding scene data. . .")
@@ -198,8 +164,6 @@ def create_npc() -> dict:
         None
     Returns:
         A dict containing information on the new NPC
-    Raises:
-        None
     """
     npc = {
         "id": "",
@@ -233,36 +197,30 @@ def create_npc() -> dict:
         },
     }
     print("Creating a new NPC")
+
+    # ID
     while True:
-        npc_id = prompt("Please enter the NPC's ID, or nothing for automatic assignment: ", True)
+        npc_id = util.prompt_id()
         if npc_id:
-            # Check if numeric
-            try:
-                float(npc_id)
-            except ValueError:
-                print("ID Must be numeric with four digits")
-                continue
-            # Check correct length
-            if len(npc_id) != 4:
-                print("ID Must be numeric with four digits")
-            else:
-                npc['id'] = npc_id
-                break
+            npc['id'] = npc_id
         else:
-            # Read latest ID
+            # TODO: Read latest ID
             # Add one to it
             npc_id = '0000'
             print(f"Creating an NPC with ID '{npc_id}'")
             break
 
     # Name
-    npc['name'] = prompt("Please enter the NPC's name: ", False)
+    npc['name'] = util.prompt_string("Please enter the NPC's name", False)
 
     # Portrait
     # Type
     npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
     while True:
-        npc_type = prompt("Please enter the NPC's type. For a list of types enter 'types': ", False)
+        npc_type = util.prompt_string(
+            "Please enter the NPC's type. For a list of types enter 'types'",
+            False
+        )
         if npc_type == 'types':
             print("NPC Types:")
             print("\t", npc_types)
@@ -273,40 +231,26 @@ def create_npc() -> dict:
             print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
 
     # Mood
-    accepted = False
-    while not accepted:
-        print("Please enter the starting integer for the mood of this NPC, from -10 to 10")
-        npc_mood = input("Positive integers means positive mood,"
-                            "negative means a starting negative mood: ")
-        if npc_mood:
-            # Check numeric
-            try:
-                float(npc_mood)
-            except ValueError:
-                print("Input must be numeric, from -10 to 10. Trying again. . .")
-            if float(npc_mood) > 10 or float(npc_mood) < -10:
-                print("Input must be between -10 and 10. Trying again. . .")
-            else:
-                accept = confirm(npc_mood)
-                if accept:
-                    npc['mood'] = npc_mood
-                    accepted = True
+    while True:
+        print(
+            "\nPlease enter the starting integer for the mood of this NPC, from -10 to 10"
+            "\nPositive integers means positive mood, "
+            "negative means a starting negative mood:"
+        )
+        npc_mood = util.prompt_number(False)
+        if float(npc_mood) > 10 or float(npc_mood) < -10:
+            print("Input must be between -10 and 10. Trying again. . .")
         else:
-            print("No input detected. Trying again. . .")
+            npc['mood'] = npc_mood
+            break
 
     # Actions
-    user_input = input("Now adding dialogue actions to this NPC, continue? (y/n) ")
-    if user_input == 'y':
-        add_actions()
-    else:
-        print("You can modify this NPC at a later time.")
-    
+    print("\nNow adding dialogue actions to this NPC. . .")
+    add_actions()
+
     # Scenes
-    user_input = input("Now adding dialogue trees to this NPC, continue? (y/n) ")
-    if user_input == 'y':
-        create_scene(npc_id)
-    else:
-        print("You can modify this NPC at a later time.")
+    print("\nNow adding dialogue trees to this NPC. . .")
+    create_scene(npc_id)
 
     print("Now exiting NPC creation. . .")
     return npc
@@ -319,8 +263,6 @@ def create(args: list) -> None:
         args: list
             the arguments passed to the command
     Returns:
-        None
-    Raises:
         None
     """
     info = {
@@ -336,6 +278,7 @@ def create(args: list) -> None:
         return
 
     if args[0] == 'help':
+        os.system('cls')
         print(info['help'])
 
     # NPC Creation
@@ -358,8 +301,6 @@ def modify(args: list):
             the arguments passed to the command
     Returns:
         None
-    Raises:
-        None
     """
     info = {
         "help": "create a new instance of NPC or scene.\n \
@@ -380,8 +321,6 @@ def delete(args: list):
         args: list
             the arguments passed to the command
     Returns:
-        None
-    Raises:
         None
     """
     info = {
@@ -404,8 +343,6 @@ def read_command(user_input: str):
         command: str
             The command passed in by the user
     Returns:
-        None
-    Raises:
         None
     """
     cmd_parts = user_input.split(" ")
@@ -439,8 +376,6 @@ def cli():
     Args:
         None
     Returns:
-        None
-    Raises:
         None
     """
     # Check data exists
