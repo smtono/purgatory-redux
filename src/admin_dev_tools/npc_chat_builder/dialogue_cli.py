@@ -7,6 +7,9 @@ Usage:
     python3 dialogue_cli.py
 """
 
+import os
+
+
 def confirm(user_input: str):
     """
     Prompts user to confirm their input
@@ -20,11 +23,35 @@ def confirm(user_input: str):
         None
     """
     accept = input(f"Is '{user_input}' OK? (y/n) ")
-    if accept == 'y':
+    if accept == 'y' or accept == '':
         print(f"Adding '{user_input}'. . .")
         return True
     print("Trying again. . .")
     return False
+
+def prompt(input_prompt: str, null_allowed: bool):
+    """
+    Prompts the user for input and returns the input
+
+    Args:
+        input_prompt: str
+            The prompt to display to the user
+        null_allowed: bool
+            Whether or not the user can input nothing
+    Returns:
+        The input from the user
+    Raises:
+        None
+    """
+    os.system('clear')
+    while True:
+        text = input(input_prompt)
+        if text or null_allowed:
+            accept = confirm(text)
+            if accept:
+                return text
+        else:
+            print("No input detected. Trying again. . .")
 
 def add_actions():
     """
@@ -37,6 +64,139 @@ def add_actions():
     Raises:
         None
     """
+
+def create_dialogue() -> dict:
+    """
+    Creates a new instance of a dialogue tree in regard to a particular scene
+
+    Args:
+        None
+    Returns:
+        A dictionary containing dialogue tree data
+    Raises:
+        None
+    """
+    dialogue_tree = {
+
+    }
+
+    current_branch = {
+
+    }
+
+    creating = True
+    while creating:
+        # Dialogue ID
+        dialogue_id = prompt("Please enter an ID for this dialogue prompt, "
+                            "or nothing for automatic assignment: ", True)
+
+        if dialogue_id:
+            current_branch['dialogue_id'] = dialogue_id
+        else:
+            print("Generating ID automatically. . .")
+            # create random 4 digit ID
+
+        # Dialogue prompt
+        current_branch['dialogue_id']['text'] = \
+            prompt("Please enter the the prompt for this dialogue:\n", False)
+
+        # Dialogue options
+        print("Now beginning option creation. . .")
+        print("How many dialogue choices will there be for this prompt?\n"
+            "Please note that additional prompts may be necessary for each option.")
+
+        while True:
+            num = prompt("Enter the amount now: ", False)
+            # Check if a number
+            try:
+                float(num)
+                break
+            except ValueError:
+                print("Please enter a numeric value")
+
+        for i in range(int(num)):
+            text = prompt(f"Please input the text for option #{i}: ", False)
+            user_input = prompt(f"Please input the ID of the next dialogue prompt for option #{i}, "
+                                      "or enter 'ids' for a list of prompts and their ids: ", False)
+            if user_input == 'ids':
+                # print list of dialogue prompts and their ids, prompt again
+                pass
+            else:
+                next_dialogue_id = user_input
+
+            # Add to current branch
+            current_branch['dialogue_id']['options'][i] = {
+                'text': text,
+                'next_dialogue_id': next_dialogue_id
+            }
+
+        # Clear branch for new one
+        current_branch.clear()
+
+    return dialogue_tree
+
+def create_scene(npc_id: str) -> dict:
+    """
+    Creates a new instance of a scene in regard to a particular NPC
+
+    Args:
+        npc_id: str
+            The ID of the NPC that is associated with this scene
+    Returns:
+        A dictionary of the scene object
+    Raises:
+        None
+    """
+    scene = {
+        "npc_id": "",
+        "trigger": "",
+        "scene_id": "",
+        "dialogues": []
+    }
+
+    print(f"Creating a new scene for NPC {npc_id}")
+    scene['npc_id'] = npc_id
+
+    # Trigger Event
+    accepted = False
+    while not accepted:
+        trigger = input(
+            "Please enter the trigger event name "
+            "(ex. quest_name_begin, confidant_event_1, etc.): ")
+        if trigger:
+            accept = confirm(trigger)
+            if accept:
+                scene['trigger'] = trigger
+                accepted = True
+        else:
+            print("No input detected. Trying again. . .")
+
+    # Scene ID
+    accepted = False
+    while not accepted:
+        scene_id = input("Please enter an ID for this scene, "
+                         "or nothing for automatic assignment: ")
+        if scene_id:
+            accept = confirm(scene_id)
+            if accept:
+                scene['scene_id'] = scene_id
+                accepted = True
+        else:
+            print("Generating ID automatically. . .")
+            # create random 4 digit ID
+
+    # Dialogues
+    print("Now beginning dialogue tree creation")
+    accept = input("Continue? (y/n): ")
+    if accept == 'y':
+        print("Now starting dialogue tree creation. . .")
+        create_dialogue()
+    else:
+        print("You can create a dialogue tree at any time")
+        print("Adding scene data. . .")
+        # Check for successful dialogue creation
+
+    return scene
 
 def create_npc() -> dict:
     """
@@ -165,147 +325,16 @@ def create_npc() -> dict:
         add_actions()
     else:
         print("You can modify this NPC at a later time.")
+    
+    # Scenes
+    user_input = input("Now adding dialogue trees to this NPC, continue? (y/n) ")
+    if user_input == 'y':
+        create_scene(npc_id)
+    else:
+        print("You can modify this NPC at a later time.")
 
     print("Now exiting NPC creation. . .")
     return npc
-
-def create_dialogue() -> dict:
-    """
-    Creates a new instance of a dialogue tree in regard to a particular scene
-
-    Args:
-        None
-    Returns:
-        A dictionary containing dialogue tree data
-    Raises:
-        None
-    """
-    dialogue_tree = {
-        
-    }
-
-    current_branch = {
-        
-    }
-
-    creating = True
-    while creating:
-        # Dialogue ID
-        accepted = False
-        while not accepted:
-            dialogue_id = input("Please enter an ID for this dialogue prompt, "
-                            "or nothing for automatic assignment: ")
-            if dialogue_id:
-                accept = confirm(dialogue_id)
-                if accept:
-                    current_branch['dialogue_id'] = dialogue_id
-                    accepted = True
-            else:
-                print("Generating ID automatically. . .")
-                # create random 4 digit ID
-
-        # Dialogue prompt
-        accepted = False
-        while not accepted:
-            text = input("Please enter the prompt for this dialogue:\n")
-            if text:
-                accept = confirm(text)
-                if accept:
-                    current_branch['text'] = text
-                    accepted = True
-            else:
-                print("No input detected. Trying again. . .")
-
-        # Dialogue options
-        accepted = False
-        while not accepted:
-            print("Now beginning option creation. . .")
-            print("How many dialogue choices will there be for this prompt?\n"
-                "Please note that additional prompts may be necessary for each option.")
-            num = input("Enter the amount now: ")
-            
-            # Check if a number
-            try:
-                float(num)
-            except ValueError:
-                print("Please enter a numeric value")
-            
-            for i in range(num):
-                text = f"Please input the text for option #{i}: "
-                accept = confirm(text)
-                if accept:
-                    
-
-            # Dialogue text
-            # Dialouge next prompt
-
-        # Clear branch for new one
-        current_branch.clear()
-
-    return dialogue_tree
-
-def create_scene(npc_id: str) -> dict:
-    """
-    Creates a new instance of a scene in regard to a particular NPC
-
-    Args:
-        npc_id: str
-            The ID of the NPC that is associated with this scene
-    Returns:
-        A dictionary of the scene object
-    Raises:
-        None
-    """
-    scene = {
-        "npc_id": "",
-        "trigger": "",
-        "scene_id": "",
-        "dialogues": []
-    }
-
-    print(f"Creating a new scene for NPC {npc_id}")
-    scene['npc_id'] = npc_id
-
-    # Trigger Event
-    accepted = False
-    while not accepted:
-        trigger = input(
-            "Please enter the trigger event name "
-            "(ex. quest_name_begin, confidant_event_1, etc.): )")
-        if trigger:
-            accept = confirm(trigger)
-            if accept:
-                scene['trigger'] = trigger
-                accepted = True
-        else:
-            print("No input detected. Trying again. . .")
-
-    # Scene ID
-    accepted = False
-    while not accepted:
-        scene_id = input("Please enter an ID for this scene, "
-                         "or nothing for automatic assignment: ")
-        if scene_id:
-            accept = confirm(scene_id)
-            if accept:
-                scene['scene_id'] = scene_id
-                accepted = True
-        else:
-            print("Generating ID automatically. . .")
-            # create random 4 digit ID
-    
-    # Dialogues
-    print("Now beginning dialogue tree creation")
-    accept = input("Continue? (y/n): ")
-    if accept == 'y':
-        print("Now starting dialogue tree creation. . .")
-        create_dialogue()
-    else:
-        print("You can create a dialogue tree at any time")
-        print("Adding scene data. . .")
-        # Check for successful dialogue creation
-
-    return scene
 
 def create(args: list) -> None:
     """
