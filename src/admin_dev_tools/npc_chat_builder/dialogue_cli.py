@@ -23,7 +23,7 @@ def confirm(user_input: str):
         None
     """
     accept = input(f"Is '{user_input}' OK? (y/n) ")
-    if accept == 'y' or accept == '':
+    if accept in ('y', ''):
         print(f"Adding '{user_input}'. . .")
         return True
     print("Trying again. . .")
@@ -64,6 +64,7 @@ def add_actions():
     Raises:
         None
     """
+    # TODO: add actions
 
 def create_dialogue() -> dict:
     """
@@ -119,7 +120,7 @@ def create_dialogue() -> dict:
             user_input = prompt(f"Please input the ID of the next dialogue prompt for option #{i}, "
                                       "or enter 'ids' for a list of prompts and their ids: ", False)
             if user_input == 'ids':
-                # print list of dialogue prompts and their ids, prompt again
+                # TODO: print list of dialogue prompts and their ids, prompt again
                 pass
             else:
                 next_dialogue_id = user_input
@@ -130,8 +131,14 @@ def create_dialogue() -> dict:
                 'next_dialogue_id': next_dialogue_id
             }
 
+        # TODO: prompt if current branch correct, and if anything should change
+        
         # Clear branch for new one
         current_branch.clear()
+        
+        # Continue to branch off each option
+            # Ask if new branch needs to be created
+            
 
     return dialogue_tree
 
@@ -158,32 +165,17 @@ def create_scene(npc_id: str) -> dict:
     scene['npc_id'] = npc_id
 
     # Trigger Event
-    accepted = False
-    while not accepted:
-        trigger = input(
-            "Please enter the trigger event name "
-            "(ex. quest_name_begin, confidant_event_1, etc.): ")
-        if trigger:
-            accept = confirm(trigger)
-            if accept:
-                scene['trigger'] = trigger
-                accepted = True
-        else:
-            print("No input detected. Trying again. . .")
+    scene['trigger'] = prompt("Please enter the trigger event name "
+                            "(ex. quest_name_begin, confidant_event_1, etc.): ", False)
 
+    scene_id = prompt("Please enter the scene ID "
+                               "or nothing for automatic assignment: ", True)
     # Scene ID
-    accepted = False
-    while not accepted:
-        scene_id = input("Please enter an ID for this scene, "
-                         "or nothing for automatic assignment: ")
-        if scene_id:
-            accept = confirm(scene_id)
-            if accept:
-                scene['scene_id'] = scene_id
-                accepted = True
-        else:
-            print("Generating ID automatically. . .")
-            # create random 4 digit ID
+    if scene_id:
+        scene['scene_id'] = scene_id
+    else:
+        print("Generating ID automatically. . .")
+        # create random 4 digit ID
 
     # Dialogues
     print("Now beginning dialogue tree creation")
@@ -210,93 +202,76 @@ def create_npc() -> dict:
         None
     """
     npc = {
-            "id": "",
-            "name": "",
-            "portrait": "",
-            "type": "",
-            "mood": "",
-            "actions": {
-                "START_SESSION": {
-                    "good": [
-                        ""
-                    ],
-                    "neutral": [
-                        ""
-                    ],
-                    "bad": [
-                        ""
-                    ]
-                },
-                "END_SESSION": {
-                    "good": [
-                        ""
-                    ],
-                    "neutral": [
-                        ""
-                    ],
-                    "bad": [
-                        ""
-                    ]
-                }
+        "id": "",
+        "name": "",
+        "portrait": "",
+        "type": "",
+        "mood": "",
+        "actions": {
+            "START_SESSION": {
+                "good": [
+                    ""
+                ],
+                "neutral": [
+                    ""
+                ],
+                "bad": [
+                    ""
+                ]
             },
-        }
+            "END_SESSION": {
+                "good": [
+                    ""
+                ],
+                "neutral": [
+                    ""
+                ],
+                "bad": [
+                    ""
+                ]
+            }
+        },
+    }
     print("Creating a new NPC")
-    # ID
-    accepted = False
-    while not accepted:
-        npc_id = input("Please enter the NPC's ID, or nothing for automatic assignment: ")
+    while True:
+        npc_id = prompt("Please enter the NPC's ID, or nothing for automatic assignment: ", True)
         if npc_id:
             # Check if numeric
             try:
                 float(npc_id)
             except ValueError:
                 print("ID Must be numeric with four digits")
-
+                continue
             # Check correct length
             if len(npc_id) != 4:
                 print("ID Must be numeric with four digits")
-
-            # Check doesn't already exist
-
-            # Check if user satisfied
-            accept = confirm(npc_id)
-            if accept:
+            else:
                 npc['id'] = npc_id
-                accepted = True
-        # Create ID automatically
+                break
         else:
             # Read latest ID
             # Add one to it
             npc_id = '0000'
             print(f"Creating an NPC with ID '{npc_id}'")
             break
+
     # Name
-    accepted = False
-    while not accepted:
-        npc_name = input("Please enter the NPC's name: ")
-        if npc_name:
-            accept = confirm(npc_name)
-            if accept:
-                npc['name'] = npc_name
-                accepted = True
-        else:
-            print("No input detected. Trying again. . .")
+    npc['name'] = prompt("Please enter the NPC's name: ", False)
+
     # Portrait
     # Type
-    accepted = False
-    while not accepted:
-        npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
-        npc_type = input("Please enter the NPC's type. For a list of types enter 'types': ")
+    npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
+    while True:
+        npc_type = prompt("Please enter the NPC's type. For a list of types enter 'types': ", False)
         if npc_type == 'types':
             print("NPC Types:")
             print("\t", npc_types)
         elif npc_type in npc_types:
-            accept = confirm(npc_type)
-            if accept:
-                npc['type'] = npc_type
-                accepted = True
+            npc['type'] = npc_type
+            break
         else:
             print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
+
     # Mood
     accepted = False
     while not accepted:
