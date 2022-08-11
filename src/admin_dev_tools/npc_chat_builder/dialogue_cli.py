@@ -80,9 +80,9 @@ def create_tree() -> dict:
         num = util.prompt_number(False)
 
         for i in range(int(num)):
-            text = util.prompt_string(f"Please input the text for option #{i}", False)
+            text = util.prompt_string(f"Please input the text for option #{i + 1}", False)
             user_input = util.prompt_string(
-                f"Please input the ID of the next dialogue prompt for option #{i}, "
+                f"Please input the ID of the next dialogue prompt for option #{i + 1}, "
                 "or enter 'ids' for a list of prompts and their ids", False
             )
 
@@ -93,13 +93,15 @@ def create_tree() -> dict:
                 next_dialogue_id = user_input
 
             # Add to current branch
-            current_branch[dialogue_id]['options'][i] = {
-                'text': text,
-                'next_dialogue_id': next_dialogue_id
-            }
+            current_branch[dialogue_id]['options'].append(
+                {
+                    'text': text,
+                    'next_dialogue_id': next_dialogue_id
+                }
+            )
 
         # TODO: prompt if current branch correct, and if anything should change
-        dialogue_tree['branches'][branch_num] = current_branch
+        dialogue_tree['branches'].append(current_branch)
         branch_num += 1
 
         # Clear branch for new one
