@@ -20,7 +20,13 @@ def add_actions():
     Returns:
         A dict of inital dialogue points for the NPC
     """
-    # TODO: add actions
+    actions = {}
+
+    print("\nNow beginning action dialogue creation. . .")
+    print("\nAn action dialogue is said at the beginning "
+          "and end of sessions when chatting with NPCs.")
+    print("\nThese dialogues can be generic or tied to confidant events, quests, etc.")
+
 
 def create_branch() -> dict:
     """
