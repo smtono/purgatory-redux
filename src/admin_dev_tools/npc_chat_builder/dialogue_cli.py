@@ -27,6 +27,7 @@ def add_actions():
           "and end of sessions when chatting with NPCs.")
     print("\nThese dialogues can be generic or tied to confidant events, quests, etc.")
 
+    context = util.prompt_string("Please enter the context for this dialogue ex. START_SESSION, END_SESSION, CONFIDANT_1 etc", False)
 
 def create_branch() -> dict:
     """

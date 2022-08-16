@@ -1,6 +1,6 @@
 {
     "npc_id": {
-        "trigger_event": {
+        "trigger": {
             "scene_id": {
                 "dialogue_id": {
                     "text": "This is the text for the dialogue",
