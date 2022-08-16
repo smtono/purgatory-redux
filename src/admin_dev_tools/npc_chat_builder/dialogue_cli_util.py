@@ -5,7 +5,23 @@ do not fit in any other module.
 """
 
 import os
+import json
 
+
+def read_npc_data() -> dict:
+    """
+    Reads the currently used file for storing NPC data and returns it as a dict
+
+    Args:
+        None
+    Returns:
+        The dict of NPC data
+    Raises:
+        None
+    """
+    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    with open(path, "r", encoding="UTF-8") as data:
+        return json.load(data)
 
 def prompt_confirm(user_input: str) -> bool:
     """

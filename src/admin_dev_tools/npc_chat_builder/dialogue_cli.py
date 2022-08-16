@@ -11,7 +11,7 @@ import os
 import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
 
-def add_actions():
+def add_actions() -> dict:
     """
     Adds inital dialgoue for an NPC
 
@@ -28,6 +28,8 @@ def add_actions():
     print("\nThese dialogues can be generic or tied to confidant events, quests, etc.")
 
     context = util.prompt_string("Please enter the context for this dialogue ex. START_SESSION, END_SESSION, CONFIDANT_1 etc", False)
+
+    return actions
 
 def create_branch() -> dict:
     """
@@ -255,11 +257,11 @@ def create_npc() -> dict:
 
     # Actions
     print("\nNow adding dialogue actions to this NPC. . .")
-    add_actions()
+    actions = add_actions()
 
     # Scenes
     print("\nNow adding dialogue trees to this NPC. . .")
-    create_scene(npc_id)
+    scenes = create_scene(npc_id)
 
     print("Now exiting NPC creation. . .")
     return npc
@@ -388,8 +390,11 @@ def cli():
         None
     """
     # Check data exists
+    if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
+        print("NPC data found.\n")
 
-    # Read data
+        # Read data
+        npc_data = util.read_npc_data()
 
     # Welcome
     print("Welcome to the NPC Chat Builder CLI!")
