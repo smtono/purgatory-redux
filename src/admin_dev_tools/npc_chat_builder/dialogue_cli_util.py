@@ -16,12 +16,30 @@ def read_npc_data() -> dict:
         None
     Returns:
         The dict of NPC data
-    Raises:
-        None
     """
     path = os.path.join(os.getcwd(), "data", "npc_data.json")
     with open(path, "r", encoding="UTF-8") as data:
         return json.load(data)
+
+def write_npc_data(npc_data: dict, new_npc: dict) -> None:
+    """
+    Writes to the currently used file for storing NPC data
+
+    Args:
+        npc_data: dict
+            The dict of NPC data
+        new_npc: dict
+            The dict of the new NPC to add to the NPC data
+    Returns:
+        None
+    """
+    # Append NPC to existing NPC data
+    npc_data.update(new_npc)
+    
+    # Write to file
+    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    with open(path, "w", encoding="UTF-8") as data:
+        json.dump(npc_data, data, indent=4)
 
 def prompt_confirm(user_input: str) -> bool:
     """
@@ -32,8 +50,6 @@ def prompt_confirm(user_input: str) -> bool:
             The input by the user
     Returns:
         Whether or not the user accepts the input
-    Raises:
-        None
     """
     accept = input(f"Is '{user_input}' OK? (y/n) ")
     if accept in ('y', ''):
@@ -53,8 +69,6 @@ def prompt_string(input_prompt: str, null_allowed: bool) -> str:
             Whether or not the user can input nothing
     Returns:
         The input from the user
-    Raises:
-        None
     """
     while True:
         text = input("\n" + input_prompt + "\n>>> ")
@@ -71,8 +85,6 @@ def prompt_number(null_allowed: bool) -> str:
         None
     Returns:
         Whether the input is numeric or not
-    Raises:
-        None
     """
     while True:
         user_input = prompt_string("Enter the value now: ", null_allowed)
@@ -94,8 +106,6 @@ def prompt_id() -> str:
         None
     Returns:
         The correctly formatted ID
-    Raises:
-        None
     """
     while True:
         print("Please enter a 4 digit ID or nothing for automatic assignment")

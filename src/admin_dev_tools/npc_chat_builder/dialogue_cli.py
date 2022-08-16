@@ -11,6 +11,16 @@ import os
 import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
 
+# Check data exists
+if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
+    print("NPC data found\n")
+
+    # Read data
+    npc_data = util.read_npc_data()
+else:
+    print("NPC data not found\n")
+    print("A new NPC data file will be created once data has been entered\n")
+
 def add_actions() -> dict:
     """
     Adds inital dialgoue for an NPC
@@ -389,13 +399,6 @@ def cli():
     Returns:
         None
     """
-    # Check data exists
-    if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
-        print("NPC data found.\n")
-
-        # Read data
-        npc_data = util.read_npc_data()
-
     # Welcome
     print("Welcome to the NPC Chat Builder CLI!")
     print("Type 'help' for a list of commands.")
