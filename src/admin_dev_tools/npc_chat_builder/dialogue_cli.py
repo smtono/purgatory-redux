@@ -37,7 +37,8 @@ def add_actions() -> dict:
           "and end of sessions when chatting with NPCs.")
     print("\nThese dialogues can be generic or tied to confidant events, quests, etc.")
 
-    context = util.prompt_string("Please enter the context for this dialogue ex. START_SESSION, END_SESSION, CONFIDANT_1 etc", False)
+    context = util.prompt_string("Please enter the context for this dialogue "
+                                 "ex. START_SESSION, END_SESSION, CONFIDANT_1 etc", False)
 
     return actions
 
@@ -51,7 +52,7 @@ def create_branch() -> dict:
         A dict containing information about the current working branch
     """
 
-def create_tree() -> dict:
+def create_tree(npc_id: str) -> dict:
     """
     Creates a new instance of a dialogue tree in regard to a particular scene
 
@@ -61,7 +62,7 @@ def create_tree() -> dict:
         A dictionary containing dialogue tree data
     """
     dialogue_tree = {
-        "npc_id": "",
+        "npc_id": npc_id,
         "branches": [
 
         ]
@@ -84,8 +85,8 @@ def create_tree() -> dict:
             current_branch[dialogue_id] = current_branch.pop('dialogue_id')
         else:
             print("Generating ID automatically. . .")
-            # TODO: create random 4 digit ID
-            dialogue_id = '0000'
+            # create ID automatically by finding the highest ID and adding 1
+            dialogue_id = util.find_next_id(npc_data[npc_id]['scenes'])
             current_branch[dialogue_id] = current_branch.pop('dialogue_id')
 
         # Dialogue prompt
@@ -169,7 +170,7 @@ def create_scene(npc_id: str) -> dict:
     accept = input("Continue? (y/n): ")
     if accept == 'y':
         print("Now starting dialogue tree creation. . .")
-        create_tree()
+        create_tree(npc_id)
     else:
         print("You can create a dialogue tree at any time")
         print("Adding scene data. . .")
@@ -225,9 +226,7 @@ def create_npc() -> dict:
         if npc_id:
             npc['id'] = npc_id
         else:
-            # TODO: Read latest ID
-            # Add one to it
-            npc_id = '0000'
+            npc_id = util.find_next_id(npc_data)
             print(f"Creating an NPC with ID '{npc_id}'")
             break
 
@@ -307,9 +306,15 @@ def create(args: list) -> None:
         npc = create_npc()
     # Scene Creation
     elif args[0].lower() == 'scene':
-        # TODO: prompt NPC id, check if exists
-        npc_id = 0000
-        scene = create_scene(npc_id)
+        npc_id = "0000"
+        while npc_id not in npc_data:
+            print("Please enter the NPC ID that this scene is associated with")
+            npc_id = util.prompt_id()
+            if npc_id in npc_data:
+                scene = create_scene(npc_id)
+                break
+            print("This NPC does not exist")
+            print("Trying again. . .")
     else:
         pass
 

@@ -35,11 +35,27 @@ def write_npc_data(npc_data: dict, new_npc: dict) -> None:
     """
     # Append NPC to existing NPC data
     npc_data.update(new_npc)
-    
+
     # Write to file
     path = os.path.join(os.getcwd(), "data", "npc_data.json")
     with open(path, "w", encoding="UTF-8") as data:
         json.dump(npc_data, data, indent=4)
+
+def find_next_id(data: dict) -> str:
+    """
+    Finds the next available ID in the NPC data and returns it as a 4 digit string
+
+    Args:
+        npc_data: dict
+            A dictionary of the current NPC data
+    Returns:
+        The next available ID as a string
+    """
+    # An ID is the key in the dict, so the length of the dict is the next available ID
+    next_id = str(len(data))
+    if len(next_id) < 4:
+        next_id = next_id.zfill(4)
+    return next_id
 
 def prompt_confirm(user_input: str) -> bool:
     """
