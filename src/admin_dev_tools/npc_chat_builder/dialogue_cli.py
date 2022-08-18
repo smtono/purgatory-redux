@@ -100,17 +100,19 @@ def create_tree(npc_id: str) -> dict:
         num = util.prompt_number(False)
 
         for i in range(int(num)):
-            text = util.prompt_string(f"Please input the text for option #{i + 1}", False)
-            user_input = util.prompt_string(
-                f"Please input the ID of the next dialogue prompt for option #{i + 1}, "
-                "or enter 'ids' for a list of prompts and their ids", False
-            )
+            while user_input == 'ids':
+                text = util.prompt_string(f"Please input the text for option #{i + 1}", False)
+                user_input = util.prompt_string(
+                    f"Please input the ID of the next dialogue prompt for option #{i + 1}, "
+                    "or enter 'ids' for a list of prompts and their ids", False
+                )
 
-            if user_input == 'ids':
-                # TODO: print list of dialogue prompts and their ids, prompt again
-                pass
-            else:
-                next_dialogue_id = user_input
+                for dialogue_id, prompt in npc_data[npc_id]['scenes'].items():
+                    print(f"{dialogue_id}: {prompt['text']}")
+
+            # TODO: find the corresponding scene IDs in scenes.json and print them
+
+            next_dialogue_id = user_input
 
             # Add to current branch
             current_branch[dialogue_id]['options'].append(
@@ -120,7 +122,11 @@ def create_tree(npc_id: str) -> dict:
                 }
             )
 
-        # TODO: prompt if current branch correct, and if anything should change
+            # Check if correct, break if done
+            again = util.prompt_confirm("\n" + current_branch + "\n")
+            if not again:
+                creating = False
+
         dialogue_tree['branches'].append(current_branch)
         branch_num += 1
 
