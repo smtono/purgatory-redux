@@ -5,7 +5,57 @@ do not fit in any other module.
 """
 
 import os
+import json
 
+
+def read_npc_data() -> dict:
+    """
+    Reads the currently used file for storing NPC data and returns it as a dict
+
+    Args:
+        None
+    Returns:
+        The dict of NPC data
+    """
+    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    with open(path, "r", encoding="UTF-8") as data:
+        return json.load(data)
+
+def write_npc_data(npc_data: dict, new_npc: dict) -> None:
+    """
+    Writes to the currently used file for storing NPC data
+
+    Args:
+        npc_data: dict
+            The dict of NPC data
+        new_npc: dict
+            The dict of the new NPC to add to the NPC data
+    Returns:
+        None
+    """
+    # Append NPC to existing NPC data
+    npc_data.update(new_npc)
+
+    # Write to file
+    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    with open(path, "w", encoding="UTF-8") as data:
+        json.dump(npc_data, data, indent=4)
+
+def find_next_id(data: dict) -> str:
+    """
+    Finds the next available ID in the NPC data and returns it as a 4 digit string
+
+    Args:
+        npc_data: dict
+            A dictionary of the current NPC data
+    Returns:
+        The next available ID as a string
+    """
+    # An ID is the key in the dict, so the length of the dict is the next available ID
+    next_id = str(len(data))
+    if len(next_id) < 4:
+        next_id = next_id.zfill(4)
+    return next_id
 
 def prompt_confirm(user_input: str) -> bool:
     """
@@ -16,8 +66,6 @@ def prompt_confirm(user_input: str) -> bool:
             The input by the user
     Returns:
         Whether or not the user accepts the input
-    Raises:
-        None
     """
     accept = input(f"Is '{user_input}' OK? (y/n) ")
     if accept in ('y', ''):
@@ -37,8 +85,6 @@ def prompt_string(input_prompt: str, null_allowed: bool) -> str:
             Whether or not the user can input nothing
     Returns:
         The input from the user
-    Raises:
-        None
     """
     while True:
         text = input("\n" + input_prompt + "\n>>> ")
@@ -55,8 +101,6 @@ def prompt_number(null_allowed: bool) -> str:
         None
     Returns:
         Whether the input is numeric or not
-    Raises:
-        None
     """
     while True:
         user_input = prompt_string("Enter the value now: ", null_allowed)
@@ -78,8 +122,6 @@ def prompt_id() -> str:
         None
     Returns:
         The correctly formatted ID
-    Raises:
-        None
     """
     while True:
         print("Please enter a 4 digit ID or nothing for automatic assignment")
