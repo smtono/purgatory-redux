@@ -11,12 +11,22 @@ import os
 import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
 
-def add_actions():
+# Check data exists
+if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
+    print("NPC data found\n")
+
+    # Read data
+    npc_data = util.read_npc_data()
+else:
+    print("NPC data not found\n")
+    print("A new NPC data file will be created once data has been entered\n")
+
+def add_actions() -> dict:
     """
     Adds inital dialgoue for an NPC
-    An action is comprised of a dialogue context, dialogue types, 
+    An action is comprised of a dialogue context, dialogue types,
     and then the actual text associated with each type.
-    
+
     context:
         This is the reason for the dialogue to be said.
         It can be something like starting a new conversation, ending one,
@@ -62,15 +72,18 @@ def add_actions():
         "\nsnippet to be said")
         print("Please enter the number of types")
         num = util.prompt_number(False)
-    
+
     dialouge_types = []
     for i in range(num):
-        dialogue_type = util.prompt_string("Please enter the type for this dialouge i.e. "
-                                        "the reason for this dialogue to be said ex. GOOD, BAD, QUEST_1_IN_PROGRESS, etc"
-                                        "\nInput now: ", False)
+        dialogue_type = util.prompt_string(
+            f"Please enter the type for this dialouge {i} i.e. "
+            "the reason for this dialogue to be said ex. GOOD, BAD, QUEST_1_IN_PROGRESS, etc"
+            "\nInput now: ",
+            False)
         dialouge_types.append(dialogue_type)
-    
+
     # Add text
+    return actions
 
 
 def create_branch() -> dict:
@@ -83,7 +96,7 @@ def create_branch() -> dict:
         A dict containing information about the current working branch
     """
 
-def create_tree() -> dict:
+def create_tree(npc_id: str) -> dict:
     """
     Creates a new instance of a dialogue tree in regard to a particular scene
 
@@ -93,7 +106,7 @@ def create_tree() -> dict:
         A dictionary containing dialogue tree data
     """
     dialogue_tree = {
-        "npc_id": "",
+        "npc_id": npc_id,
         "branches": [
 
         ]
@@ -116,8 +129,8 @@ def create_tree() -> dict:
             current_branch[dialogue_id] = current_branch.pop('dialogue_id')
         else:
             print("Generating ID automatically. . .")
-            # TODO: create random 4 digit ID
-            dialogue_id = '0000'
+            # create ID automatically by finding the highest ID and adding 1
+            dialogue_id = util.find_next_id(npc_data[npc_id]['scenes'])
             current_branch[dialogue_id] = current_branch.pop('dialogue_id')
 
         # Dialogue prompt
@@ -131,17 +144,19 @@ def create_tree() -> dict:
         num = util.prompt_number(False)
 
         for i in range(int(num)):
-            text = util.prompt_string(f"Please input the text for option #{i + 1}", False)
-            user_input = util.prompt_string(
-                f"Please input the ID of the next dialogue prompt for option #{i + 1}, "
-                "or enter 'ids' for a list of prompts and their ids", False
-            )
+            while user_input == 'ids':
+                text = util.prompt_string(f"Please input the text for option #{i + 1}", False)
+                user_input = util.prompt_string(
+                    f"Please input the ID of the next dialogue prompt for option #{i + 1}, "
+                    "or enter 'ids' for a list of prompts and their ids", False
+                )
 
-            if user_input == 'ids':
-                # TODO: print list of dialogue prompts and their ids, prompt again
-                pass
-            else:
-                next_dialogue_id = user_input
+                for dialogue_id, prompt in npc_data[npc_id]['scenes'].items():
+                    print(f"{dialogue_id}: {prompt['text']}")
+
+            # TODO: find the corresponding scene IDs in scenes.json and print them
+
+            next_dialogue_id = user_input
 
             # Add to current branch
             current_branch[dialogue_id]['options'].append(
@@ -151,7 +166,11 @@ def create_tree() -> dict:
                 }
             )
 
-        # TODO: prompt if current branch correct, and if anything should change
+            # Check if correct, break if done
+            again = util.prompt_confirm("\n" + current_branch + "\n")
+            if not again:
+                creating = False
+
         dialogue_tree['branches'].append(current_branch)
         branch_num += 1
 
@@ -201,7 +220,7 @@ def create_scene(npc_id: str) -> dict:
     accept = input("Continue? (y/n): ")
     if accept == 'y':
         print("Now starting dialogue tree creation. . .")
-        create_tree()
+        create_tree(npc_id)
     else:
         print("You can create a dialogue tree at any time")
         print("Adding scene data. . .")
@@ -257,9 +276,7 @@ def create_npc() -> dict:
         if npc_id:
             npc['id'] = npc_id
         else:
-            # TODO: Read latest ID
-            # Add one to it
-            npc_id = '0000'
+            npc_id = util.find_next_id(npc_data)
             print(f"Creating an NPC with ID '{npc_id}'")
             break
 
@@ -299,11 +316,11 @@ def create_npc() -> dict:
 
     # Actions
     print("\nNow adding dialogue actions to this NPC. . .")
-    add_actions()
+    actions = add_actions()
 
     # Scenes
     print("\nNow adding dialogue trees to this NPC. . .")
-    create_scene(npc_id)
+    scenes = create_scene(npc_id)
 
     print("Now exiting NPC creation. . .")
     return npc
@@ -339,9 +356,15 @@ def create(args: list) -> None:
         npc = create_npc()
     # Scene Creation
     elif args[0].lower() == 'scene':
-        # TODO: prompt NPC id, check if exists
-        npc_id = 0000
-        scene = create_scene(npc_id)
+        npc_id = "0000"
+        while npc_id not in npc_data:
+            print("Please enter the NPC ID that this scene is associated with")
+            npc_id = util.prompt_id()
+            if npc_id in npc_data:
+                scene = create_scene(npc_id)
+                break
+            print("This NPC does not exist")
+            print("Trying again. . .")
     else:
         pass
 
@@ -431,10 +454,6 @@ def cli():
     Returns:
         None
     """
-    # Check data exists
-
-    # Read data
-
     # Welcome
     print("Welcome to the NPC Chat Builder CLI!")
     print("Type 'help' for a list of commands.")
