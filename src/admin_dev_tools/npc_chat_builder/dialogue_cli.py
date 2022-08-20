@@ -10,16 +10,19 @@ Usage:
 import os
 import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__))
+)
 
 # Check data exists
-if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
+if os.path.isfile(os.path.join(__location__, 'data', 'npc_data.json')):
     print("NPC data found\n")
-
     # Read data
     npc_data = util.read_npc_data()
 else:
     print("NPC data not found\n")
     print("A new NPC data file will be created once data has been entered\n")
+
 
 def add_actions() -> dict:
     """
@@ -153,8 +156,6 @@ def create_tree(npc_id: str) -> dict:
 
                 for dialogue_id, prompt in npc_data[npc_id]['scenes'].items():
                     print(f"{dialogue_id}: {prompt['text']}")
-
-            # TODO: find the corresponding scene IDs in scenes.json and print them
 
             next_dialogue_id = user_input
 

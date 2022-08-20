@@ -7,6 +7,9 @@ do not fit in any other module.
 import os
 import json
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__))
+)
 
 def read_npc_data() -> dict:
     """
@@ -17,7 +20,7 @@ def read_npc_data() -> dict:
     Returns:
         The dict of NPC data
     """
-    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    path = os.path.join(__location__, "data", "npc_data.json")
     with open(path, "r", encoding="UTF-8") as data:
         return json.load(data)
 
@@ -37,7 +40,7 @@ def write_npc_data(npc_data: dict, new_npc: dict) -> None:
     npc_data.update(new_npc)
 
     # Write to file
-    path = os.path.join(os.getcwd(), "data", "npc_data.json")
+    path = os.path.join(__location__, "data", "npc_data.json")
     with open(path, "w", encoding="UTF-8") as data:
         json.dump(npc_data, data, indent=4)
 
