@@ -67,7 +67,7 @@ def add_actions() -> dict:
 
     print("Please enter the number of types for this context, or type 0 for more information")
     num = util.prompt_number(False)
-    while num == 0:
+    while num == "0":
         print("type:"
         "\nThis is more specific dialogue to be said depending on"
         "\nthe relationship of the player to the NPC, or if certain"
@@ -77,7 +77,7 @@ def add_actions() -> dict:
         num = util.prompt_number(False)
 
     dialouge_types = []
-    for i in range(num):
+    for i in range(int(num)):
         dialogue_type = util.prompt_string(
             f"Please enter the type for this dialouge {i} i.e. "
             "the reason for this dialogue to be said ex. GOOD, BAD, QUEST_1_IN_PROGRESS, etc"
