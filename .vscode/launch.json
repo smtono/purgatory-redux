@@ -21,5 +21,14 @@
             "justMyCode": true,
             "args": []
         },
+        {
+            "name": "Run Main",
+            "type": "python",
+            "request": "launch",
+            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": []
+        }
     ]
 }
