@@ -10,20 +10,37 @@ Usage:
 import os
 import admin_dev_tools.npc_chat_builder.dialogue_cli_util as util
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__))
+)
 
 # Check data exists
-if os.path.isfile(os.path.join(os.getcwd(), 'data', 'npc_data.json')):
+if os.path.isfile(os.path.join(__location__, 'data', 'npc_data.json')):
     print("NPC data found\n")
-
     # Read data
     npc_data = util.read_npc_data()
 else:
     print("NPC data not found\n")
     print("A new NPC data file will be created once data has been entered\n")
 
+
 def add_actions() -> dict:
     """
     Adds inital dialgoue for an NPC
+    An action is comprised of a dialogue context, dialogue types,
+    and then the actual text associated with each type.
+
+    context:
+        This is the reason for the dialogue to be said.
+        It can be something like starting a new conversation, ending one,
+        being involved with a ceratin quest, etc.
+    type:
+        This is more specific dialogue to be said depending on
+        the relationship of the player to the NPC, or if certain
+        requirements have been met to warrant a specific dialogue
+        snippet to be said
+    test:
+        This is the actual content of a dialogue point
 
     Args:
         None
@@ -37,10 +54,40 @@ def add_actions() -> dict:
           "and end of sessions when chatting with NPCs.")
     print("\nThese dialogues can be generic or tied to confidant events, quests, etc.")
 
-    context = util.prompt_string("Please enter the context for this dialogue "
-                                 "ex. START_SESSION, END_SESSION, CONFIDANT_1 etc", False)
+    print("Please enter the context for this dialogue ex. "
+        "START_SESSION, END_SESSION, CONFIDANT_1 etc"
+        "\nOr enter 'help' for more information.")
+    dialogue_context = util.prompt_string("\nInput now: ", False)
+    while dialogue_context == 'help':
+        print("context:"
+        "\nThis is the reason for the dialogue to be said."
+        "\nIt can be something like starting a new conversation, ending one,"
+        "\nbeing involved with a ceratin quest, etc.")
+        dialogue_context = util.prompt_string("\nInput context now: ", False)
 
+    print("Please enter the number of types for this context, or type 0 for more information")
+    num = util.prompt_number(False)
+    while num == "0":
+        print("type:"
+        "\nThis is more specific dialogue to be said depending on"
+        "\nthe relationship of the player to the NPC, or if certain"
+        "\nrequirements have been met to warrant a specific dialogue"
+        "\nsnippet to be said")
+        print("Please enter the number of types")
+        num = util.prompt_number(False)
+
+    dialouge_types = []
+    for i in range(int(num)):
+        dialogue_type = util.prompt_string(
+            f"Please enter the type for this dialouge {i} i.e. "
+            "the reason for this dialogue to be said ex. GOOD, BAD, QUEST_1_IN_PROGRESS, etc"
+            "\nInput now: ",
+            False)
+        dialouge_types.append(dialogue_type)
+
+    # Add text
     return actions
+
 
 def create_branch() -> dict:
     """
@@ -109,8 +156,6 @@ def create_tree(npc_id: str) -> dict:
 
                 for dialogue_id, prompt in npc_data[npc_id]['scenes'].items():
                     print(f"{dialogue_id}: {prompt['text']}")
-
-            # TODO: find the corresponding scene IDs in scenes.json and print them
 
             next_dialogue_id = user_input
 

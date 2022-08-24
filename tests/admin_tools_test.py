@@ -3,7 +3,6 @@ This module is for testing the functionality of the admin tools.
 """
 
 import unittest
-from admin_dev_tools.npc_chat_builder.dialogue_cli import read_command
 
 class AdminToolsTest(unittest.TestCase):
     """
@@ -14,8 +13,40 @@ class AdminToolsTest(unittest.TestCase):
         """
         OBJECTIVE: Test the functionality of the Dialogue Creation CLI
         """
-        command = "create help"
-        read_command(command)
+        
+        # Sample result from the Dialogue CLI
+        result = {
+            "0000": {
+                "name": "Test NPC",
+                "portrait": "test_portrait.png",
+                "type": "generic",
+                "mood": 0,
+                "actions:": {
+                    "START_SESSION": {
+                        "neutral": [
+                            "Hello World"
+                        ],
+                    },
+                    "END_SESSION": {
+                        "neutral": [
+                            "Goodbye World"
+                        ],
+                    }
+                },
+                "scenes": {
+                    "test_event": {
+                        "begin_event": [
+                            "0000"
+                        ],
+                        "end_event": [
+                            "0001"
+                        ]
+                    }
+                }
+            }
+        }
+        
+        
 
 if __name__ == '__main__':
     unittest.main()
