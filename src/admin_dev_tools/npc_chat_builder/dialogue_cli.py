@@ -342,8 +342,30 @@ def modify(args: list):
         "args": ['type', 'npc_id']
     }
 
+    if not args:
+        print("Arguments required for modify command. Type 'help' for more information.")
+        return
+
     if args[0] == 'help':
         print(info['help'])
+    else:
+        print("NPC ID:\n")
+        npc_id = util.prompt_id()
+        if not npc_id:
+            print("NPC ID needed for modify command")
+            print("Trying again. . .")
+        # NPC Modification
+        if args[0].lower() == 'npc':
+            # Open the NPC data's entry, edit directly
+            pass
+        # Scene Modification
+        elif args[0].lower() == 'scene':
+            # Enter NPC ID
+            print("Scene ID:\n")
+            npc_id = util.prompt_id()
+            # Enter Scene ID
+        else:
+            pass
 
 def delete(args: list):
     """
