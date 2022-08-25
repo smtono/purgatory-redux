@@ -468,7 +468,7 @@ def read_command(user_input: str):
     elif not cmd_args:
         print("Please provide arguments for this command, or type 'help'")
 
-def cli():
+def dialogue_cli():
     """
     The command line interface for creating, modifying, and deleting NPC data
 
@@ -496,4 +496,4 @@ def cli():
             read_command(command)
 
 if __name__ == '__main__':
-    cli()
+    dialogue_cli()
