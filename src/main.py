@@ -6,6 +6,7 @@ run tools, or run prototypes currently in the program.
 
 import os
 from admin_dev_tools.npc_chat_builder.dialogue_cli import dialogue_cli
+from prototypes.overworld.movement import movement
 
 supported_commands = [
     "dialougue cli",
@@ -32,5 +33,7 @@ if user_input.split()[0] == "run":
         dialogue_cli()
     elif user_input.split()[1] == "movement":
         print("movement")
+        os.system('cls')
+        movement()
     else:
         print("Command not found")
