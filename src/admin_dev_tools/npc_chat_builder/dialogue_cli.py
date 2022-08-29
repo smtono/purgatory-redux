@@ -432,6 +432,10 @@ def delete(args: list):
 
     if args[0] == 'help':
         print(info['help'])
+    
+    # check if the NPC or scene exists
+    
+    # delete that entry from dictionary
 
 def read_command(user_input: str):
     """

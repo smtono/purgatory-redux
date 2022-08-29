@@ -37,3 +37,4 @@ if user_input.split()[0] == "run":
         movement()
     else:
         print("Command not found")
+
