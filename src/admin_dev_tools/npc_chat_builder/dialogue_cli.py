@@ -369,6 +369,63 @@ def create(args: list) -> None:
     else:
         pass
 
+def modify_npc(npc: dict):
+    """
+    Modifies an existing NPC
+
+    Args:
+        npc: dict
+            The NPC to modify
+    Returns:
+        None
+    """
+    print("Modifying NPC. . .")
+    # prompt what attribute to modify via list
+    print("Please enter the number attribute you would like to modify:\n")
+    print(
+        "1. ID\n"
+        "2. Name\n"
+        "3. Portrait\n"
+        "4. Type\n"
+        "5. Mood\n"
+        "6. Actions\n"
+        "7. Scenes\n"
+    )
+    while True:
+        option = util.prompt_number(False)
+    
+    # ID
+    # Name
+    # Portrait
+    # Type
+    # Mood
+    # Actions
+    # Scenes
+
+def modify_scene(scene: dict):
+    """
+    Modifies an existing scene
+
+    Args:
+        scene (dict):
+            The scene to modify
+    Returns:
+        None
+    """
+    print("Modifying scene. . .")
+    # prompt what attribute to modify via list
+    print("Please enter the number attribute you would like to modify:\n")
+    print(
+        "1. ID\n"
+        "2. Name\n"
+        "3. Dialogues\n"
+    )
+    while True:
+        option = util.prompt_number(False)
+    
+    # access the scene data via ID given in NPC data
+
+
 def modify(args: list):
     """
     Modifies an instance of an NPC or scene
@@ -399,16 +456,22 @@ def modify(args: list):
         if not npc_id:
             print("NPC ID needed for modify command")
             print("Trying again. . .")
+            # Check if NPC exists
+            # Grab NPC's data, sotre locally
         # NPC Modification
         if args[0].lower() == 'npc':
             # Open the NPC data's entry, edit directly
             pass
         # Scene Modification
         elif args[0].lower() == 'scene':
-            # Enter NPC ID
+            # Enter Scene ID
             print("Scene ID:\n")
             npc_id = util.prompt_id()
-            # Enter Scene ID
+
+            # Check if Scene exists
+
+            # Grab NPC's scene data
+
         else:
             pass
 
