@@ -25,6 +25,7 @@ print(
     "\tmovement - a prototype for a movement system using blocks and entities"
 )
 
+# TODO: clean up with a function/decorators
 user_input = input("Please enter your command: ")
 if user_input.split()[0] == "run":
     if " ".join(user_input.split()[1:]) == "dialogue cli":
@@ -37,4 +38,3 @@ if user_input.split()[0] == "run":
         movement()
     else:
         print("Command not found")
-
