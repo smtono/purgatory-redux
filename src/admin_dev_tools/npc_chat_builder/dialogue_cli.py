@@ -189,7 +189,7 @@ def create_scene(npc_id: str) -> dict:
 
     Args:
         npc_id: str
-            The ID of the NPC that is associated with this scene
+            The ID of the NPC that is associated with this scenlole
     Returns:
         A dictionary of the scene object
     """
@@ -393,14 +393,74 @@ def modify_npc(npc: dict):
     )
     while True:
         option = util.prompt_number(False)
-    
+        if option:
+            break
+
+    # TODO: make separate function, maybe can access dict by index, so use option to access it
     # ID
+    if option == 1:
+        while True:
+            npc_id = util.prompt_id()
+            if npc_id:
+                npc['id'] = npc_id
+                break
+            print("ID cannot be empty. Trying again. . .")
+
     # Name
+    elif option == 2:
+        while True:
+            npc_name = util.prompt_string("Please enter the NPC's name", False)
+            if npc_name:
+                npc['name'] = npc_name
+                break
+            print("Name cannot be empty. Trying again. . .")
+        
     # Portrait
+    elif option == 3:
+        while True:
+            npc_portrait = util.prompt_string("Please enter the NPC's portrait", False)
+            if npc_portrait:
+                npc['portrait'] = npc_portrait
+                break
+            print("Portrait cannot be empty. Trying again. . .")
+    
     # Type
+    elif option == 4:
+        while True:
+            npc_type = util.prompt_string("Please enter the NPC's type", False)
+            if npc_type:
+                npc['type'] = npc_type
+                break
+            print("Type cannot be empty. Trying again. . .")
+    
     # Mood
+    elif option == 5:
+        while True:
+            print(
+                "\nPlease enter the starting integer for the mood of this NPC, from -10 to 10"
+                "\nPositive integers means positive mood, "
+                "negative means a starting negative mood:"
+            )
+            npc_mood = util.prompt_number(False)
+            if float(npc_mood) > 10 or float(npc_mood) < -10:
+                print("Input must be between -10 and 10. Trying again. . .")
+            else:
+                npc['mood'] = npc_mood
+                break
+
     # Actions
+    elif option == 6:
+        # TODO: prompt if actions are wanting to be deleted
+        print("\nNow adding dialogue actions to this NPC. . .")
+        actions = add_actions()
+        npc['actions'] = actions
+
     # Scenes
+    elif option == 7:
+        # TODO: same here
+        print("\nNow adding dialogue trees to this NPC. . .")
+        scenes = create_scene(npc['id'])
+        npc['scenes'] = scenes
 
 def modify_scene(scene: dict):
     """
@@ -422,7 +482,7 @@ def modify_scene(scene: dict):
     )
     while True:
         option = util.prompt_number(False)
-    
+
     # access the scene data via ID given in NPC data
 
 
