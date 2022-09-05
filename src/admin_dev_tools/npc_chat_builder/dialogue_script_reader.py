@@ -14,3 +14,71 @@ Scripts are set up in the following manner:
         
 """
 
+class ScriptReader:
+    """
+    This class is used to read in a script and parse it into a usable format.
+    This is for declaring and editing NPC data.
+    """
+    def __init__(self, script):
+        self.script = script
+        self.script_type = None
+        self.script_data = None
+        self.dialogue_data = None
+        self.parse_script()
+
+    def parse_script(self):
+        """
+        Parses the script into usable data.
+
+        Args:
+            None
+        Returns:
+            None
+        """
+        # Get the script type
+        self.script_type = self.script[0].strip()
+
+        # Get the script data
+        self.script_data = self.script[1].strip()
+
+        # Get the dialogue data
+        self.dialogue_data = self.script[2:]
+
+    def get_script_type(self):
+        """
+        Returns the type of script.
+
+        Args:
+            None
+        Returns:
+            script_type (str):
+                the type of script
+        """
+        return self.script_type
+
+    def get_script_data(self):
+        """
+        Returns the data for the script.
+
+        Args:
+            None
+        Returns:
+            script_data (dict):
+                the data for the script
+        """
+        return self.script_data
+
+    def get_dialogue_data(self):
+        """
+        Returns the dialogue data for the script.
+
+        Args:
+            None
+        Returns:
+            dialogue_data (dict):
+                the dialogue data for the script
+        """
+        return self.dialogue_data
+
+if __name__ == "__main__":
+    pass
