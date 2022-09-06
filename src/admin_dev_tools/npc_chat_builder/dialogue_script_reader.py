@@ -44,41 +44,5 @@ class ScriptReader:
         # Get the dialogue data
         self.dialogue_data = self.script[2:]
 
-    def get_script_type(self):
-        """
-        Returns the type of script.
-
-        Args:
-            None
-        Returns:
-            script_type (str):
-                the type of script
-        """
-        return self.script_type
-
-    def get_script_data(self):
-        """
-        Returns the data for the script.
-
-        Args:
-            None
-        Returns:
-            script_data (dict):
-                the data for the script
-        """
-        return self.script_data
-
-    def get_dialogue_data(self):
-        """
-        Returns the dialogue data for the script.
-
-        Args:
-            None
-        Returns:
-            dialogue_data (dict):
-                the dialogue data for the script
-        """
-        return self.dialogue_data
-
 if __name__ == "__main__":
     pass
