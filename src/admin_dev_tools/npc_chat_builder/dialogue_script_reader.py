@@ -14,6 +14,8 @@ Scripts are set up in the following manner:
         
 """
 
+import prototypes.game_objects.npc as npc
+
 class ScriptReader:
     """
     This class is used to read in a script and parse it into a usable format.
@@ -25,6 +27,52 @@ class ScriptReader:
         self.script_data = None
         self.dialogue_data = None
         self.parse_script()
+
+    def parse_npc(self, args: list):
+        """
+        Parses the NPC data.
+
+        Args:
+            args: the arguments to parse
+        Returns:
+            None
+        """
+        # Get the name
+        name = args[0].strip()
+
+        # Get the portrait
+        portrait = args[1].strip()
+
+        # Get the type
+        npc_type = args[2].strip()
+
+        # Get the mood
+        mood = args[3].strip()
+
+        # Create the NPC
+        npc = npc.NPC(name, portrait, npc_type, mood)
+
+        # Add the NPC to the NPC list
+        self.npc_list.append(npc)
+        
+
+    def parse_line(self, line: str):
+        """
+        Parses a line of data into a usable format.
+
+        Args:
+            line: the line of data to parse
+        Returns:
+            None
+        """
+        line = line.split(" ")
+        data_type = line[0].strip()
+        data_args = line[1:]
+        
+        # Parse according to the data type
+        if data_type == "NPC":
+            self.parse_npc(data_args)
+
 
     def parse_script(self):
         """
