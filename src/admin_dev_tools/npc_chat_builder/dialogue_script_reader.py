@@ -11,10 +11,11 @@ Scripts are set up in the following manner:
         type: the type of NPC (e.g. "merchant", "guard", etc.)
         mood: the starting integer of the NPC's mood
     dialogues are then written in the following format:
-        
 """
-
+# TODO: parse portrait file to get image
+# TODO: add way to randomly generate data
 import prototypes.game_objects.npc as npc
+import pygame
 
 class ScriptReader:
     """
@@ -27,6 +28,17 @@ class ScriptReader:
         self.script_data = None
         self.dialogue_data = None
         self.parse_script()
+
+    def parse_image(self, image_name: str) -> pygame.Surface:
+        """
+        Parses an image from the image directory.
+
+        Args:
+            image_name: the name of the image to parse
+        Returns:
+            The image as a pygame.Surface
+        """
+        pygame.image.load(f'/../portraits/{image_name}')
 
     def parse_npc(self, args: list):
         """

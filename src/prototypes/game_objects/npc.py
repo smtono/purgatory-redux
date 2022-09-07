@@ -1,7 +1,7 @@
 """
 This module contains the class definition for an NPC object in the overworld
 """
-
+# TODO: make portrait an actual image rather than a link
 import pygame
 from prototypes.game_objects.game_object import GameObject
 
