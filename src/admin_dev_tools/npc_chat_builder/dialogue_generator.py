@@ -9,13 +9,31 @@ Dialogue can be produced manually or randomly
 To create dialogue manually, the user will be prompted to input 
 """
 
-def generate_dialogue():
+import prototypes.game_objects.npc as npc
+import prototypes.game_objects.game_object as game_object
+
+def generate_generic_game_object(object_data: dict):
     """
-    Generates dialogue for an NPC.
+    Generates a generic game object via dictionary
 
     Args:
         None
     Returns:
-        None
+        A game object with dictionary values as kwargs
     """
-    
+    game_object = game_object.GameObject(object_data)
+    return game_object
+
+def generate_npc(number_of_npcs: int, npc_type: str):
+    """
+    Generates a new NPC with starting stats.
+
+    Args:
+        None
+    Returns:
+        A newly initalized NPC object
+    """
+    npc = npc.NPC()
+
+    # TODO: create NPC based on type
+    # Create number of NPCs based on input

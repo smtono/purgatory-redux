@@ -53,7 +53,8 @@ class GameObject(pygame.sprite.Sprite):
                  color: int=None, 
                  width: int=None, 
                  height: int=None, 
-                 coordinates: tuple=(0,0)) -> None:
+                 coordinates: tuple=(0,0),
+                 **kwargs) -> None:
         """
         Initializes game object's image with a color and size
 
