@@ -15,6 +15,8 @@ Scripts are set up in the following manner:
 # TODO: parse portrait file to get image
 # TODO: add way to randomly generate data
 import prototypes.game_objects.npc as npc
+
+import os
 import pygame
 
 class ScriptReader:
@@ -103,6 +105,27 @@ class ScriptReader:
 
         # Get the dialogue data
         self.dialogue_data = self.script[2:]
+    
+    # TODO: maybe make generic and input file to be read?
+    def parse(self, file: str) -> dict:
+        """
+        Reads and parses the script into usable data.
+
+        Args:
+            file: str
+                The path to the file to read
+        Returns:
+            A dict with parsed NPC data
+        """
+        # Read in data file
+        file = os.path.join(os.getcwd(), "data", file)
+        
+        # Parse the script data
+        self.parse_script()
+
+        # Parse the dialogue data
+        for line in self.dialogue_data:
+            self.parse_line(line)
 
 if __name__ == "__main__":
-    pass
+    ScriptReader.parse()

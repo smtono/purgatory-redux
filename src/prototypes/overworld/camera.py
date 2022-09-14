@@ -4,7 +4,7 @@ The camera object follows the player around the map, updating the screen to show
 in relation to other game objects on the map.
 """
 import pygame
-from prototypes.player import Player
+from prototypes.game_objects.player import Player
 
 class Camera:
     """
