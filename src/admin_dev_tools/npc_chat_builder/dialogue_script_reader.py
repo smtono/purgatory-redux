@@ -58,9 +58,10 @@ def parse_npc(args: list):
     npc_list.append(npc)
 
 def parse_enemy(args: list):
+    pass
 
 # TODO: maybe make generic and input file to be read?
-def parse(file_path: str) -> dict:
+def parse(lines: list) -> dict:
     """
     Reads and parses the script into usable data.
 
@@ -70,12 +71,15 @@ def parse(file_path: str) -> dict:
     Returns:
         A dict with parsed NPC data
     """
+    result = {}
     # Open the file
     
     # Push lines into a list
     script_data = []
 
     # Go through each line, parse for type
+    
+    return result
     
 
 if __name__ == "__main__":
