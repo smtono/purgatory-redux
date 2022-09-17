@@ -88,7 +88,7 @@ class NPC(GameObject):
 
 # TODO: From here on, refactor to rely solely on player class instead of having this as a dependency
 
-    def detect_nearby(self, player: GameObject) -> Any:
+    def detect_nearby(self, player: GameObject):
         """
         If the player is nearby an NPC object, the NPC will show a notification above their head
 

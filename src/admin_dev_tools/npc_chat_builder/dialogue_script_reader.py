@@ -19,113 +19,64 @@ import prototypes.game_objects.npc as npc
 import os
 import pygame
 
-class ScriptReader:
+def parse_image(image_name: str) -> pygame.Surface:
     """
-    This class is used to read in a script and parse it into a usable format.
-    This is for declaring and editing NPC data.
+    Parses an image from the image directory.
+
+    Args:
+        image_name: the name of the image to parse
+    Returns:
+        The image as a pygame.Surface
     """
-    def __init__(self, script):
-        self.script = script
-        self.script_type = None
-        self.script_data = None
-        self.dialogue_data = None
-        self.parse_script()
+    pygame.image.load(f'/../portraits/{image_name}')
 
-    def parse_image(self, image_name: str) -> pygame.Surface:
-        """
-        Parses an image from the image directory.
+def parse_npc(args: list):
+    """
+    Parses the NPC data.
 
-        Args:
-            image_name: the name of the image to parse
-        Returns:
-            The image as a pygame.Surface
-        """
-        pygame.image.load(f'/../portraits/{image_name}')
+    Args:
+        args: the arguments to parse
+    Returns:
+        None
+    """
+    # Get the name
+    name = args[0].strip()
 
-    def parse_npc(self, args: list):
-        """
-        Parses the NPC data.
+    # Get the portrait
+    portrait = args[1].strip()
 
-        Args:
-            args: the arguments to parse
-        Returns:
-            None
-        """
-        # Get the name
-        name = args[0].strip()
+    # Get the type
+    npc_type = args[2].strip()
 
-        # Get the portrait
-        portrait = args[1].strip()
+    # Get the mood
+    mood = args[3].strip()
 
-        # Get the type
-        npc_type = args[2].strip()
+    # Create the NPC
+    npc = npc.NPC(name, portrait, npc_type, mood)
 
-        # Get the mood
-        mood = args[3].strip()
+    # Add the NPC to the NPC list
+    npc_list.append(npc)
 
-        # Create the NPC
-        npc = npc.NPC(name, portrait, npc_type, mood)
+def parse_enemy(args: list):
 
-        # Add the NPC to the NPC list
-        self.npc_list.append(npc)
-        
+# TODO: maybe make generic and input file to be read?
+def parse(file_path: str) -> dict:
+    """
+    Reads and parses the script into usable data.
 
-    def parse_line(self, line: str):
-        """
-        Parses a line of data into a usable format.
-
-        Args:
-            line: the line of data to parse
-        Returns:
-            None
-        """
-        line = line.split(" ")
-        data_type = line[0].strip()
-        data_args = line[1:]
-        
-        # Parse according to the data type
-        if data_type == "NPC":
-            self.parse_npc(data_args)
-
-
-    def parse_script(self):
-        """
-        Parses the script into usable data.
-
-        Args:
-            None
-        Returns:
-            None
-        """
-        # Get the script type
-        self.script_type = self.script[0].strip()
-
-        # Get the script data
-        self.script_data = self.script[1].strip()
-
-        # Get the dialogue data
-        self.dialogue_data = self.script[2:]
+    Args:
+        file: str
+            The path to the file to read
+    Returns:
+        A dict with parsed NPC data
+    """
+    # Open the file
     
-    # TODO: maybe make generic and input file to be read?
-    def parse(self, file: str) -> dict:
-        """
-        Reads and parses the script into usable data.
+    # Push lines into a list
+    script_data = []
 
-        Args:
-            file: str
-                The path to the file to read
-        Returns:
-            A dict with parsed NPC data
-        """
-        # Read in data file
-        file = os.path.join(os.getcwd(), "data", file)
-        
-        # Parse the script data
-        self.parse_script()
-
-        # Parse the dialogue data
-        for line in self.dialogue_data:
-            self.parse_line(line)
+    # Go through each line, parse for type
+    
 
 if __name__ == "__main__":
-    ScriptReader.parse()
+    parse(os.path.join(os.getcwd(), "data", "example_script.txt"))

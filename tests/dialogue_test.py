@@ -19,3 +19,8 @@ class TestDialogue(unittest.TestCase):
         """
         OBJECTIVE: Tests the navigation of the dialogue tree
         """
+
+    def test_script_reader(self):
+        """
+        OBJECTIVE: Tests the script reader
+        """
