@@ -47,3 +47,11 @@ class TestDialogue(unittest.TestCase):
             self.assertTrue(result["npc_list"])
             self.assertTrue(result["enemy_list"])
             self.assertTrue(result["item_list"])
+
+        # Test incorrect input
+        test_script = [
+            "Test test_portrait.jpg generic 0",
+            "NPC Test none bubba A", # Should throw error due to "bubba" not being a type
+        ]
+
+        # Check that error was raised
