@@ -1,1 +1,0 @@
-NPC Test test_portrait.jpg generic 0
