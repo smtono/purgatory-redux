@@ -22,7 +22,7 @@ class Command(ABC):
         execute() -> None 
             Executes the command
     """
-    def __init__(self, name: str, args: list):
+    def __init__(self, args: list):
         """
         The constructor for the Command class
 
@@ -32,7 +32,7 @@ class Command(ABC):
             args: list
                 A list of possible arguments for the command
         """
-        self.name = name
+        self.name = ""
         self.args = args
 
     @abstractmethod
