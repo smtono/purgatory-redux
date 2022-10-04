@@ -1,7 +1,7 @@
 """
 This module serves as the class definition for the Create class.
 """
-    
+
 from admin_dev_tools.dialogue_builder.cli.commands.command import Command
 
 

@@ -22,18 +22,20 @@ class Command(ABC):
         execute() -> None 
             Executes the command
     """
-    def __init__(self, args: list):
+    def __init__(self):
         """
         The constructor for the Command class
-
-        Args:
-            name: str
-                The name of the command
-            args: list
-                A list of possible arguments for the command
         """
         self.name = ""
-        self.args = args
+        self.description = ""
+        self.usage = ""
+        self.args = []
+
+    def get_help(self) -> str:
+        """
+        Returns the help message for the command
+        """
+        return f"Usage: {self.usage}: {self.description}"
 
     @abstractmethod
     def syntax_check(self, args: list) -> bool:
