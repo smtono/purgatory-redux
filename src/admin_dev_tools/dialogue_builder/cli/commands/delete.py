@@ -23,6 +23,6 @@ class Delete(Command):
     """
 
     def __init__(self, args: list):
-        super().__init__(args)
+        super().__init__()
         self.name = "delete"
         self.args = args

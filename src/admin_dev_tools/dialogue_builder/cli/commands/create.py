@@ -25,6 +25,6 @@ class Create(Command):
     """
 
     def __init__(self, args: list):
-        super().__init__(args)
+        super().__init__()
         self.name = "create"
         self.args = args

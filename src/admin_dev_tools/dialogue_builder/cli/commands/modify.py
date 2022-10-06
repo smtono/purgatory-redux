@@ -23,6 +23,6 @@ class Modify(Command):
     """
 
     def __init__(self, args: list):
-        super().__init__(args)
+        super().__init__()
         self.name = "modify"
         self.args = args
