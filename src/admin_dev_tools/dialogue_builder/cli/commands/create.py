@@ -86,101 +86,104 @@ class Create(Command):
                 break
             print("This NPC does not exist")
             print("Trying again. . .")
+    
 
-  # TODO: maybe separate this into util class?
-    def create_npc(self) -> dict:
-        """
-        Creates a new instance of an NPC
+def create_scene():
+    pass
 
-        Args:
-            None
-        Returns:
-            A dict containing information on the new NPC
-        """
-        npc = {
-            "id": "",
-            "name": "",
-            "portrait": "",
-            "type": "",
-            "mood": "",
-            "actions": {
-                "START_SESSION": {
-                    "good": [
-                        ""
-                    ],
-                    "neutral": [
-                        ""
-                    ],
-                    "bad": [
-                        ""
-                    ]
-                },
-                "END_SESSION": {
-                    "good": [
-                        ""
-                    ],
-                    "neutral": [
-                        ""
-                    ],
-                    "bad": [
-                        ""
-                    ]
-                }
+def create_npc(self) -> dict:
+    """
+    Creates a new instance of an NPC
+
+    Args:
+        None
+    Returns:
+        A dict containing information on the new NPC
+    """
+    npc = {
+        "id": "",
+        "name": "",
+        "portrait": "",
+        "type": "",
+        "mood": "",
+        "actions": {
+            "START_SESSION": {
+                "good": [
+                    ""
+                ],
+                "neutral": [
+                    ""
+                ],
+                "bad": [
+                    ""
+                ]
             },
-        }
-        print("Creating a new NPC")
+            "END_SESSION": {
+                "good": [
+                    ""
+                ],
+                "neutral": [
+                    ""
+                ],
+                "bad": [
+                    ""
+                ]
+            }
+        },
+    }
+    print("Creating a new NPC")
 
-        # ID
-        while True:
-            npc_id = util.prompt_id()
-            if npc_id:
-                npc['id'] = npc_id
-            else:
-                npc_id = util.find_next_id(npc_data)
-                print(f"Creating an NPC with ID '{npc_id}'")
-                break
+    # ID
+    while True:
+        npc_id = util.prompt_id()
+        if npc_id:
+            npc['id'] = npc_id
+        else:
+            npc_id = util.find_next_id(npc_data)
+            print(f"Creating an NPC with ID '{npc_id}'")
+            break
 
-        # Name
-        npc['name'] = util.prompt_string("Please enter the NPC's name", False)
+    # Name
+    npc['name'] = util.prompt_string("Please enter the NPC's name", False)
 
-        # Portrait
-        # Type
-        npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
-        while True:
-            npc_type = util.prompt_string(
-                "Please enter the NPC's type. For a list of types enter 'types'",
-                False
-            )
-            if npc_type == 'types':
-                print("NPC Types:")
-                print("\t", npc_types)
-            elif npc_type in npc_types:
-                npc['type'] = npc_type
-                break
-            else:
-                print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
+    # Portrait
+    # Type
+    npc_types = ['generic', 'quest_giver', 'shopkeeper', 'enemy']
+    while True:
+        npc_type = util.prompt_string(
+            "Please enter the NPC's type. For a list of types enter 'types'",
+            False
+        )
+        if npc_type == 'types':
+            print("NPC Types:")
+            print("\t", npc_types)
+        elif npc_type in npc_types:
+            npc['type'] = npc_type
+            break
+        else:
+            print(f"Input '{npc_type}' is not a valid type. Trying again. . .")
 
-        # Mood
-        while True:
-            print(
-                "\nPlease enter the starting integer for the mood of this NPC, from -10 to 10"
-                "\nPositive integers means positive mood, "
-                "negative means a starting negative mood:"
-            )
-            npc_mood = util.prompt_number(False)
-            if float(npc_mood) > 10 or float(npc_mood) < -10:
-                print("Input must be between -10 and 10. Trying again. . .")
-            else:
-                npc['mood'] = npc_mood
-                break
+    # Mood
+    while True:
+        print(
+            "\nPlease enter the starting integer for the mood of this NPC, from -10 to 10"
+            "\nPositive integers means positive mood, "
+            "negative means a starting negative mood:"
+        )
+        npc_mood = util.prompt_number(False)
+        if float(npc_mood) > 10 or float(npc_mood) < -10:
+            print("Input must be between -10 and 10. Trying again. . .")
+        else:
+            npc['mood'] = npc_mood
+            break
 
-        # Actions
-        print("\nNow adding dialogue actions to this NPC. . .")
-        actions = self.add_actions()
+    # Actions
+    print("\nNow adding dialogue actions to this NPC. . .")
+    actions = self.add_actions()
 
-        # Scenes
-        print("\nNow adding dialogue trees to this NPC. . .")
-        scenes = self.create_scene(npc_id)
+    # Scenes
+    print("\nNow adding dialogue trees to this NPC. . .")
+    scenes = self.create_scene(npc_id)
 
-        print("Now exiting NPC creation. . .")
-        return npc
+    print("Now exiting NPC creation. . .")
+    return npc
