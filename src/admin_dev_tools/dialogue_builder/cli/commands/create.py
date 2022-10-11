@@ -35,6 +35,8 @@ class Create(Command):
         self.description = "Create a new instance of NPC or scene."
         self.usage = "create type [id]"
         self.args = args
+        
+        # TODO: read in current npc data and store in npc_data
 
     def syntax_check(self, args: list) -> bool:
         """
