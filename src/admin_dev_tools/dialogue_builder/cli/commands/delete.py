@@ -26,3 +26,32 @@ class Delete(Command):
         super().__init__()
         self.name = "delete"
         self.args = args
+
+    def syntax_check(self, args: list) -> bool:
+        """
+        Performs a syntax check on the arguments
+
+        Parameters:
+            args: list
+                The arguments to check
+
+        Returns:
+            bool
+                True if the arguments are valid, False if they are not
+        """
+        if len(args) == 2:
+            return True
+        else:
+            return False
+
+    def execute(self, args: list):
+        """
+        Executes the command
+
+        Parameters:
+            args: list
+                The arguments to use
+
+        Returns:
+            None
+        """
