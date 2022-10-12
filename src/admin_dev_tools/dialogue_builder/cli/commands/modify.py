@@ -8,7 +8,7 @@ from admin_dev_tools.dialogue_builder.cli.commands.command import Command
 class Modify(Command):
     """
     This is the class definition for the Create command in the dialogue CLI
-    
+
     Attributes:
         name: str
             The name of the command
