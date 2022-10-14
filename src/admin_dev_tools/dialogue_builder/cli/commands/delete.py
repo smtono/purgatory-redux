@@ -43,6 +43,9 @@ class Delete(Command):
             return True
         else:
             return False
+        
+        # check if data file exists
+        # check if game object exists
 
     def execute(self, args: list):
         """
@@ -55,8 +58,9 @@ class Delete(Command):
         Returns:
             None
         """
+        # delete the game object
 
-    def delete(args: list):
+    def delete(self, args: list):
         """
         Deletes an instance of an NPC or scene
 
