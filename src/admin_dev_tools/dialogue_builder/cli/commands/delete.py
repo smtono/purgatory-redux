@@ -55,3 +55,28 @@ class Delete(Command):
         Returns:
             None
         """
+
+    def delete(args: list):
+        """
+        Deletes an instance of an NPC or scene
+
+        Args:
+            args: list
+                the arguments passed to the command
+        Returns:
+            None
+        """
+        info = {
+            "help": "deletes an instance of NPC or scene.\n \
+            Args:\n\
+                type: The type of the instance you want to delete (NPC or Scene)\n\
+                npc_id: The ID of NPC or scene to delete",
+            "args": ['type', 'npc_id']
+        }
+
+        if args[0] == 'help':
+            print(info['help'])
+
+        # check if the NPC or scene exists
+
+        # delete that entry from dictionary

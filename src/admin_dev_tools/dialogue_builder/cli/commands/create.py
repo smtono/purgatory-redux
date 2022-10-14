@@ -10,6 +10,10 @@ import os
 import admin_dev_tools.dialogue_builder.cli.util.dialogue_cli_util as util
 from admin_dev_tools.dialogue_builder.cli.commands.command import Command
 
+# TODO:
+# Make it so it makes a generic NPC with bare bones info
+# Then use modify command to directly edit NPC
+# Can ask user if they want to proceed with modifying their NPC
 class Create(Command):
     """
     This is the class definition for the Create command in the dialogue CLI
@@ -232,7 +236,7 @@ class Create(Command):
 
         print("Now exiting NPC creation. . .")
         return npc
-    
+
     def create_tree(self, npc_id: str) -> dict:
         """
         Creates a new instance of a dialogue tree in regard to a particular scene
