@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
@@ -14,18 +14,18 @@
         },
         {
             "name": "NPC Chat Builder",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\admin_dev_tools\\npc_chat_builder\\dialogue_cli.py",
+            "program": "${cwd}/src/admin_dev_tools/npc_chat_builder/dialogue_cli.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": []
         },
         {
             "name": "Run Main",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "program": "C:\\Users\\smtho\\workspaces\\vscode\\purgatory-redux\\src\\main.py",
+            "program": "${cwd}/src/main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": []

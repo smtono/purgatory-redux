@@ -8,7 +8,7 @@ Usage:
 """
 
 import os
-import admin_dev_tools.dialogue_builder.cli.util.dialogue_cli_util as util
+# from admin_dev_tools.dialogue_builder.wip.util.dialogue_cli_util import 
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__))
@@ -113,15 +113,15 @@ def read_command(user_input: str):
                         modify \
                         delete \
                     Type 'help' after these commands for more information.")
-    elif command in supported_commands:
-        if command == 'create':
-            create(cmd_args)
-        elif command == 'modify':
-            modify(cmd_args)
-        elif command == 'delete':
-            delete(cmd_args)
-    elif not cmd_args:
-        print("Please provide arguments for this command, or type 'help'")
+    # elif command in supported_commands:
+    #     if command == 'create':
+    #         create(cmd_args)
+    #     elif command == 'modify':
+    #         modify(cmd_args)
+    #     elif command == 'delete':
+    #         delete(cmd_args)
+    # elif not cmd_args:
+    #     print("Please provide arguments for this command, or type 'help'")
 
 def dialogue_cli():
     """
