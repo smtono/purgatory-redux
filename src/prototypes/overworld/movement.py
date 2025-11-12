@@ -32,9 +32,9 @@ Functions:
 """
 import pygame
 from prototypes.overworld.camera import Camera
-from prototypes.game_objects.game_objects import NPC
-from prototypes.player.player import Player
-from prototypes.player.player import PlayerInput
+from prototypes.game_objects.npc import NPC
+from prototypes.game_objects.player.player import Player
+from prototypes.game_objects.player.player import PlayerInput
 
 
 def movement():
