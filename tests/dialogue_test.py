@@ -10,7 +10,8 @@ according to specific user inputs with dialogue sets.
 
 import unittest
 
-from admin_dev_tools.npc_chat_builder.dialogue_script_reader import parse
+from admin_dev_tools.dialogue_builder.wip.dialogue_script_reader import parse
+
 
 class TestDialogue(unittest.TestCase):
     """
@@ -25,9 +26,15 @@ class TestDialogue(unittest.TestCase):
         npc = {
             "0000": {
                     "name": "Test_NPC",
-                    "portrait": "This is the filepath to the portrait of this NPC",
-                    "type": "This is the type of NPC (shopkeeper, quest giver, confidant, generic)",
-                    "mood": "This is the starting mood of this NPC as an integer (positive means good, negative means bad)",
+                    "portrait":
+                            "This is the filepath to the portrait of this NPC",
+                    "type":
+                            "This is the type of NPC"
+                            " (shopkeeper, quest giver, confidant, generic)",
+                    "mood":
+                            "This is the starting mood of"
+                            " this NPC as an integer"
+                            " (positive means good, negative means bad)",
                     "actions": {
                         "START_SESSION": {
                             "good": [
@@ -101,9 +108,10 @@ class TestDialogue(unittest.TestCase):
             self.assertTrue(result["item_list"])
 
         # Test incorrect input
+        # Should throw error due to "bubba" not being a type
         test_script = [
             "Test test_portrait.jpg generic 0",
-            "NPC Test none bubba A", # Should throw error due to "bubba" not being a type
+            "NPC Test none bubba A",
         ]
 
         # Check that error was raised

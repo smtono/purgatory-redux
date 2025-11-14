@@ -4,6 +4,7 @@ This module is for testing the functionality of the admin tools.
 
 import unittest
 
+
 class AdminToolsTest(unittest.TestCase):
     """
     Test the functionality of the NPC Chat Builder CLI
@@ -13,7 +14,7 @@ class AdminToolsTest(unittest.TestCase):
         """
         OBJECTIVE: Test the functionality of the Dialogue Creation CLI
         """
-        
+
         # Sample result from the Dialogue CLI
         result = {
             "0000": {
@@ -45,8 +46,7 @@ class AdminToolsTest(unittest.TestCase):
                 }
             }
         }
-        
-        
+
 
 if __name__ == '__main__':
     unittest.main()

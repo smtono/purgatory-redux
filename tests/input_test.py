@@ -1,8 +1,15 @@
+"""
+Testing user input when moving player character around
+"""
+
 import unittest
-from prototypes.player.player import Player, PlayerInput
+# from prototypes.game_objects.player.input_controller import Player, PlayerInput
+
 
 # create a unit test to test the movement of the player from src\prototypes\overworld\movement.py
 class InputTests(unittest.TestCase):
+    """ Test"""
+
     def test_left_movement(self):
         player = Player(0, 0)
         self.assertGreater()
